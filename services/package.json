@@ -1,0 +1,22 @@
+{
+  "name": "@gpt-workspace-search/services",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.234.0",
+    "@notionhq/client": "^2.2.2",
+    "@pothos/core": "^3.23.2",
+    "aws-sdk": "^2.1278.0",
+    "electrodb": "^2.3.5",
+    "gpt-3-encoder": "latitudegames/GPT-3-Encoder",
+    "gpt3-tokenizer": "^1.1.4",
+    "graphql": "^16.6.0",
+    "openai": "^3.1.0",
+    "pinecone-client": "^1.0.0",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.109"
+  }
+}
