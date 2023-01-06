@@ -5,16 +5,21 @@ import { Embedding } from "@gpt-workspace-search/core/embedding";
 const workspaceId = "test";
 it("create an article", async () => {
   // TODO: create from the api
-  const embedding = await Embedding.create({
-    ada002: [1, 2, 3],
-    text: "test",
-    originData: {},
-    originId: "test",
-    workspaceId,
-    originLink: "https://test.com/link/",
-  });
+  const embedding = await Embedding.batchCreateEmbedding([
+    {
+      ada002: [1, 2, 3],
+      text: {
+        content: "test",
+        context: "test",
+      },
+      originId: "test",
+      workspaceId,
+      originLink: {
+        text: "test",
+        url: "https://test",
+      },
+    },
+  ]);
   const list = await Embedding.list(workspaceId);
-  expect(
-    list.find((a) => a.embeddingId === embedding.embeddingId)
-  ).not.toBeNull();
+  expect(list.length).toBe(1);
 });

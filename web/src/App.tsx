@@ -7,11 +7,12 @@ import {
 } from "@tanstack/solid-query";
 import { Route, Routes } from "@solidjs/router";
 import { Home } from "./pages/home";
-import { Notion } from "./pages/notion";
+import { Notion } from "./pages/connections";
 import { Embeddings } from "./pages/embeddings";
 import { Header } from "./components/header";
 import { SignIn } from "./pages/sign-in";
-import { SignUp } from "./pages/sign-up";
+import { Workspaces } from "./layouts/workspaces";
+import { Workspace } from "./components/workspace";
 
 const queryClient = new QueryClient();
 
@@ -20,12 +21,17 @@ const App: Component = () => {
     <QueryClientProvider client={queryClient}>
       <Header></Header>
       <Routes>
-        <Route path="/chat" component={Chat} />
+        <Route path="/workspaces" component={Workspaces}>
+          <Route path="/" />
+          <Route path=":workspaceId">
+            <Route path="/" component={Workspace} />
+            <Route path="/connections" component={Notion} />
+            <Route path="/embeddings" component={Embeddings} />
+            <Route path="/chat" component={Chat} />
+          </Route>
+        </Route>
         <Route path="/" component={Home} />
-        <Route path="/notion" component={Notion} />
-        <Route path="/embeddings" component={Embeddings} />
         <Route path="/sign-in" component={SignIn} />
-        <Route path="/sign-up" component={SignUp} />
       </Routes>
     </QueryClientProvider>
   );

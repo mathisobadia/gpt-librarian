@@ -1,7 +1,7 @@
 import { use, StackContext, StaticSite } from "@serverless-stack/resources";
 import { Api } from "./Api";
 
-export function Web({ stack }: StackContext) {
+export function Web({ stack }: StackContext): StaticSite {
   const api = use(Api);
 
   const site = new StaticSite(stack, "site", {
@@ -16,4 +16,5 @@ export function Web({ stack }: StackContext) {
   stack.addOutputs({
     SITE: site.url,
   });
+  return site;
 }

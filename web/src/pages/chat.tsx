@@ -1,20 +1,23 @@
 import type { Component } from "solid-js";
 import { createMutation } from "@tanstack/solid-query";
 import { Switch, Match, createSignal } from "solid-js";
-import { postChatMessage } from "../queries/postChatMessage";
+import { queryChat } from "../queries/query-chat";
 import { ChatMessage } from "../components/message";
 import { EmbeddingList } from "../components/embedding";
+import { useParams } from "@solidjs/router";
 
 export const Chat: Component = () => {
   const [newChatQuery, setChatQuery] = createSignal("");
-  const mutation = createMutation(["chatMessage"], postChatMessage);
+  const param = useParams();
+  const workspaceId = param.workspaceId;
+  const mutation = createMutation(["chatMessage"], queryChat);
   const onSubmit = (e: Event) => {
     e.preventDefault();
-    mutation.mutate(newChatQuery());
+    mutation.mutate({ query: newChatQuery(), workspaceId });
   };
   const submitOnEnter = (e: KeyboardEvent) => {
     if (e.key === "Enter") {
-      mutation.mutate(newChatQuery());
+      mutation.mutate({ query: newChatQuery(), workspaceId });
     }
   };
 

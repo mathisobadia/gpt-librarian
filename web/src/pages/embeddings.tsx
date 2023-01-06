@@ -1,10 +1,14 @@
 import { Component, Match, Switch } from "solid-js";
 import { createQuery } from "@tanstack/solid-query";
-import { getEmbeddings } from "../queries/getEmbeddings";
+import { listEmbeddings } from "../queries/list-embeddings";
 import { EmbeddingList } from "../components/embedding";
+import { useParams } from "@solidjs/router";
 
 export const Embeddings: Component = () => {
-  const query = createQuery(() => ["embeddings"], getEmbeddings);
+  const param = useParams();
+  const workspaceId = param.workspaceId;
+  const listWorkspaceEmbeddings = () => listEmbeddings(workspaceId);
+  const query = createQuery(() => ["embeddings"], listWorkspaceEmbeddings);
   return (
     <div class="flex flex-col items-center justify-center h-screen">
       <Switch>

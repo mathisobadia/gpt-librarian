@@ -6,7 +6,6 @@ import {
   GetPageResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import { Client } from "@notionhq/client";
-import { Config } from "@serverless-stack/node/config";
 import { createEmbeddingWithRetry, getPromptLength } from "./openai";
 import {
   CreateEmbeddingInput,
@@ -16,13 +15,13 @@ import {
 // Initializing a client
 
 // TODO user notion token from user ?
-const notion = new Client({
-  auth: Config.NOTION_TOKEN,
-});
 
 const MERGED_BLOCK_LENGTH = 200;
 
-export const getAllDatabases = async () => {
+export const getAllDatabases = async (notionToken: string) => {
+  const notion = new Client({
+    auth: notionToken,
+  });
   const response = await notion.search({
     filter: {
       property: "object",
@@ -32,10 +31,19 @@ export const getAllDatabases = async () => {
   return response.results;
 };
 
-export const getPage = async (pageId: string) => {
+export const getPage = async ({
+  pageId,
+  notionToken,
+}: {
+  pageId: string;
+  notionToken: string;
+}) => {
+  const notion = new Client({
+    auth: notionToken,
+  });
   const pageResponse = await notion.pages.retrieve({ page_id: pageId });
   const page = checkPageIsNotPartial(pageResponse);
-  const children = await getAllBlockChildren(pageId);
+  const children = await getAllBlockChildren({ blockId: pageId, notionToken });
   return { page, children };
 };
 
@@ -63,22 +71,44 @@ export const filterBlock = (block: BlocksWithTextContent) => {
   return block.text.content.length > 20;
 };
 
-export const savePageEmbeddings = async (pageId: string) => {
-  const input = await getTextContents(pageId);
+export const savePageEmbeddings = async ({
+  connectionId,
+  workspaceId,
+  pageId,
+  notionToken,
+}: {
+  connectionId: string;
+  workspaceId: string;
+  pageId: string;
+  notionToken: string;
+}) => {
+  const input = await getTextContents({ pageId, notionToken });
   const blocksWithTextContent = mergeBlocks(input, MERGED_BLOCK_LENGTH);
   const filteredBlocks = blocksWithTextContent.filter(filterBlock);
   const embeddingInputs = await Promise.all(
     filteredBlocks.map((block) =>
-      getCreateEmbeddingInputFromBlock(block, input.page)
+      getCreateEmbeddingInputFromBlock({
+        workspaceId,
+        block,
+        page: input.page,
+        connectionId,
+      })
     )
   );
   return Embedding.batchCreateEmbedding(embeddingInputs);
 };
 
-export const getCreateEmbeddingInputFromBlock = async (
-  block: BlocksWithTextContent,
-  page: PageObjectResponse
-) => {
+export const getCreateEmbeddingInputFromBlock = async ({
+  workspaceId,
+  connectionId,
+  block,
+  page,
+}: {
+  workspaceId: string;
+  connectionId: string;
+  block: BlocksWithTextContent;
+  page: PageObjectResponse;
+}) => {
   const { text } = block;
   // TODO pass in real user
   const ada002 = await createEmbeddingWithRetry({
@@ -88,8 +118,9 @@ export const getCreateEmbeddingInputFromBlock = async (
   const embeddingInput: CreateEmbeddingInput = {
     ada002,
     text: text,
-    workspaceId: "test",
+    workspaceId,
     originId: page.id,
+    connectionId,
     originLink: {
       url: `${page.url}#${block.block.id.split("-").join("")}`,
       text: getPageTitle(page),
@@ -98,8 +129,14 @@ export const getCreateEmbeddingInputFromBlock = async (
   return embeddingInput;
 };
 
-const getTextContents = async (pageId: string) => {
-  const { page, children } = await getPage(pageId);
+const getTextContents = async ({
+  notionToken,
+  pageId,
+}: {
+  notionToken: string;
+  pageId: string;
+}) => {
+  const { page, children } = await getPage({ notionToken, pageId });
   const blocksWithTextContent = children.map((block) => {
     const textContent = blockToPlainText(block);
     return {
@@ -245,16 +282,27 @@ type NestedBlockObjectResponse =
       nested_column: { children: NestedBlockObjectResponse[] };
     };
 
-const getAllBlockChildren = async (
-  blockId: string
-): Promise<NestedBlockObjectResponse[]> => {
+const getAllBlockChildren = async ({
+  blockId,
+  notionToken,
+}: {
+  blockId: string;
+  notionToken: string;
+}): Promise<NestedBlockObjectResponse[]> => {
+  const notion = new Client({
+    auth: notionToken,
+  });
   const childrens = await getAllPages<
     ListBlockChildrenParameters,
     NestedBlockObjectResponse
   >({ block_id: blockId }, notion.blocks.children.list as any);
+
   const promises = childrens.map(async (child) => {
     if (child.type === "table") {
-      const nestedTableChildren = await getAllBlockChildren(child.id);
+      const nestedTableChildren = await getAllBlockChildren({
+        blockId: child.id,
+        notionToken,
+      });
       const nestedTable: NestedBlockObjectResponse = {
         id: child.id,
         type: "nested-table",
@@ -263,7 +311,10 @@ const getAllBlockChildren = async (
       return nestedTable;
     }
     if (child.type === "column_list") {
-      const nestedColumnListChildren = await getAllBlockChildren(child.id);
+      const nestedColumnListChildren = await getAllBlockChildren({
+        blockId: child.id,
+        notionToken,
+      });
       const nestedColumnList: NestedBlockObjectResponse = {
         id: child.id,
         type: "nested-column-list",
@@ -272,7 +323,10 @@ const getAllBlockChildren = async (
       return nestedColumnList;
     }
     if (child.type === "column") {
-      const nestedColumnChildren = await getAllBlockChildren(child.id);
+      const nestedColumnChildren = await getAllBlockChildren({
+        blockId: child.id,
+        notionToken,
+      });
       const nestedColumn: NestedBlockObjectResponse = {
         id: child.id,
         type: "nested-column",

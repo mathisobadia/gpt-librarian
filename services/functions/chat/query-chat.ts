@@ -1,4 +1,4 @@
-import { respond } from "@gpt-workspace-search/core/respond";
+import { respond } from "../utils";
 import {
   getRankedEmbeddings,
   createPrompt,
@@ -7,17 +7,20 @@ import {
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { ChatRequest, ChatResponse } from "./types";
 import { mapRankedEmbeddings } from "@gpt-workspace-search/core/embedding";
+import { ApiHandler } from "@serverless-stack/node/api";
+import { useAuth } from "functions/utils";
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
-  if (!event.body) return respond.error("No body provided");
-
+export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
+  const member = await useAuth(event);
+  if (!member) return respond.error("auth error");
+  if (!event.body) return respond.error("no body");
   const { query }: ChatRequest = JSON.parse(event.body);
-  const user = "admin";
-  const worspaceId = "test";
+  const { userId, workspaceId } = member;
+  // const workspaceId = session.properties.userId;
   const rankedEmbeddings = await getRankedEmbeddings({
-    userId: user,
+    userId,
     query,
-    workspaceId: worspaceId,
+    workspaceId,
     embeddingQuantity: 10,
   });
   console.log(
@@ -30,7 +33,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   console.log(prompt);
   const completion = await createCompletion({
     prompt,
-    user,
+    user: userId,
   });
   // remove source from completion
   if (!completion) {
@@ -57,4 +60,4 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     rankedEmbeddings: filteredRankedEmbeddings.map(mapRankedEmbeddings),
   };
   return respond.ok(response);
-};
+});

@@ -37,22 +37,10 @@ export const Header: Component = () => {
           </div>
           <nav class="hidden space-x-10 md:flex">
             <A
-              href="/chat"
+              href="/workspaces"
               class="text-base font-medium text-gray-500 hover:text-gray-900"
             >
-              Chat
-            </A>
-            <A
-              href="/notion"
-              class="text-base font-medium text-gray-500 hover:text-gray-900"
-            >
-              Notion
-            </A>
-            <A
-              href="/embeddings"
-              class="text-base font-medium text-gray-500 hover:text-gray-900"
-            >
-              Embeddings
+              Workspaces
             </A>
           </nav>
           <div class="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
@@ -63,7 +51,7 @@ export const Header: Component = () => {
               Sign in
             </A>
             <A
-              href="/sign-up"
+              href="/sign-in"
               class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
             >
               Sign up

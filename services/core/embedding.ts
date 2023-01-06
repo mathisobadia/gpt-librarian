@@ -36,6 +36,7 @@ export const EmbeddingEntity = new Entity(
         required: true,
         readOnly: true,
       },
+      connectionId: { type: "string", required: true, readOnly: true },
       originId: { type: "string", required: true },
       originLink: {
         type: "map",
@@ -67,7 +68,7 @@ export const EmbeddingEntity = new Entity(
         },
         sk: {
           field: "gsi1sk",
-          composite: [],
+          composite: ["createdAt"],
         },
       },
     },
@@ -79,7 +80,7 @@ export type EmbeddingEntityType = EntityItem<typeof EmbeddingEntity>;
 
 export type CreateEmbeddingInput = Pick<
   EmbeddingEntityType,
-  "text" | "originId" | "workspaceId" | "originLink"
+  "text" | "originId" | "workspaceId" | "originLink" | "connectionId"
 > & { ada002: number[] };
 // export async function create(input : CreateEmbeddingInput) {
 //   const result = await EmbeddingEntity.create(embeddingInputToEmbedding(input)).go();
@@ -91,6 +92,7 @@ const embeddingInputToEmbedding = ({
   originId,
   workspaceId,
   originLink,
+  connectionId,
 }: CreateEmbeddingInput) => ({
   embeddingId: ulid(),
   ada002,
@@ -99,6 +101,7 @@ const embeddingInputToEmbedding = ({
   originType: "NOTION",
   workspaceId,
   originLink,
+  connectionId,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 });
@@ -166,11 +169,6 @@ export const batchGetEmbeddings = async (
   return result.data;
 };
 
-// export async function get(workspaceId: string, embeddingId: string) {
-//   const result = await EmbeddingEntity.get({ workspaceId, embeddingId }).go();
-//   return result.data;
-// }
-
 export const list = async (workspaceId: string) => {
   const result = await EmbeddingEntity.query.primary({ workspaceId }).go();
   return result.data;
@@ -192,23 +190,6 @@ export const listByOrigin = async (
 export const getFullTextEmbedding = (text: EmbeddingEntityType["text"]) => {
   return `${text.context}\n${text.content}`;
 };
-
-// export async function update(
-//   item: Partial<Pick<EmbeddingEntityType, "ada002" | "text" | "originData">> &
-//     Pick<EmbeddingEntityType, "workspaceId" | "embeddingId">
-// ) {
-//   const result = await EmbeddingEntity.patch(item)
-//     .set(item)
-//     .go();
-//   return result.data;
-// }
-
-// export async function getAllEmbeddingsForWorkspace(workspaceId: string) {
-//   const result = await EmbeddingEntity.query
-//     .primary({ workspaceId })
-//     .go({ pages: "all" });
-//   return result.data;
-// }
 
 export const mapRankedEmbeddings = (
   embedding: WeightedEmbedding

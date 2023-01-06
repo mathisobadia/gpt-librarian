@@ -2,12 +2,19 @@ import type {
   ChatRequest,
   ChatResponse,
 } from "@gpt-workspace-search/services/functions/chat/types";
-export const postChatMessage = async (query: string): Promise<ChatResponse> => {
+import { getAPIUrl } from "./utils";
+export const queryChat = async ({
+  query,
+  workspaceId,
+}: {
+  query: string;
+  workspaceId: string;
+}): Promise<ChatResponse> => {
   console.log(query);
   const param: ChatRequest = {
     query,
   };
-  const response = await fetch(import.meta.env.VITE_REST_URL + "/chat", {
+  const response = await fetch(getAPIUrl("/query-chat", workspaceId), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -15,6 +22,7 @@ export const postChatMessage = async (query: string): Promise<ChatResponse> => {
     body: JSON.stringify({
       query,
     }),
+    credentials: "include",
   });
   return response.json();
 };
