@@ -11,7 +11,7 @@ import { ApiHandler } from "@serverless-stack/node/api";
 import { useAuth } from "functions/utils";
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
-  const member = await useAuth(event);
+  const member = await useAuth();
   if (!member) return respond.error("auth error");
   if (!event.body) return respond.error("no body");
   const { query }: ChatRequest = JSON.parse(event.body);

@@ -5,7 +5,7 @@ import { Connection } from "@gpt-workspace-search/core/connection";
 import { ListConnectionsResponse } from "./types";
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
-  const member = await useAuth(event);
+  const member = await useAuth();
   if (!member) return respond.error("auth error");
   const connections = await Connection.list(member.workspaceId);
   const response: ListConnectionsResponse = connections;

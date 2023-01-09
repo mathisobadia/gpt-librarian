@@ -1,8 +1,13 @@
 import { useSession } from "@serverless-stack/node/auth";
 import { Member } from "@gpt-workspace-search/core/member";
-import { APIGatewayProxyEventV2 } from "aws-lambda";
-export const useAuth = async (event: APIGatewayProxyEventV2) => {
-  const workspaceId = event.queryStringParameters?.workspaceId;
+import { useQueryParam } from "@serverless-stack/node/api";
+
+/**
+ * Hook to return the current user's membership in the workspace, implicitly gets the workspaceId from the query params
+ */
+export const useAuth = async () => {
+  // those hooks use sst context to get the request info anywhere in your code, see https://docs.sst.dev/clients/api#usequeryparam
+  const workspaceId = useQueryParam("workspaceId");
   if (!workspaceId) throw new Error("Workspace not specified");
   const session = useSession();
   if (session.type === "public") throw new Error("User not authenticated");
@@ -14,6 +19,9 @@ export const useAuth = async (event: APIGatewayProxyEventV2) => {
   return membership;
 };
 
+/**
+ * Utility to return a response from an API Gateway handler with a the right status code, JSON body, and CORS headers
+ */
 export const respond = {
   ok: async (response: unknown) => {
     return {

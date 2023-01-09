@@ -5,7 +5,7 @@ import { Connection } from "@gpt-workspace-search/core/connection";
 import { CreateConnectionRequest, CreateConnectionResponse } from "./types";
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
-  const member = await useAuth(event);
+  const member = await useAuth();
   if (!member) return respond.error("auth error");
   if (!event.body) return respond.error("no body");
   const { type, notionToken, name }: CreateConnectionRequest = JSON.parse(
