@@ -20,19 +20,21 @@ const App: Component = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Header></Header>
-      <Routes>
-        <Route path="/workspaces" component={Workspaces}>
-          <Route path="/" />
-          <Route path=":workspaceId">
-            <Route path="/" component={Workspace} />
-            <Route path="/connections" component={Notion} />
-            <Route path="/embeddings" component={Embeddings} />
-            <Route path="/chat" component={Chat} />
+      <main class="bg-slate-1">
+        <Routes>
+          <Route path="/workspaces" component={Workspaces}>
+            <Route path="/" />
+            <Route path=":workspaceId">
+              <Route path="/" component={Workspace} />
+              <Route path="/connections" component={Notion} />
+              <Route path="/embeddings" component={Embeddings} />
+              <Route path="/chat" component={Chat} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="/" component={Home} />
-        <Route path="/sign-in" component={SignIn} />
-      </Routes>
+          <Route path="/" component={Home} />
+          <Route path="/sign-in" component={SignIn} />
+        </Routes>
+      </main>
     </QueryClientProvider>
   );
 };

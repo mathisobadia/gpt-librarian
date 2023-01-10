@@ -3,7 +3,8 @@ import {
   EmbeddingsResponse,
 } from "@gpt-workspace-search/services/functions/embeddings/types";
 import { Component, For } from "solid-js";
-import { NotionLogo } from "./notion-logo";
+import { LinkSvg } from "../base-ui/link-svg";
+import { NotionLogo } from "../base-ui/notion-logo";
 
 export const EmbeddingItem: Component<EmbeddingResponse> = (props) => {
   const { textContent, originLink } = props;
@@ -16,18 +17,21 @@ export const EmbeddingItem: Component<EmbeddingResponse> = (props) => {
         </div>
         <div class="flex-1 min-w-0">
           <a
-            class="text-sm font-medium text-gray-900 truncate dark:text-white"
+            class="text-sm font-medium text-slate-12 truncate"
             href={originLink.url}
+            target="_blank"
           >
             {originLink.text}
           </a>
-          <p class="text-sm text-gray-500 text-clip dark:text-gray-400">
-            {textContent}
-          </p>
+          <p class="text-sm text-slate-11 text-clip">{textContent}</p>
         </div>
-        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-          go
-        </div>
+        <a
+          class="inline-flex items-center text-base font-semibold text-slate-12 flex-shrink-0"
+          href={originLink.url}
+          target="_blank"
+        >
+          <LinkSvg />
+        </a>
       </div>
     </li>
   );
@@ -39,7 +43,7 @@ export const EmbeddingList: Component<{ embeddings: EmbeddingsResponse }> = (
   const { embeddings } = props;
 
   return (
-    <ul class="max-w-2xl divide-y divide-gray-200 dark:divide-gray-700">
+    <ul class="max-w-2xl divide-y divide-slate-6">
       <For each={embeddings}>
         {(embedding) => <EmbeddingItem {...embedding}></EmbeddingItem>}
       </For>

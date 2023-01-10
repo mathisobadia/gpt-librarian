@@ -6,20 +6,25 @@ import { listUserWorkspaces } from "../queries/list-user-workspaces";
 export const Workspaces: Component = () => {
   const query = createQuery(() => ["workspaces"], listUserWorkspaces);
   return (
-    <div>
+    <div class="flex flex-col h-screen">
       <Switch>
         <Match when={query.isLoading}>
-          <p>Loading...</p>
+          <p class="text-slate-12">Loading...</p>
         </Match>
         <Match when={query.isError}>
-          <p>Error: {JSON.stringify(query.error)}</p>
+          <p class="text-slate-12">Error: {JSON.stringify(query.error)}</p>
         </Match>
         <Match when={query.isSuccess && query.data}>
           <ul>
             <For each={query.data}>
               {(workspaceId) => (
                 <li>
-                  <Link href={`/workspaces/${workspaceId}`}>{workspaceId}</Link>
+                  <Link
+                    class="text-slate-12"
+                    href={`/workspaces/${workspaceId}`}
+                  >
+                    {workspaceId}
+                  </Link>
                 </li>
               )}
             </For>

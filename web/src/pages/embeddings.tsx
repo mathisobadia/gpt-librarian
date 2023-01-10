@@ -10,13 +10,13 @@ export const Embeddings: Component = () => {
   const listWorkspaceEmbeddings = () => listEmbeddings(workspaceId);
   const query = createQuery(() => ["embeddings"], listWorkspaceEmbeddings);
   return (
-    <div class="flex flex-col items-center justify-center h-screen">
+    <div class="bg-slate-2 flex flex-col items-center justify-center">
       <Switch>
         <Match when={query.isLoading}>
-          <p>Loading...</p>
+          <p class="text-slate-12">Loading...</p>
         </Match>
         <Match when={query.isError}>
-          <p>Error: {JSON.stringify(query.error)}</p>
+          <p class="text-slate-12">Error: {JSON.stringify(query.error)}</p>
         </Match>
         <Match when={query.isSuccess && query.data}>
           <EmbeddingList embeddings={query.data!}></EmbeddingList>

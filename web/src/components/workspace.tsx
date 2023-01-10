@@ -4,25 +4,25 @@ export const Workspace = () => {
   const params = useParams();
   const workspaceId = params.workspaceId;
   return (
-    <nav class="hidden space-x-10 md:flex">
+    <div class="space-x-10">
       <A
         href={`/workspaces/${workspaceId}/chat`}
-        class="text-base font-medium text-gray-500 hover:text-gray-900"
+        class="text-base font-medium text-slate-11 hover:text-slate-12"
       >
         Chat
       </A>
       <A
         href={`/workspaces/${workspaceId}/connections`}
-        class="text-base font-medium text-gray-500 hover:text-gray-900"
+        class="text-base font-medium text-slate-11 hover:text-slate-12"
       >
         Connections
       </A>
       <A
         href={`/workspaces/${workspaceId}/embeddings`}
-        class="text-base font-medium text-gray-500 hover:text-gray-900"
+        class="text-base font-medium text-slate-11 hover:text-slate-12"
       >
         Embeddings
       </A>
-    </nav>
+    </div>
   );
 };

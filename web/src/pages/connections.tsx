@@ -1,9 +1,11 @@
 import { useParams } from "@solidjs/router";
 import { createMutation, createQuery } from "@tanstack/solid-query";
+import { Button } from "../base-ui/button";
 import { Component, createSignal, For, Match, Switch } from "solid-js";
 import { createConnection } from "../queries/create-connection";
 import { fetchConnections } from "../queries/fetch-connections";
 import { listConnections } from "../queries/list-connections";
+import { Input } from "../base-ui/input";
 
 export const Notion: Component = () => {
   const fetchConnectionMutation = createMutation(
@@ -35,86 +37,76 @@ export const Notion: Component = () => {
   };
   return (
     <div class="flex flex-col h-screen">
-      <h1 class="text-2xl font-bold text-gray-600 dark:text-gray-300">
-        Connections
-      </h1>
-      <h2>Existing connections</h2>
+      <h1 class="text-2xl font-bold text-slate-11">Connections</h1>
+      <h2 class="text-slate-12">Existing connections</h2>
       <Switch>
         <Match when={query.isLoading}>
-          <p>Loading...</p>
+          <p class="text-slate-12">Loading...</p>
         </Match>
         <Match when={query.isError}>
-          <p>Error: {JSON.stringify(query.error)}</p>
+          <p class="text-slate-12">Error: {JSON.stringify(query.error)}</p>
         </Match>
         <Match when={query.isSuccess && query.data && query.data.length}>
           <ul>
             <For each={query.data}>
               {(connection) => (
                 <li>
-                  <p>{connection.name}</p>
+                  <p class="text-slate-12">{connection.name}</p>
                 </li>
               )}
             </For>
           </ul>
           <form class="mt-4" onSubmit={onSubmitFetchConnections}>
-            <button
-              disabled={fetchConnectionMutation.isLoading}
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              type="submit"
-            >
+            <Button type="submit" disabled={fetchConnectionMutation.isLoading}>
               Sync Connections
-            </button>
+            </Button>
           </form>
         </Match>
       </Switch>
-      <h2>Create new connection</h2>
+      <h2 class="text-slate-12">Create new connection</h2>
       <Switch>
         <Match when={fetchConnectionMutation.isError}>
-          <p>Error: {JSON.stringify(fetchConnectionMutation.error)}</p>
+          <p class="text-slate-12">
+            Error: {JSON.stringify(fetchConnectionMutation.error)}
+          </p>
         </Match>
         <Match when={fetchConnectionMutation.isSuccess}>
-          <p>Success!</p>
+          <p class="text-slate-12">Success!</p>
         </Match>
         <Match when={fetchConnectionMutation.isLoading}>
-          <p>Loading...</p>
+          <p class="text-slate-12">Loading...</p>
         </Match>
       </Switch>
 
-      <form class="mt-4" onSubmit={onSubmitCreateConnection}>
-        <label class="block text-gray-700 text-sm font-bold mb-2">
-          Connection Name
-        </label>
-        <input
+      <form class="mt-4 max-w-md space-y-4" onSubmit={onSubmitCreateConnection}>
+        <Input
           type="text"
-          onInput={(e) => setConnectionName(e.currentTarget.value)}
-          value={connectionName()}
+          label="Connection Name"
+          name="connection-name"
+          signal={[connectionName, setConnectionName]}
         />
-        <label class="block text-gray-700 text-sm font-bold mb-2">
-          Notion Token
-        </label>
-        <input
+        <Input
           type="text"
-          onInput={(e) => setNotionToken(e.currentTarget.value)}
-          value={notionToken()}
+          label="Notion Token"
+          name="notion-token"
+          signal={[notionToken, setNotionToken]}
         />
-        <button
-          disabled={createConnectionMutation.isLoading}
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          type="submit"
-        >
+        <Button type="submit" disabled={createConnectionMutation.isLoading}>
           Create Connection
-        </button>
+        </Button>
       </form>
 
       <Switch>
         <Match when={createConnectionMutation.isError}>
-          <p>Error: {JSON.stringify(createConnectionMutation.error)}</p>
+          <p class="text-slate-12">
+            Error: {JSON.stringify(createConnectionMutation.error)}
+          </p>
         </Match>
         <Match when={createConnectionMutation.isSuccess}>
-          <p>Success!</p>
+          <p class="text-slate-12">Success!</p>
         </Match>
         <Match when={createConnectionMutation.isLoading}>
-          <p>Loading...</p>
+          <p class="text-slate-12">Loading...</p>
         </Match>
       </Switch>
     </div>

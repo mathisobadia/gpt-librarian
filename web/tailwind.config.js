@@ -4,9 +4,9 @@ module.exports = {
     './index.html',
     './src/**/*.{js,ts,jsx,tsx,css,md,mdx,html,json,scss}'
   ],
-  darkMode: 'class',
+  darkMode: 'auto',
   theme: {
     extend: {}
   },
-  plugins: [require('@tailwindcss/forms')]
+  plugins: [require('@tailwindcss/forms'), require('windy-radix-palette')]
 }
