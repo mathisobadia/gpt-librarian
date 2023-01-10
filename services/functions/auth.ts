@@ -1,3 +1,7 @@
+/* 
+Auth handler from [SST Auth](https://docs.sst.dev/auth)
+this handles the auth flow for the app, including the login page, the callback page, and the logout page
+**/
 import { AuthHandler, LinkAdapter, Session } from "@serverless-stack/node/auth";
 import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses";
 import { respond } from "./utils";

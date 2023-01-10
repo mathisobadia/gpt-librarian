@@ -1,3 +1,11 @@
+/* 
+
+This file contains the OpenAI API calls for the project.
+It tries to implement the best practices for using the API out of the box as much as possible.
+https://beta.openai.com/docs/guides/safety-best-practices
+
+**/
+
 import { Configuration, OpenAIApi } from "openai";
 import { Config } from "@serverless-stack/node/config";
 import { EmbeddingEntityType, Embedding } from "./embedding";
@@ -133,6 +141,10 @@ export const createCompletion = async ({
   prompt: string;
   user: string;
 }) => {
+  const isCompliant = await checkModerationCompliance(prompt);
+  if (!isCompliant) {
+    throw new Error("Prompt is not compliant with OpenAI's moderation policy");
+  }
   const temperature = 0;
   // Create Params for the API
   const params = {
@@ -230,4 +242,16 @@ const getPromtContext = (
   return `Content ${rankedEmbeddings.text.context}
   ${rankedEmbeddings.text.content}
   Source: ${index}-pl`;
+};
+
+/**
+ * Check the prompt for moderation compliance, maybe this function should only be activated with some config flag
+ */
+export const checkModerationCompliance = async (prompt: string) => {
+  const res = await openai.createModeration({
+    input: prompt,
+    model: "text-moderation-stable",
+  });
+  const flagged = res.data.results[0].flagged;
+  return !flagged;
 };

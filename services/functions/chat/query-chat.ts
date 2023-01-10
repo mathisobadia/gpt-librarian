@@ -9,13 +9,18 @@ import { ChatRequest, ChatResponse } from "./types";
 import { mapRankedEmbeddings } from "@gpt-workspace-search/core/embedding";
 import { ApiHandler } from "@serverless-stack/node/api";
 import { useAuth } from "functions/utils";
+import { ChatHistory } from "@gpt-workspace-search/core/chat-history";
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   const member = await useAuth();
   if (!member) return respond.error("auth error");
   if (!event.body) return respond.error("no body");
   const { query }: ChatRequest = JSON.parse(event.body);
-  const { userId, workspaceId } = member;
+  const { memberId, userId, workspaceId } = member;
+  const rateExceeded = await checkRateLimit(memberId);
+  if (rateExceeded) {
+    return respond.error("rate limit exceeded");
+  }
   // const workspaceId = session.properties.userId;
   const rankedEmbeddings = await getRankedEmbeddings({
     userId,
@@ -54,10 +59,48 @@ export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   const filteredRankedEmbeddings = rankedEmbeddings.filter((_, index) =>
     sourceIndexes.includes(index)
   );
+  const finalAnswer = filterWrongAnswers(answer);
+  const answerFound = Boolean(finalAnswer !== "I don't know");
   console.log(filteredRankedEmbeddings);
   const response: ChatResponse = {
     completion: answer,
-    rankedEmbeddings: filteredRankedEmbeddings.map(mapRankedEmbeddings),
+    rankedEmbeddings: answerFound
+      ? filteredRankedEmbeddings.map(mapRankedEmbeddings)
+      : [],
   };
+  await ChatHistory.create({
+    memberId: member.memberId,
+    workspaceId,
+    query,
+    response: answer,
+    answerFound,
+  });
   return respond.ok(response);
 });
+
+/* sometimes the answer leaks from the promt because the question does not make sense **/
+const filterWrongAnswers = (answer: string) => {
+  if (!answer) return "I don't know";
+  if (answer === "The president did not mention Michael Jackson.") {
+    return "I don't know";
+  }
+  return answer;
+};
+
+/* 
+Check rate limit openai API, this is required to get aproval from Openai 
+and is a good thing to include anyway as they costs can go up pretty fast 
+We check in chat history the last requests made in the last minute
+*/
+const checkRateLimit = async (memberId: string) => {
+  const rateLimit = 10;
+  const dateAMinuteAgo = new Date();
+  dateAMinuteAgo.setMinutes(dateAMinuteAgo.getMinutes() - 1);
+
+  const lastRequest = await ChatHistory.listByUser({
+    memberId,
+    fromDate: dateAMinuteAgo,
+  });
+  if (!lastRequest) return true;
+  return lastRequest.length < rateLimit;
+};

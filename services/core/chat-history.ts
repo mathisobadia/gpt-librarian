@@ -1,6 +1,7 @@
 import { ulid } from "ulid";
 import { Entity, EntityItem } from "electrodb";
 import { Dynamo } from "./dynamo";
+export * as ChatHistory from "./chat-history";
 
 export const ChatHistoryEntity = new Entity(
   {
@@ -80,5 +81,75 @@ export type ChatHistoryEntityType = EntityItem<typeof ChatHistoryEntity>;
 
 export const list = async (workspaceId: string) => {
   const result = await ChatHistoryEntity.query.primary({ workspaceId }).go();
+  return result.data;
+};
+
+export const listByUser = async ({
+  memberId,
+  fromDate,
+}: {
+  memberId: string;
+  fromDate?: Date;
+}) => {
+  const result = await ChatHistoryEntity.query
+    .byMember({ memberId })
+    .gte({
+      createdAt: fromDate ? fromDate.toISOString() : undefined,
+    })
+    .go();
+  return result.data;
+};
+
+export const create = async (params: {
+  query: string;
+  response: string;
+  answerFound: boolean;
+  workspaceId: string;
+  memberId: string;
+}) => {
+  const { query, response, answerFound, workspaceId, memberId } = params;
+  const chatHistoryId = ulid();
+  const now = new Date().toISOString();
+  const result = await ChatHistoryEntity.put({
+    chatHistoryId,
+    query,
+    response,
+    answerFound,
+    workspaceId,
+    memberId,
+    createdAt: now,
+    updatedAt: now,
+  }).go();
+  return result.data;
+};
+
+export const update = async (params: {
+  chatHistoryId: string;
+  userSatisfaction: "OK" | "NOT_OK";
+  workspaceId: string;
+}) => {
+  const { chatHistoryId, userSatisfaction, workspaceId } = params;
+  const now = new Date().toISOString();
+  const result = await ChatHistoryEntity.patch({
+    workspaceId,
+    chatHistoryId,
+  })
+    .set({
+      userSatisfaction,
+      updatedAt: now,
+    })
+    .go();
+  return result.data;
+};
+
+export const remove = async (params: {
+  chatHistoryId: string;
+  workspaceId: string;
+}) => {
+  const { chatHistoryId, workspaceId } = params;
+  const result = await ChatHistoryEntity.delete({
+    workspaceId,
+    chatHistoryId,
+  }).go();
   return result.data;
 };
