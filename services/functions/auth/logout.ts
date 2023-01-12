@@ -1,8 +1,6 @@
-import { APIGatewayProxyStructuredResultV2 } from "aws-lambda";
+import { ApiHandler } from "@serverless-stack/node/api";
 import { respond } from "functions/utils";
 
-export const handler = (): APIGatewayProxyStructuredResultV2 => {
-    // const sesh = useSession();
-    // clear push notifications and other stuff
-    return respond.redirect('/');
-  };
+export const handler = ApiHandler(async (event) => {
+  return respond.redirectClearSession("/");
+});

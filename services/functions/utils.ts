@@ -46,14 +46,19 @@ export const respond = {
       body: JSON.stringify(error),
     };
   },
-  redirect: (path: string) => {
+  redirectClearSession: (path: string) => {
     const domainName = Config.DOMAIN_NAME;
-    const redirect = process.env.IS_LOCAL ? `http://localhost:3000${path}` : `https://${domainName}${path}`;
+    const redirect = process.env.IS_LOCAL
+      ? `http://localhost:3000${path}`
+      : `https://${domainName}${path}`;
     return {
       statusCode: 302,
       headers: {
         Location: redirect,
       },
+      cookies: [
+        "auth-token=deleted; HttpOnly; SameSite=None; Secure; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
+      ],
     };
-  }
+  },
 };

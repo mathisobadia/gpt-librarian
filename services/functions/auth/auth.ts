@@ -37,7 +37,9 @@ export const onSuccess = async (claims: Record<string, any>) => {
     const res = await createUser(claims);
     user = res.user;
   }
-  const redirect = process.env.IS_LOCAL ? "http://localhost:3000" : `https://${domainName}`;
+  const redirect = process.env.IS_LOCAL
+    ? "http://localhost:3000"
+    : `https://${domainName}`;
   return Session.cookie({
     redirect: redirect,
     type: "user",
@@ -89,7 +91,7 @@ export const sendLink = async (link: string, claims: Record<string, any>) => {
       Source: "mathis.obadia@gmail.com",
     })
   );
-  return  respond.redirect('/sign-in?emailsent=true');
+  return respond.redirectClearSession("/sign-in?emailsent=true");
 };
 
 const html = ({ url, email }: { url: string; email: string }) => {

@@ -7,6 +7,7 @@ type ButtonProps = {
   intent?: "primary" | "secondary" | "ghost";
   type?: "button" | "submit";
   additionalClass?: string;
+  onClick?: (e: Event) => void;
 };
 export const Button: ParentComponent<ButtonProps> = (props) => {
   const { children, additionalClass, disabled, href } = props;
@@ -36,6 +37,7 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
       </Match>
       <Match when={!href}>
         <Btn
+          onClick={props.onClick}
           class={fullClass}
           disabled={disabled}
           type={props.type || "button"}

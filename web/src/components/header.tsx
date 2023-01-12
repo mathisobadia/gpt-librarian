@@ -9,6 +9,20 @@ export const Header: Component = () => {
   const query = createQuery(() => ["workspaces"], listUserWorkspaces, {
     retry: false,
   });
+
+  const onLogout = (e: Event) => {
+    e.preventDefault();
+    fetch(import.meta.env.VITE_REST_URL + `/logout`, {
+      method: "POST",
+      credentials: "include",
+    }).then((res) => {
+      if (res.status === 200) {
+        window.location.href = "/";
+      } else {
+        console.error("Logout failed");
+      }
+    });
+  };
   return (
     <div class="relative bg-slate-2">
       <div class="mx-auto max-w-7xl px-4">
@@ -58,7 +72,7 @@ export const Header: Component = () => {
           <div class="flex flex-row items-center justify-end flex-gap gap-2">
             <Switch>
               <Match when={query.data && query.data.length}>
-                <Button intent="ghost" href="/sign-in">
+                <Button onClick={onLogout} intent="ghost">
                   Log out
                 </Button>
               </Match>
