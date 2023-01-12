@@ -17,8 +17,10 @@ import {
 // TODO user notion token from user ?
 
 const MERGED_BLOCK_LENGTH = 200;
+const MAX_PAGES = 100;
 
-export const getAllDatabases = async (notionToken: string) => {
+export const getPageList = async (notionToken: string, maxPages?: number) => {
+  if (!maxPages) maxPages = MAX_PAGES;
   const notion = new Client({
     auth: notionToken,
   });
@@ -27,11 +29,13 @@ export const getAllDatabases = async (notionToken: string) => {
       property: "object",
       value: "page",
     },
+    // TODO: max page size is 100 so we need to paginate if maxPages > 100
+    page_size: maxPages,
   });
   return response.results;
 };
 
-export const getPage = async ({
+const getPage = async ({
   pageId,
   notionToken,
 }: {
@@ -67,7 +71,7 @@ type BlocksWithTextContent = {
   };
 };
 
-export const filterBlock = (block: BlocksWithTextContent) => {
+const filterBlock = (block: BlocksWithTextContent) => {
   return block.text.content.length > 20;
 };
 
@@ -98,7 +102,7 @@ export const savePageEmbeddings = async ({
   return Embedding.batchCreateEmbedding(embeddingInputs);
 };
 
-export const getCreateEmbeddingInputFromBlock = async ({
+const getCreateEmbeddingInputFromBlock = async ({
   workspaceId,
   connectionId,
   block,
@@ -147,7 +151,9 @@ const getTextContents = async ({
   return { page, blocksWithTextContent };
 };
 
-// merge blocks to the previous heading
+/* 
+merge blocks to the previous heading 
+**/
 const mergeBlocks = (
   input: TextContentResponse,
   contentLengthInTokens: number
@@ -221,15 +227,15 @@ const getBlockHeadingContext = (
   }
   if (heading1) {
     context += `
-Heading 1: ${heading1}`;
+# ${heading1}`;
   }
   if (heading2) {
     context += `
-Heading 2: ${heading2}`;
+## ${heading2}`;
   }
   if (heading3) {
     context += `
-Heading 3: ${heading3}`;
+### ${heading3}`;
   }
   return context;
 };
@@ -406,13 +412,13 @@ const blockToPlainText = (block: NestedBlockObjectResponse): string => {
     case "paragraph":
       return richTextToPlainText(block.paragraph.rich_text);
     case "heading_1":
-      return richTextToPlainText(block.heading_1.rich_text);
+      return `# ${richTextToPlainText(block.heading_1.rich_text)}`;
     case "heading_2":
-      return richTextToPlainText(block.heading_2.rich_text);
+      return `## ${richTextToPlainText(block.heading_2.rich_text)}`;
     case "heading_3":
-      return richTextToPlainText(block.heading_3.rich_text);
+      return `### ${richTextToPlainText(block.heading_3.rich_text)}`;
     case "bulleted_list_item":
-      return richTextToPlainText(block.bulleted_list_item.rich_text);
+      return `- ${richTextToPlainText(block.bulleted_list_item.rich_text)}`;
     case "numbered_list_item":
       return richTextToPlainText(block.numbered_list_item.rich_text);
     case "to_do":
@@ -422,9 +428,9 @@ const blockToPlainText = (block: NestedBlockObjectResponse): string => {
     case "child_page":
       return block.child_page.title;
     case "quote":
-      return richTextToPlainText(block.quote.rich_text);
+      return `> ${richTextToPlainText(block.quote.rich_text)}`;
     case "code":
-      return richTextToPlainText(block.code.rich_text);
+      return `\`${richTextToPlainText(block.code.rich_text)}\``;
     case "table_row":
       return block.table_row.cells
         .map((cell) => richTextToPlainText(cell))

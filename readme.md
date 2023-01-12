@@ -10,7 +10,10 @@ Connect one of your knowledge bases to your workspace, once connected the chatbo
 
 - [**Notion**](https://notion.so) ✅
 - [**Google Docs**](https://docs.google.com/) (coming soon)
+- [**Github**](https://github.com/) (coming soon)
 - [**Confluence**](https://www.atlassian.com/software/confluence) (coming soon)
+
+Let me know what integration you would like to see included by opening a new issue!
 
 ### Features
 

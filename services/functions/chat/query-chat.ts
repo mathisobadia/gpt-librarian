@@ -3,13 +3,13 @@ import {
   getRankedEmbeddings,
   createPrompt,
   createCompletion,
-} from "@gpt-workspace-search/core/openai";
+} from "@gpt-librarian/core/openai";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { ChatRequest, ChatResponse } from "./types";
-import { mapRankedEmbeddings } from "@gpt-workspace-search/core/embedding";
+import { mapRankedEmbeddings } from "@gpt-librarian/core/embedding";
 import { ApiHandler } from "@serverless-stack/node/api";
 import { useAuth } from "functions/utils";
-import { ChatHistory } from "@gpt-workspace-search/core/chat-history";
+import { ChatHistory } from "@gpt-librarian/core/chat-history";
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   const member = await useAuth();

@@ -1,6 +1,6 @@
 // import { Api } from "@serverless-stack/node/api";
 import { expect, it } from "vitest";
-import { Embedding } from "@gpt-workspace-search/core/embedding";
+import { Embedding } from "@gpt-librarian/core/embedding";
 
 const workspaceId = "test";
 it("create an article", async () => {

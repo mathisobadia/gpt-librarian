@@ -1,13 +1,11 @@
-import { Embedding } from "@gpt-workspace-search/core/embedding";
-import {
-  getAllDatabases,
-  savePageEmbeddings,
-} from "@gpt-workspace-search/core/notion";
+import { Embedding } from "@gpt-librarian/core/embedding";
+import { getPageList, savePageEmbeddings } from "@gpt-librarian/core/notion";
 import { respond, useAuth } from "functions/utils";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { ApiHandler } from "@serverless-stack/node/api";
-import { Connection } from "@gpt-workspace-search/core/connection";
+import { Connection } from "@gpt-librarian/core/connection";
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
+  const PAGES_LIMIT = 100;
   const member = await useAuth();
   if (!member) return respond.error("auth error");
   const connections = await Connection.list(member.workspaceId);
@@ -21,7 +19,7 @@ export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
     if (!notionToken) {
       return respond.error("no notion token");
     }
-    const pages = await getAllDatabases(notionToken);
+    const pages = await getPageList(notionToken);
     console.log(pages);
     for (const page of pages) {
       await deletePreviousEmbeddings(workspaceId, page.id);

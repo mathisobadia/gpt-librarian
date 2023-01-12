@@ -1,6 +1,7 @@
 import { useSession } from "@serverless-stack/node/auth";
-import { Member } from "@gpt-workspace-search/core/member";
+import { Member } from "@gpt-librarian/core/member";
 import { useQueryParam } from "@serverless-stack/node/api";
+import { Config } from "@serverless-stack/node/config";
 
 /**
  * Hook to return the current user's membership in the workspace, implicitly gets the workspaceId from the query params
@@ -23,7 +24,7 @@ export const useAuth = async () => {
  * Utility to return a response from an API Gateway handler with a the right status code, JSON body, and CORS headers
  */
 export const respond = {
-  ok: async (response: unknown) => {
+  ok: (response: unknown) => {
     return {
       statusCode: 200,
       headers: {
@@ -34,7 +35,7 @@ export const respond = {
       body: JSON.stringify(response),
     };
   },
-  error: async (error: string) => {
+  error: (error: string) => {
     return {
       statusCode: 400,
       headers: {
@@ -45,4 +46,14 @@ export const respond = {
       body: JSON.stringify(error),
     };
   },
+  redirect: (path: string) => {
+    const domainName = Config.DOMAIN_NAME;
+    const redirect = process.env.IS_LOCAL ? `http://localhost:3000${path}` : `https://${domainName}${path}`;
+    return {
+      statusCode: 302,
+      headers: {
+        Location: redirect,
+      },
+    };
+  }
 };

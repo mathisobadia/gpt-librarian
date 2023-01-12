@@ -1,7 +1,7 @@
 import { respond, useAuth } from "functions/utils";
 import { ApiHandler } from "@serverless-stack/node/api";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { Workspace } from "@gpt-workspace-search/core/workspace";
+import { Workspace } from "@gpt-librarian/core/workspace";
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   const member = await useAuth();

@@ -1,7 +1,7 @@
 import { respond, useAuth } from "functions/utils";
 import { ApiHandler } from "@serverless-stack/node/api";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
-import { Connection } from "@gpt-workspace-search/core/connection";
+import { Connection } from "@gpt-librarian/core/connection";
 import { ListConnectionsResponse } from "./types";
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {

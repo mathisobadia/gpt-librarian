@@ -1,7 +1,4 @@
-import {
-  Embedding,
-  mapRankedEmbeddings,
-} from "@gpt-workspace-search/core/embedding";
+import { Embedding, mapRankedEmbeddings } from "@gpt-librarian/core/embedding";
 import { respond, useAuth } from "functions/utils";
 import { ApiHandler } from "@serverless-stack/node/api";
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";

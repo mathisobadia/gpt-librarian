@@ -12,7 +12,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@gpt-workspace-search/core": "./services/core",
+      "@gpt-librarian/core": "./services/core",
     },
   },
 });

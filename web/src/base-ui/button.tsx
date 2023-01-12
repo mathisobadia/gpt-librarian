@@ -4,37 +4,43 @@ import { Match, ParentComponent, Switch } from "solid-js";
 type ButtonProps = {
   disabled?: boolean;
   href?: string;
+  intent?: "primary" | "secondary" | "ghost";
   type?: "button" | "submit";
-  fullWidth?: boolean;
+  additionalClass?: string;
 };
 export const Button: ParentComponent<ButtonProps> = (props) => {
-  const baseClass =
-    "bg-sky-4 hover:bg-sky-5 text-sky-12 font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-sky-7";
+  const { children, additionalClass, disabled, href } = props;
+  // TODO replace this spagetthi with CVA (https://www.npmjs.com/package/class-variance-authority)
+  const intent = props.intent || "primary";
+  const ghostClass =
+    "font-sans bg-transparent py-2 px-4 rounded hover:outline hover:outline-sky-7 hover:outline-2 text-sky-12 focus:outline-none focus:ring-2 focus:ring-slate-7 ";
+  const primaryClass =
+    "font-sans bg-sky-4 hover:bg-sky-5 text-sky-12 font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-sky-7 ";
   const fullClass =
-    baseClass +
-    (props.fullWidth ? "w-full" : "") +
-    (props.disabled ? "opacity-50 cursor-not-allowed" : "");
+    (intent === "primary" ? primaryClass : ghostClass) +
+    additionalClass +
+    (disabled ? " opacity-50 cursor-not-allowed" : "");
   return (
     <Switch>
-      <Match when={props.href}>
+      <Match when={href}>
         <Switch>
-          <Match when={props.disabled}>
-            <span class={fullClass}>{props.children}</span>
+          <Match when={disabled}>
+            <span class={fullClass}>{children}</span>
           </Match>
-          <Match when={!props.disabled}>
-            <A class={fullClass} href={props.href!}>
-              {props.children}
+          <Match when={!disabled}>
+            <A class={fullClass} href={href!}>
+              {children}
             </A>
           </Match>
         </Switch>
       </Match>
-      <Match when={!props.href}>
+      <Match when={!href}>
         <Btn
           class={fullClass}
-          disabled={props.disabled}
+          disabled={disabled}
           type={props.type || "button"}
         >
-          {props.children}
+          {children}
         </Btn>
       </Match>
     </Switch>

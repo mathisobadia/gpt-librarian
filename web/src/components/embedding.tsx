@@ -1,7 +1,7 @@
 import {
   EmbeddingResponse,
   EmbeddingsResponse,
-} from "@gpt-workspace-search/services/functions/embeddings/types";
+} from "@gpt-librarian/services/functions/embeddings/types";
 import { Component, For } from "solid-js";
 import { LinkSvg } from "../base-ui/link-svg";
 import { NotionLogo } from "../base-ui/notion-logo";

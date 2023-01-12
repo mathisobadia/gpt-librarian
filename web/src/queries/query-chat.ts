@@ -1,7 +1,7 @@
 import type {
   ChatRequest,
   ChatResponse,
-} from "@gpt-workspace-search/services/functions/chat/types";
+} from "@gpt-librarian/services/functions/chat/types";
 import { getAPIUrl } from "./utils";
 export const queryChat = async ({
   query,

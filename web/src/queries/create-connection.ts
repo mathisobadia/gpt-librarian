@@ -1,7 +1,7 @@
 import type {
   CreateConnectionRequest,
   CreateConnectionResponse,
-} from "@gpt-workspace-search/services/functions/connection/types";
+} from "@gpt-librarian/services/functions/connection/types";
 import { getAPIUrl } from "./utils";
 
 export const createConnection = async (
@@ -18,5 +18,8 @@ export const createConnection = async (
       body: JSON.stringify(params),
     }
   );
+  if (response.status !== 200) {
+    throw new Error("Failed to create connection");
+  }
   return response.json();
 };

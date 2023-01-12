@@ -1,4 +1,4 @@
-import { ListConnectionsResponse } from "@gpt-workspace-search/services/functions/connection/types";
+import { ListConnectionsResponse } from "@gpt-librarian/services/functions/connection/types";
 import { getAPIUrl } from "./utils";
 
 export const listConnections = async (
@@ -12,5 +12,8 @@ export const listConnections = async (
     body: JSON.stringify({}),
     credentials: "include",
   });
+  if (response.status !== 200) {
+    throw new Error("Failed to list connections");
+  }
   return response.json();
 };

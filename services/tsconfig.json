@@ -7,7 +7,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@gpt-workspace-search/core/*": ["./core/*"]
+      "@gpt-librarian/core/*": ["./core/*"]
     }
   }
 }

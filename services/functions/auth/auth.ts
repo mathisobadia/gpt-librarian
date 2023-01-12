@@ -4,11 +4,13 @@ this handles the auth flow for the app, including the login page, the callback p
 **/
 import { AuthHandler, LinkAdapter, Session } from "@serverless-stack/node/auth";
 import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses";
-import { respond } from "./utils";
-import { User } from "@gpt-workspace-search/core/user";
-import { Organization } from "@gpt-workspace-search/core/organization";
-import { Member } from "@gpt-workspace-search/core/member";
-import { Workspace } from "@gpt-workspace-search/core/workspace";
+import { respond } from "../utils";
+import { User } from "@gpt-librarian/core/user";
+import { Organization } from "@gpt-librarian/core/organization";
+import { Member } from "@gpt-librarian/core/member";
+import { Workspace } from "@gpt-librarian/core/workspace";
+import { Config } from "@serverless-stack/node/config";
+
 const client = new SESClient({});
 export const handler = AuthHandler({
   providers: {
@@ -29,13 +31,15 @@ export const handler = AuthHandler({
 });
 
 export const onSuccess = async (claims: Record<string, any>) => {
+  const domainName = Config.DOMAIN_NAME;
   let user = await User.getByEmail(claims.email);
   if (!user) {
     const res = await createUser(claims);
     user = res.user;
   }
+  const redirect = process.env.IS_LOCAL ? "http://localhost:3000" : `https://${domainName}`;
   return Session.cookie({
-    redirect: "http://localhost:3000/workspaces",
+    redirect: redirect,
     type: "user",
     properties: {
       userId: user.userId,
@@ -62,7 +66,7 @@ export const createUser = async (claims: Record<string, any>) => {
 
 export const sendLink = async (link: string, claims: Record<string, any>) => {
   const { email: address } = claims;
-  const subject = "Login to GPT Workspace Search";
+  const subject = "Login to GPT Librarian";
   await client.send(
     new SendEmailCommand({
       // TODO: check if we need this
@@ -75,7 +79,7 @@ export const sendLink = async (link: string, claims: Record<string, any>) => {
         },
         Body: {
           Text: {
-            Data: `Login to GPT Workspace Search at ${link}`,
+            Data: `Login to GPT Librarian ${link}`,
           },
           Html: {
             Data: html({ url: link, email: address }),
@@ -85,7 +89,7 @@ export const sendLink = async (link: string, claims: Record<string, any>) => {
       Source: "mathis.obadia@gmail.com",
     })
   );
-  return respond.ok("link sent");
+  return  respond.redirect('/sign-in?emailsent=true');
 };
 
 const html = ({ url, email }: { url: string; email: string }) => {
@@ -94,7 +98,7 @@ const html = ({ url, email }: { url: string; email: string }) => {
   // clients like Outlook and Apple mail, as this is confusing because it seems
   // like they are supposed to click on their email address to sign in.
   const escapedEmail = `${email.replace(/\./g, "&#8203;.")}`;
-  const escapedSite = "GPT Workspace Search";
+  const escapedSite = "GPT Librarian";
 
   // Some simple styling options
   const backgroundColor = "#f9f9f9";

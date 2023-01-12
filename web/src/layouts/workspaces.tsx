@@ -17,13 +17,13 @@ export const Workspaces: Component = () => {
         <Match when={query.isSuccess && query.data}>
           <ul>
             <For each={query.data}>
-              {(workspaceId) => (
+              {(workspace) => (
                 <li>
                   <Link
                     class="text-slate-12"
-                    href={`/workspaces/${workspaceId}`}
+                    href={`/workspaces/${workspace.workspaceId}`}
                   >
-                    {workspaceId}
+                    {workspace.workspaceId}
                   </Link>
                 </li>
               )}

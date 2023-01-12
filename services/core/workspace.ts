@@ -83,3 +83,10 @@ export const get = async (workspaceId: string) => {
   }).go();
   return result.data;
 };
+
+export const batchGet = async (workspaceIds: string[]) => {
+  const result = await WorkspaceEntity.get(
+    workspaceIds.map((id) => ({ workspaceId: id }))
+  ).go();
+  return result.data;
+};

@@ -1,5 +1,5 @@
 {
-  "name": "@gpt-workspace-search/services",
+  "name": "@gpt-librarian/services",
   "version": "0.0.0",
   "type": "module",
   "scripts": {},

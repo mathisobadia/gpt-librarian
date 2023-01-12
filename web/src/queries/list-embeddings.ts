@@ -1,4 +1,4 @@
-import type { EmbeddingsResponse } from "@gpt-workspace-search/services/functions/embeddings/types";
+import type { EmbeddingsResponse } from "@gpt-librarian/services/functions/embeddings/types";
 import { getAPIUrl } from "./utils";
 
 export const listEmbeddings = async (
@@ -11,5 +11,8 @@ export const listEmbeddings = async (
     },
     credentials: "include",
   });
+  if (response.status !== 200) {
+    throw new Error("Failed to list embeddings");
+  }
   return response.json();
 };

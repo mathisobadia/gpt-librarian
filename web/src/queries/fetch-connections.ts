@@ -11,5 +11,8 @@ export const fetchConnections = async (
     body: JSON.stringify({}),
     credentials: "include",
   });
+  if (response.status !== 200) {
+    throw new Error("Failed to fetch connections");
+  }
   return response.json();
 };
