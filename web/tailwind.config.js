@@ -1,19 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx,css,md,mdx,html,json,scss}'
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx,css,md,mdx,html,json,scss}",
   ],
-  darkMode: 'auto',
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', ...defaultTheme.fontFamily.sans]
-      }
-    }
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+      },
+    },
   },
-  plugins: [require('@tailwindcss/forms'), require('windy-radix-palette')]
-}
+  plugins: [require("@tailwindcss/forms"), require("windy-radix-palette")],
+};

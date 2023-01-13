@@ -2,7 +2,9 @@ import { A } from "@solidjs/router";
 import { createQuery } from "@tanstack/solid-query";
 import { Component, For, Match, Switch } from "solid-js";
 import { Button } from "../base-ui/button";
+import { GithubLogo } from "../base-ui/github-logo";
 import { Logo } from "../base-ui/logo";
+import { ThemeToggler } from "../base-ui/theme-toggler";
 import { listUserWorkspaces } from "../queries/list-user-workspaces";
 
 export const Header: Component = () => {
@@ -26,7 +28,7 @@ export const Header: Component = () => {
   return (
     <div class="relative bg-slate-2">
       <div class="mx-auto max-w-7xl px-4">
-        <div class="flex items-center justify-between border-b-2 border-slate-6 py-6">
+        <div class="flex items-center justify-between border-b-2 border-slate-6 py-1">
           <div class="flex justify-start">
             <A href="/">
               <span class="sr-only">GPT Librarian</span>
@@ -53,22 +55,15 @@ export const Header: Component = () => {
               </svg>
             </Button>
           </div>
-          <nav class="hidden space-x-10 md:flex">
-            <Switch>
-              <Match when={query.data && query.data.length}>
-                <For each={query.data}>
-                  {(workspace) => (
-                    <Button
-                      intent="ghost"
-                      href={`/workspaces/${workspace.workspaceId}`}
-                    >
-                      {workspace.name}
-                    </Button>
-                  )}
-                </For>
-              </Match>
-            </Switch>
-          </nav>
+          <div class="hidden md:flex flex-row items-center justify-end flex-gap gap-2">
+            <Button
+              href="https://github.com/mathisobadia/gpt-librarian"
+              intent="ghost"
+            >
+              <GithubLogo />
+            </Button>
+            <ThemeToggler />
+          </div>
           <div class="flex flex-row items-center justify-end flex-gap gap-2">
             <Switch>
               <Match when={query.data && query.data.length}>

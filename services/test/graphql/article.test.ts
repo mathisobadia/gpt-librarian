@@ -12,6 +12,7 @@ it("create an article", async () => {
         content: "test",
         context: "test",
       },
+      connectionId: "test",
       originId: "test",
       workspaceId,
       originLink: {
