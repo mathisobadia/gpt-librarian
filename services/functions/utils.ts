@@ -2,11 +2,21 @@ import { useSession } from "@serverless-stack/node/auth";
 import { Member } from "@gpt-librarian/core/member";
 import { useQueryParam } from "@serverless-stack/node/api";
 import { Config } from "@serverless-stack/node/config";
+import {
+  useEvent,
+  useLambdaContext,
+} from "@serverless-stack/node/context/handler";
 
 /**
  * Hook to return the current user's membership in the workspace, implicitly gets the workspaceId from the query params
+ * it caches the result in a map keyed by the request id, so it can be called multiple times in the same request
  */
 export const useAuth = async () => {
+  const context = useLambdaContext();
+  const requestId = context.awsRequestId;
+  const authMap = new Map<string, Member.MemberEntityType>();
+  const cached = authMap.get(requestId);
+  if (cached) return cached;
   // those hooks use sst context to get the request info anywhere in your code, see https://docs.sst.dev/clients/api#usequeryparam
   const workspaceId = useQueryParam("workspaceId");
   if (!workspaceId) throw new Error("Workspace not specified");
@@ -17,6 +27,7 @@ export const useAuth = async () => {
     (membership) => membership.workspaceId === workspaceId
   );
   if (!membership) throw new Error("User not authorized");
+  authMap.set(requestId, membership);
   return membership;
 };
 
