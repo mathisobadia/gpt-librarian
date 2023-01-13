@@ -33,7 +33,7 @@ export const Chat: Component = () => {
     <div>
       <div class="flex flex-row gap-3">
         <form onSubmit={onSubmit} class="w-full p-3">
-          <div class="flex py-2 pl-3 md:py-3 bg-slate-2 rounded-md focus:ring-2 focus:ring-sky-7">
+          <div class="flex py-2 pl-3 md:py-3 bg-slate-2 rounded-md focus:ring-2 focus:ring-cyan-7">
             <textarea
               class="m-0 flex-auto text-slate-12 resize-none border-0 bg-transparent p-0 pr-7 focus:ring-0 focus-visible:ring-0 overflow-hidden"
               placeholder="enter query"

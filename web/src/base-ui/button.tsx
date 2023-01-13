@@ -1,26 +1,67 @@
 import { A } from "@solidjs/router";
 import { Button as Btn } from "solid-headless";
 import { Match, ParentComponent, Switch } from "solid-js";
+import { cva } from "class-variance-authority";
+
 type ButtonProps = {
   disabled?: boolean;
   href?: string;
-  intent?: "primary" | "secondary" | "ghost";
+  intent?: "primary" | "ghost";
   type?: "button" | "submit";
   additionalClass?: string;
+  size?: "small" | "medium";
   onClick?: (e: Event) => void;
 };
 export const Button: ParentComponent<ButtonProps> = (props) => {
-  const { children, additionalClass, disabled, href } = props;
-  // TODO replace this spagetthi with CVA (https://www.npmjs.com/package/class-variance-authority)
-  const intent = props.intent || "primary";
-  const ghostClass =
-    "font-sans bg-transparent py-2 px-4 rounded hover:outline hover:outline-sky-7 hover:outline-2 text-slate-11 hover:text-slate-12 focus:outline-none focus:ring-2 focus:ring-slate-7 ";
-  const primaryClass =
-    "font-sans bg-sky-4 hover:bg-sky-5 text-sky-12 font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-sky-7 ";
-  const fullClass =
-    (intent === "primary" ? primaryClass : ghostClass) +
-    additionalClass +
-    (disabled ? " opacity-50 cursor-not-allowed" : "");
+  const { children, additionalClass, disabled, href, intent, size } = props;
+
+  const button = cva(
+    [
+      "font-sans",
+      "rounded",
+      "disabled:opacity-50",
+      "disabled:cursor-not-allowed",
+      "focus:outline-none",
+      "focus:ring-2",
+    ],
+    {
+      variants: {
+        intent: {
+          primary: [
+            "bg-cyan-5",
+            "hover:bg-cyan-6",
+            "text-cyan-12",
+            "font-bold",
+            "focus:ring-cyan-7",
+          ],
+          ghost: [
+            "bg-transparent",
+            "hover:outline",
+            "hover:outline-cyan-7",
+            "hover:outline-2",
+            "text-slate-11",
+            "hover:text-slate-12",
+            "focus:ring-slate-7",
+          ],
+        },
+        size: {
+          small: ["text-sm", "py-1", "px-2"],
+          medium: ["text-base", "py-2", "px-4"],
+        },
+      },
+      defaultVariants: {
+        intent: "primary",
+        size: "medium",
+      },
+    }
+  );
+
+  const fullClass = button({
+    class: additionalClass,
+    intent,
+    size: size,
+  });
+
   return (
     <Switch>
       <Match when={href}>

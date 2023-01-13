@@ -28,7 +28,7 @@ export const Header: Component = () => {
   return (
     <div class="relative bg-slate-2">
       <div class="mx-auto max-w-7xl px-4">
-        <div class="flex items-center justify-between border-b-2 border-slate-6 py-1">
+        <div class="flex justify-between items-center border-b-2 border-slate-6 py-1">
           <div class="flex justify-start">
             <A href="/">
               <span class="sr-only">GPT Librarian</span>
@@ -55,16 +55,8 @@ export const Header: Component = () => {
               </svg>
             </Button>
           </div>
-          <div class="hidden md:flex flex-row items-center justify-end flex-gap gap-2">
-            <Button
-              href="https://github.com/mathisobadia/gpt-librarian"
-              intent="ghost"
-            >
-              <GithubLogo />
-            </Button>
-            <ThemeToggler />
-          </div>
-          <div class="flex flex-row items-center justify-end flex-gap gap-2">
+          <div class="flex flex-row items-center justify-end flex-gap gap-2"></div>
+          <div class="hidden md:flex flex-row items-center justify-start flex-gap gap-2">
             <Switch>
               <Match when={query.data && query.data.length}>
                 <Button onClick={onLogout} intent="ghost">
@@ -78,6 +70,14 @@ export const Header: Component = () => {
                 <Button href="/sign-up">Sign up</Button>
               </Match>
             </Switch>
+            <Button
+              size="small"
+              href="https://github.com/mathisobadia/gpt-librarian"
+              intent="ghost"
+            >
+              <GithubLogo />
+            </Button>
+            <ThemeToggler />
           </div>
         </div>
       </div>

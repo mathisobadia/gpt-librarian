@@ -67,7 +67,7 @@ export const SignIn: Component = () => {
                   value={email()}
                   onInput={(e) => setEmail(e.currentTarget.value)}
                   required
-                  class="bg-slate-2 relative block w-full appearance-none rounded-md border border-slate-6 px-3 py-2 text-slate-12 placeholder-slate-11 focus:ring-2 focus:outline-none focus:ring-sky-7 sm:text-sm"
+                  class="bg-slate-2 relative block w-full appearance-none rounded-md border border-slate-6 px-3 py-2 text-slate-12 placeholder-slate-11 focus:ring-2 focus:outline-none focus:ring-cyan-7 sm:text-sm"
                   placeholder="Email address"
                 ></input>
               </div>

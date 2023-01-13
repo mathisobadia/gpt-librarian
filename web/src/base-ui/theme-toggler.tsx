@@ -31,6 +31,7 @@ export const ThemeToggler = () => {
   return (
     <div>
       <Button
+        size="small"
         intent="ghost"
         onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
       >
@@ -47,8 +48,8 @@ const lightThemeIcon = () => {
   return (
     <svg
       class="fill-current"
-      width="40"
-      height="40"
+      width="30"
+      height="30"
       viewBox="0 0 700 550"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -64,8 +65,8 @@ const darkThemeIcon = () => {
   return (
     <svg
       class="fill-current"
-      width="40"
-      height="40"
+      width="30"
+      height="30"
       version="1.1"
       viewBox="0 0 700 550"
       xmlns="http://www.w3.org/2000/svg"
