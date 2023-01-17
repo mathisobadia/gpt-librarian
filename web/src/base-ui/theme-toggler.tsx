@@ -46,9 +46,9 @@ export const ThemeToggler = () => {
 }
 
 const lightThemeIcon = () => {
-  return <Icon path={sun} />
+  return <Icon class="h-8 w-8" path={sun} />
 }
 
 const darkThemeIcon = () => {
-  return <Icon path={moon} />
+  return <Icon class="h-8 w-8" path={moon} />
 }
