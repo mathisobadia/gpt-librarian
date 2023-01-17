@@ -15,5 +15,10 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms"), require("windy-radix-palette")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("windy-radix-palette"),
+    require("@tailwindcss/typography"),
+    require("windy-radix-typography"),
+  ],
 };

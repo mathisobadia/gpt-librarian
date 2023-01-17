@@ -1,43 +1,43 @@
-import { useParams } from "@solidjs/router";
-import { createMutation, createQuery } from "@tanstack/solid-query";
-import { Button } from "../base-ui/button";
-import { Component, createSignal, For, Match, Switch } from "solid-js";
-import { createConnection } from "../queries/create-connection";
-import { fetchConnections } from "../queries/fetch-connections";
-import { listConnections } from "../queries/list-connections";
-import { Input } from "../base-ui/input";
+import { useParams } from '@solidjs/router'
+import { createMutation, createQuery } from '@tanstack/solid-query'
+import { Button } from '../base-ui/button'
+import { Component, createSignal, For, Match, Switch } from 'solid-js'
+import { createConnection } from '../queries/create-connection'
+import { fetchConnections } from '../queries/fetch-connections'
+import { listConnections } from '../queries/list-connections'
+import { Input } from '../base-ui/input'
 
 export const Notion: Component = () => {
   const fetchConnectionMutation = createMutation(
-    ["connections"],
+    ['connections'],
     fetchConnections
-  );
+  )
   const createConnectionMutation = createMutation(
-    ["connections"],
+    ['connections'],
     createConnection
-  );
-  const params = useParams();
-  const workspaceId = params.workspaceId;
-  const listWorkspaceConnections = () => listConnections(workspaceId);
-  const [connectionName, setConnectionName] = createSignal("");
-  const [notionToken, setNotionToken] = createSignal("");
-  const query = createQuery(() => ["connections"], listWorkspaceConnections);
+  )
+  const params = useParams()
+  const workspaceId = params.workspaceId
+  const listWorkspaceConnections = async () => await listConnections(workspaceId)
+  const [connectionName, setConnectionName] = createSignal('')
+  const [notionToken, setNotionToken] = createSignal('')
+  const query = createQuery(() => ['connections'], listWorkspaceConnections)
   const onSubmitFetchConnections = (e: Event) => {
-    e.preventDefault();
-    fetchConnectionMutation.mutate(workspaceId);
-  };
+    e.preventDefault()
+    fetchConnectionMutation.mutate(workspaceId)
+  }
   const onSubmitCreateConnection = (e: Event) => {
-    e.preventDefault();
+    e.preventDefault()
     createConnectionMutation.mutate({
       workspaceId,
       name: connectionName(),
       notionToken: notionToken(),
-      type: "NOTION",
-    });
-  };
+      type: 'NOTION'
+    })
+  }
   return (
-    <div class="flex flex-col h-screen">
-      <h1 class="text-2xl font-bold text-slate-11">Connections</h1>
+    <div class="flex h-screen flex-col">
+      <h1 class="text-slate-11 text-2xl font-bold">Connections</h1>
       <h2 class="text-slate-12">Existing connections</h2>
       <Switch>
         <Match when={query.isLoading}>
@@ -46,7 +46,7 @@ export const Notion: Component = () => {
         <Match when={query.isError}>
           <p class="text-slate-12">Error: {JSON.stringify(query.error)}</p>
         </Match>
-        <Match when={query.isSuccess && query.data && query.data.length}>
+        <Match when={query.isSuccess && query.data.length}>
           <ul>
             <For each={query.data}>
               {(connection) => (
@@ -110,5 +110,5 @@ export const Notion: Component = () => {
         </Match>
       </Switch>
     </div>
-  );
-};
+  )
+}

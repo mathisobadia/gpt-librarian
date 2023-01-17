@@ -9,7 +9,8 @@ import { Auth } from "@serverless-stack/resources";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 export function Api({ stack }: StackContext) {
   const table = use(Database);
-  const { OPENAI_API_KEY, PINECONE_TOKEN, DOMAIN_NAME } = use(ConfigStack);
+  const { OPENAI_API_KEY, PINECONE_TOKEN, DOMAIN_NAME, SES_IDENTITY_ARN } =
+    use(ConfigStack);
   const routes = {
     "POST /fetch-connections": {
       type: "function",
@@ -71,7 +72,13 @@ export function Api({ stack }: StackContext) {
   const api = new ApiGateway(stack, "api", {
     defaults: {
       function: {
-        bind: [table, OPENAI_API_KEY, PINECONE_TOKEN, DOMAIN_NAME],
+        bind: [
+          table,
+          OPENAI_API_KEY,
+          PINECONE_TOKEN,
+          DOMAIN_NAME,
+          SES_IDENTITY_ARN,
+        ],
       },
     },
     cors: {

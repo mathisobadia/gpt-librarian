@@ -14,5 +14,14 @@ export function ConfigStack({ stack }: StackContext) {
   const DOMAIN_NAME = new Config.Parameter(stack, "DOMAIN_NAME", {
     value: domainName,
   });
-  return { OPENAI_API_KEY, PINECONE_TOKEN, DOMAIN_NAME, BASE_DOMAIN };
+  const SES_IDENTITY_ARN = new Config.Parameter(stack, "SES_IDENTITY_ARN", {
+    value: `arn:aws:ses:${stack.region}:${stack.account}:identity/gpt-librarian.com`,
+  });
+  return {
+    OPENAI_API_KEY,
+    PINECONE_TOKEN,
+    DOMAIN_NAME,
+    BASE_DOMAIN,
+    SES_IDENTITY_ARN,
+  };
 }

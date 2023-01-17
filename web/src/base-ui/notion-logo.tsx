@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Component } from 'solid-js'
 
 export const NotionLogo: Component = () => {
   return (
@@ -20,5 +20,5 @@ export const NotionLogo: Component = () => {
         fill="#000"
       />
     </svg>
-  );
-};
+  )
+}

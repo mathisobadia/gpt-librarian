@@ -51,12 +51,12 @@ export const onSuccess = async (claims: Record<string, any>) => {
 };
 
 export const createUser = async (claims: Record<string, any>) => {
-  const { email } = claims;
+  const { email, name } = claims;
   const organization = await Organization.create();
-  const user = await User.create({ email });
+  const user = await User.create({ email, name });
   const workspace = await Workspace.create(
     organization.organizationId,
-    "Default Workspace"
+    `${name || "Default"} Workspace`
   );
   const member = await Member.create({
     workspaceId: workspace.workspaceId,
@@ -88,10 +88,11 @@ export const sendLink = async (link: string, claims: Record<string, any>) => {
           },
         },
       },
-      Source: "mathis.obadia@gmail.com",
+      SourceArn: Config.SES_IDENTITY_ARN,
+      Source: "no-reply@gpt-librarian.com",
     })
   );
-  return respond.redirectClearSession("/sign-in?emailsent=true");
+  return respond.redirectClearSession("/log-in?emailsent=true");
 };
 
 const html = ({ url, email }: { url: string; email: string }) => {
@@ -121,14 +122,14 @@ const html = ({ url, email }: { url: string; email: string }) => {
     <table width="100%" border="0" cellspacing="20" cellpadding="0" style="background: ${mainBackgroundColor}; max-width: 600px; margin: auto; border-radius: 10px;">
       <tr>
         <td align="center" style="padding: 10px 0px 0px 0px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
-          Sign in as <strong>${escapedEmail}</strong>
+          Log in as <strong>${escapedEmail}</strong>
         </td>
       </tr>
       <tr>
         <td align="center" style="padding: 20px 0;">
           <table border="0" cellspacing="0" cellpadding="0">
             <tr>
-              <td align="center" style="border-radius: 5px;" bgcolor="${buttonBackgroundColor}"><a href="${url}" target="_blank" style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${buttonTextColor}; text-decoration: none; text-decoration: none;border-radius: 5px; padding: 10px 20px; border: 1px solid ${buttonBorderColor}; display: inline-block; font-weight: bold;">Sign in</a></td>
+              <td align="center" style="border-radius: 5px;" bgcolor="${buttonBackgroundColor}"><a href="${url}" target="_blank" style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${buttonTextColor}; text-decoration: none; text-decoration: none;border-radius: 5px; padding: 10px 20px; border: 1px solid ${buttonBorderColor}; display: inline-block; font-weight: bold;">Log in</a></td>
             </tr>
           </table>
         </td>
