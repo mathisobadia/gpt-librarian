@@ -1,10 +1,10 @@
-import { EmbeddingResponse } from "../embeddings/types";
+import { EmbeddingResponse } from '../embeddings/types'
 
 export type ChatRequest = {
-  query: string;
-};
+  query: string
+}
 
 export type ChatResponse = {
-  completion: string | undefined;
-  rankedEmbeddings: Array<EmbeddingResponse>;
-};
+  completion: string | undefined
+  rankedEmbeddings: EmbeddingResponse[]
+}

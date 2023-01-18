@@ -1,4 +1,4 @@
-/* 
+/*
 
 This file contains the OpenAI API calls for the project.
 It tries to implement the best practices for using the API out of the box as much as possible.
@@ -6,146 +6,147 @@ https://beta.openai.com/docs/guides/safety-best-practices
 
 **/
 
-import { Configuration, OpenAIApi } from "openai";
-import { Config } from "@serverless-stack/node/config";
-import { EmbeddingEntityType, Embedding } from "./embedding";
-import GPT3Tokenizer from "gpt3-tokenizer";
-import { queryEmbeddings } from "./pinecone";
-//TODO weird bug here where the import is not working
-const tokenizer = new (GPT3Tokenizer as any).default({ type: "gpt3" });
+import { Configuration, OpenAIApi } from 'openai'
+import { Config } from '@serverless-stack/node/config'
+import { EmbeddingEntityType, Embedding } from './embedding'
+import GPT3Tokenizer from 'gpt3-tokenizer'
+import { queryEmbeddings } from './pinecone'
+// TODO weird bug here where the import is not working
+// eslint-disable-next-line new-cap
+const tokenizer = new (GPT3Tokenizer as any).default({ type: 'gpt3' })
 
 const configuration = new Configuration({
-  apiKey: Config.OPENAI_API_KEY,
-});
+  apiKey: Config.OPENAI_API_KEY
+})
 
-const openai = new OpenAIApi(configuration);
-const EMBEDDING_MODEL = "text-embedding-ada-002";
-const COMPLETION_MODEL = "text-davinci-003";
-const COMPLETION_TOKENS = 256;
-const COMPLETION_MAX_TOKENS = 4096;
+const openai = new OpenAIApi(configuration)
+const EMBEDDING_MODEL = 'text-embedding-ada-002'
+const COMPLETION_MODEL = 'text-davinci-003'
+const COMPLETION_TOKENS = 256
+const COMPLETION_MAX_TOKENS = 4096
 export const createEmbedding = async ({
   user,
-  text,
+  text
 }: {
-  user: string;
-  text: string;
+  user: string
+  text: string
 }) => {
-  return openai
+  return await openai
     .createEmbedding({
       user,
       model: EMBEDDING_MODEL,
-      input: text.split("\n").join(" "),
+      input: text.split('\n').join(' ')
     })
     .then((embedding) => {
-      return embedding.data.data[0].embedding;
-    });
-};
+      return embedding.data.data[0].embedding
+    })
+}
 
 export const createEmbeddingWithRetry = async ({
   user,
-  text,
+  text
 }: {
-  user: string;
-  text: string;
+  user: string
+  text: string
 }) => {
-  return linearBackoffCall({
-    call: () => createEmbedding({ user, text }),
+  return await linearBackoffCall({
+    call: async () => await createEmbedding({ user, text }),
     maxRetries: 3,
-    retryDelay: 1000,
-  });
-};
+    retryDelay: 1000
+  })
+}
 
 export const linearBackoffCall = async <T>({
   call,
   maxRetries,
-  retryDelay,
+  retryDelay
 }: {
-  call: () => Promise<T>;
-  maxRetries: number;
-  retryDelay: number;
+  call: () => Promise<T>
+  maxRetries: number
+  retryDelay: number
 }) => {
-  let retries = 0;
+  let retries = 0
   while (retries < maxRetries) {
     try {
-      return await call();
+      return await call()
     } catch (error: any) {
       // only retry if error is throttling
       if (error.status === 429 || error.response.status === 429) {
-        console.log("error", error);
-        retries++;
+        console.log('error', error)
+        retries++
         await new Promise((resolve) =>
           setTimeout(resolve, retryDelay * retries)
-        );
+        )
       }
     }
   }
-  throw new Error("Max retries reached");
-};
+  throw new Error('Max retries reached')
+}
 
 export type WeightedEmbedding = Pick<
-  EmbeddingEntityType,
-  "text" | "originLink"
+EmbeddingEntityType,
+'text' | 'originLink'
 > & {
-  weight: number;
-};
+  weight: number
+}
 
 export const getRankedEmbeddings = async ({
   userId,
   query,
   workspaceId,
-  embeddingQuantity,
+  embeddingQuantity
 }: {
-  userId: string;
-  query: string;
-  workspaceId: string;
-  embeddingQuantity: number;
-}): Promise<Array<WeightedEmbedding>> => {
+  userId: string
+  query: string
+  workspaceId: string
+  embeddingQuantity: number
+}): Promise<WeightedEmbedding[]> => {
   // get the embedding for the query
   const queryEmbedding = await openai.createEmbedding({
     user: userId,
     model: EMBEDDING_MODEL,
-    input: query.split("\n").join(" "),
-  });
-  const ada002 = queryEmbedding.data.data[0].embedding;
+    input: query.split('\n').join(' ')
+  })
+  const ada002 = queryEmbedding.data.data[0].embedding
   const embeddingMatches = await queryEmbeddings(
     workspaceId,
     ada002,
     embeddingQuantity
-  );
+  )
   const embeddings = await Embedding.batchGetEmbeddings(
     workspaceId,
     embeddingMatches.map((match) => match.id)
-  );
+  )
   const sortedEmbeddings = embeddings.map((embedding) => {
     const embeddingMatch = embeddingMatches.find(
       (match) => match.id === embedding.embeddingId
-    );
+    )
     return {
       ...embedding,
-      weight: embeddingMatch?.score as number,
-    };
-  });
+      weight: embeddingMatch?.score as number
+    }
+  })
   return sortedEmbeddings.slice(0, embeddingQuantity).map((embedding) => {
     return {
       weight: embedding.weight,
       text: embedding.text,
-      originLink: embedding.originLink,
-    };
-  });
-};
+      originLink: embedding.originLink
+    }
+  })
+}
 
 export const createCompletion = async ({
   prompt,
-  user,
+  user
 }: {
-  prompt: string;
-  user: string;
+  prompt: string
+  user: string
 }) => {
-  const isCompliant = await checkModerationCompliance(prompt);
+  const isCompliant = await checkModerationCompliance(prompt)
   if (!isCompliant) {
-    throw new Error("Prompt is not compliant with OpenAI's moderation policy");
+    throw new Error("Prompt is not compliant with OpenAI's moderation policy")
   }
-  const temperature = 0;
+  const temperature = 0
   // Create Params for the API
   const params = {
     model: COMPLETION_MODEL,
@@ -153,36 +154,36 @@ export const createCompletion = async ({
     stream: false,
     temperature,
     user,
-    max_tokens: COMPLETION_TOKENS,
-  };
+    max_tokens: COMPLETION_TOKENS
+  }
 
   // Get completed response data from OpenAPI
-  const completion = await openai.createCompletion(params);
-  return completion.data.choices[0].text;
-};
+  const completion = await openai.createCompletion(params)
+  return completion.data.choices[0].text
+}
 
 export const createCompletionWithRetry = async ({
   prompt,
-  user,
+  user
 }: {
-  prompt: string;
-  user: string;
+  prompt: string
+  user: string
 }) => {
-  return linearBackoffCall({
-    call: () => createCompletion({ prompt, user }),
+  return await linearBackoffCall({
+    call: async () => await createCompletion({ prompt, user }),
     maxRetries: 3,
-    retryDelay: 1000,
-  });
-};
+    retryDelay: 1000
+  })
+}
 
 export const createPrompt = ({
   rankedEmbeddings,
-  query,
+  query
 }: {
-  rankedEmbeddings: WeightedEmbedding[];
-  query: string;
+  rankedEmbeddings: WeightedEmbedding[]
+  query: string
 }) => {
-  const MAX_TOKEN_SIZE = COMPLETION_MAX_TOKENS - COMPLETION_TOKENS - 100; // we keep a margin of 100 tokens in case our calculation is not exactly right
+  const MAX_TOKEN_SIZE = COMPLETION_MAX_TOKENS - COMPLETION_TOKENS - 100 // we keep a margin of 100 tokens in case our calculation is not exactly right
   const promptHeader = `Given the following extracted parts of a long document and a question, create a final answer with references ("SOURCES"). 
 If you don't know the answer, just say that you don't know. Don't try to make up an answer.
 ALWAYS return a "SOURCES" part in your answer.
@@ -212,28 +213,28 @@ FINAL ANSWER: The president did not mention Michael Jackson.
 SOURCES:
 QUESTION: ${query}
 =========
-`;
+`
   const promptFooter = `=========
-FINAL ANSWER:`;
-  let promptLength = getPromptLength(promptHeader + promptFooter);
-  let context = "";
+FINAL ANSWER:`
+  let promptLength = getPromptLength(promptHeader + promptFooter)
+  let context = ''
   for (let i = 0; i < rankedEmbeddings.length; i++) {
-    const rankedEmbedding = rankedEmbeddings[i];
-    const fullText = getPromtContext(rankedEmbedding, i);
-    const length = getPromptLength(fullText);
+    const rankedEmbedding = rankedEmbeddings[i]
+    const fullText = getPromtContext(rankedEmbedding, i)
+    const length = getPromptLength(fullText)
     if (promptLength + length > MAX_TOKEN_SIZE) {
-      break;
+      break
     }
-    promptLength += length;
-    context += fullText + "\n";
+    promptLength += length
+    context += fullText + '\n'
   }
-  const prompt = `${promptHeader}\n${context}\n${promptFooter}`;
-  return prompt;
-};
+  const prompt = `${promptHeader}\n${context}\n${promptFooter}`
+  return prompt
+}
 
-export const getPromptLength = (prompt: string) => {
-  return tokenizer.encode(prompt).bpe.length;
-};
+export const getPromptLength = (prompt: string): number => {
+  return tokenizer.encode(prompt).bpe.length
+}
 
 const getPromtContext = (
   rankedEmbeddings: WeightedEmbedding,
@@ -241,8 +242,8 @@ const getPromtContext = (
 ) => {
   return `Content ${rankedEmbeddings.text.context}
   ${rankedEmbeddings.text.content}
-  Source: ${index}-pl`;
-};
+  Source: ${index}-pl`
+}
 
 /**
  * Check the prompt for moderation compliance, maybe this function should only be activated with some config flag
@@ -250,8 +251,8 @@ const getPromtContext = (
 export const checkModerationCompliance = async (prompt: string) => {
   const res = await openai.createModeration({
     input: prompt,
-    model: "text-moderation-stable",
-  });
-  const flagged = res.data.results[0].flagged;
-  return !flagged;
-};
+    model: 'text-moderation-stable'
+  })
+  const flagged = res.data.results[0].flagged
+  return !flagged
+}

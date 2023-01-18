@@ -1,99 +1,99 @@
-import { ulid } from "ulid";
-import { Entity, EntityItem } from "electrodb";
-import { Dynamo } from "./dynamo";
-export * as Connection from "./connection";
+import { ulid } from 'ulid'
+import { Entity, EntityItem } from 'electrodb'
+import { Dynamo } from './dynamo'
+export * as Connection from './connection'
 
 export const ConnectionEntity = new Entity(
   {
     model: {
-      version: "1",
-      entity: "Connection",
-      service: "connection",
+      version: '1',
+      entity: 'Connection',
+      service: 'connection'
     },
     attributes: {
       connectionId: {
-        type: "string",
+        type: 'string',
         required: true,
-        readOnly: true,
+        readOnly: true
       },
       workspaceId: {
-        type: "string",
+        type: 'string',
         required: true,
-        readOnly: true,
+        readOnly: true
       },
       type: {
-        type: ["NOTION"] as const,
+        type: ['NOTION'] as const,
         required: true,
-        readOnly: true,
+        readOnly: true
       },
       name: {
-        type: "string",
+        type: 'string'
       },
       notionToken: {
-        type: "string",
+        type: 'string'
       },
-      createdAt: { type: "string", required: true, readOnly: true },
-      updatedAt: { type: "string", required: true, readOnly: false },
+      createdAt: { type: 'string', required: true, readOnly: true },
+      updatedAt: { type: 'string', required: true, readOnly: false }
     },
     indexes: {
       primary: {
         pk: {
-          field: "pk",
-          composite: ["workspaceId"],
+          field: 'pk',
+          composite: ['workspaceId']
         },
         sk: {
-          field: "sk",
-          composite: ["connectionId"],
-        },
+          field: 'sk',
+          composite: ['connectionId']
+        }
       },
       byType: {
-        index: "gsi1",
+        index: 'gsi1',
         pk: {
-          field: "gsi1pk",
-          composite: ["type"],
+          field: 'gsi1pk',
+          composite: ['type']
         },
         sk: {
-          field: "gsi1sk",
-          composite: ["connectionId"],
-        },
-      },
-    },
+          field: 'gsi1sk',
+          composite: ['connectionId']
+        }
+      }
+    }
   },
   Dynamo.Configuration
-);
+)
 
-export type ConnectionEntityType = EntityItem<typeof ConnectionEntity>;
+export type ConnectionEntityType = EntityItem<typeof ConnectionEntity>
 
 export const list = async (workspaceId: string) => {
   const result = await ConnectionEntity.query
     .primary({
-      workspaceId,
+      workspaceId
     })
-    .go();
-  return result.data;
-};
+    .go()
+  return result.data
+}
 
-export const listByType = async (type: "NOTION") => {
+export const listByType = async (type: 'NOTION') => {
   const result = await ConnectionEntity.query
     .byType({
-      type,
+      type
     })
-    .go();
-  return result.data;
-};
+    .go()
+  return result.data
+}
 
 export const create = async ({
   workspaceId,
   type,
   notionToken,
-  name,
+  name
 }: {
-  workspaceId: string;
-  type: "NOTION";
-  notionToken: string;
-  name?: string;
+  workspaceId: string
+  type: 'NOTION'
+  notionToken: string
+  name?: string
 }) => {
-  const connectionId = ulid();
+  const connectionId = ulid()
   const connection = await ConnectionEntity.create({
     connectionId,
     workspaceId,
@@ -101,7 +101,7 @@ export const create = async ({
     type,
     name,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  }).go();
-  return connection.data;
-};
+    updatedAt: new Date().toISOString()
+  }).go()
+  return connection.data
+}

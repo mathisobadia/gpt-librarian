@@ -1,9 +1,9 @@
 export type EmbeddingResponse = {
-  textContent: string;
+  textContent: string
   originLink: {
-    url: string;
-    text: string;
-  };
-};
+    url: string
+    text: string
+  }
+}
 
-export type EmbeddingsResponse = Array<EmbeddingResponse>;
+export type EmbeddingsResponse = EmbeddingResponse[]

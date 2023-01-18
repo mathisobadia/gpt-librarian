@@ -1,75 +1,75 @@
-import { ulid } from "ulid";
-import { Entity, EntityItem } from "electrodb";
-import { Dynamo } from "./dynamo";
-export * as User from "./user";
+import { ulid } from 'ulid'
+import { Entity, EntityItem } from 'electrodb'
+import { Dynamo } from './dynamo'
+export * as User from './user'
 
 export const UserEntity = new Entity(
   {
     model: {
-      version: "1",
-      entity: "User",
-      service: "user",
+      version: '1',
+      entity: 'User',
+      service: 'user'
     },
     attributes: {
       userId: {
-        type: "string",
+        type: 'string',
         required: true,
-        readOnly: true,
+        readOnly: true
       },
       email: {
-        type: "string",
-        required: true,
+        type: 'string',
+        required: true
       },
       name: {
-        type: "string",
-      },
+        type: 'string'
+      }
     },
     indexes: {
       primary: {
         pk: {
-          field: "pk",
-          composite: ["userId"],
+          field: 'pk',
+          composite: ['userId']
         },
         sk: {
-          field: "sk",
-          composite: [],
-        },
+          field: 'sk',
+          composite: []
+        }
       },
       byMail: {
-        index: "gsi1",
+        index: 'gsi1',
         pk: {
-          field: "gsi1pk",
-          composite: ["email"],
+          field: 'gsi1pk',
+          composite: ['email']
         },
         sk: {
-          field: "gsi1sk",
-          composite: [],
-        },
-      },
-    },
+          field: 'gsi1sk',
+          composite: []
+        }
+      }
+    }
   },
   Dynamo.Configuration
-);
+)
 
-export type UserEntityType = EntityItem<typeof UserEntity>;
+export type UserEntityType = EntityItem<typeof UserEntity>
 
 type CreateUserInput = {
-  email: string;
-  name?: string;
-};
-export async function create(input: CreateUserInput) {
+  email: string
+  name?: string
+}
+export async function create (input: CreateUserInput) {
   const result = await UserEntity.create({
     userId: ulid(),
     email: input.email,
-    name: input.name,
-  }).go();
-  return result.data;
+    name: input.name
+  }).go()
+  return result.data
 }
 
-export async function getByEmail(email: string) {
-  const result = await UserEntity.query.byMail({ email }).go();
+export async function getByEmail (email: string) {
+  const result = await UserEntity.query.byMail({ email }).go()
   if (result.data.length === 0) {
-    return null;
+    return null
   }
-  return result.data[0];
+  return result.data[0]
 }

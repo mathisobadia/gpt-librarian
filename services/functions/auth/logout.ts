@@ -1,6 +1,6 @@
-import { ApiHandler } from "@serverless-stack/node/api";
-import { respond } from "functions/utils";
+import { ApiHandler } from '@serverless-stack/node/api'
+import { respond } from 'functions/utils'
 
 export const handler = ApiHandler(async (event) => {
-  return respond.redirectClearSession("/");
-});
+  return respond.redirectClearSession('/')
+})

@@ -1,14 +1,14 @@
 export type CreateConnectionRequest = {
-  type: "NOTION";
-  notionToken: string;
-  name?: string;
-};
+  type: 'NOTION'
+  notionToken: string
+  name?: string
+}
 
 export type CreateConnectionResponse = {
-  connectionId: string;
-  workspaceId: string;
-  type: "NOTION";
-  name?: string;
-};
+  connectionId: string
+  workspaceId: string
+  type: 'NOTION'
+  name?: string
+}
 
-export type ListConnectionsResponse = Array<CreateConnectionResponse>;
+export type ListConnectionsResponse = CreateConnectionResponse[]
