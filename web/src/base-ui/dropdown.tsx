@@ -14,32 +14,43 @@ function classNames (...classes: Array<string | boolean | undefined>): string {
   return classes.filter(Boolean).join(' ')
 }
 
-export interface DropDownProps {
-  options: Array<{
-    name: string
-    value: string
-  }>
+export type DropDownOption = {
+  name: string
+  value: string
+}
+export type DropDownProps = {
+  options: DropDownOption[]
   value?: string
-  onChange?: (value: string) => void
+  onChange?: (value: DropDownOption) => void
 }
 
 export const DropDown: Component<DropDownProps> = (props) => {
   const initialValue = () => {
     return props.options.find((option) => option.value === props.value) ?? props.options[0]
   }
-  const [selected, setSelected] = createSignal(initialValue())
+  const onSelectChange = (value: DropDownOption | undefined) => {
+    if (value) {
+      setSelected(value)
+      if (props.onChange) {
+        props.onChange(value)
+      }
+    }
+  }
 
+  const [selected, setSelected] = createSignal(initialValue())
   return (
     <Listbox
       defaultOpen={false}
       value={selected()}
-      onSelectChange={setSelected}
+      onSelectChange={onSelectChange}
     >
       <div class="relative mt-1">
-        <ListboxButton class="bg-slate-3 relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300/75 sm:text-sm">
-          <span class="block truncate">{selected().name}</span>
+        <ListboxButton class="bg-slate-3 focus-visible:ring-slate-7 relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:ring-2 sm:text-sm">
+          <span class="text-slate-11 block truncate">{selected().name}</span>
           <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <Icon
+              width="1.25rem"
+              height="1.25rem"
               class="text-slate-11 h-5 w-5"
               aria-hidden="true"
               path={chevronUpDown}
@@ -57,7 +68,7 @@ export const DropDown: Component<DropDownProps> = (props) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <ListboxOptions class="bg-slate-3 ring-slate-7/5 absolute mt-1 max-h-60 w-full overflow-auto rounded-md py-1 text-base shadow-lg ring-1 focus:outline-none sm:text-sm">
+              <ListboxOptions class="bg-slate-3 ring-slate-7 absolute mt-1 max-h-60 w-full overflow-auto rounded-md py-1 text-base shadow-lg ring-1 focus:outline-none sm:text-sm">
                 <For each={props.options}>
                   {(person) => (
                     <ListboxOption
@@ -92,7 +103,9 @@ export const DropDown: Component<DropDownProps> = (props) => {
                                 )}
                             >
                                 <Icon
-                                  class="h-5 w-5"
+                                  width="2rem"
+                                  height="2rem"
+                                  class="h-8 w-8"
                                   aria-hidden="true"
                                   path={check}
                               />

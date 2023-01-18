@@ -29,7 +29,7 @@ export const EmbeddingItem: Component<EmbeddingResponse> = (props) => {
           href={props.originLink.url}
           target="_blank"
         >
-          <Icon path={link} />
+          <Icon path={link} class="h-8 w-8" />
         </a>
       </div>
     </li>

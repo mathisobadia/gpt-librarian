@@ -7,7 +7,7 @@ import {
 import { Route, Routes } from '@solidjs/router'
 import { Home } from './pages/home'
 import { Notion } from './pages/connections'
-import { Embeddings } from './pages/embeddings'
+import { Search } from './pages/search'
 import { Header } from './components/header'
 import { LogIn } from './pages/log-in'
 import { Workspaces } from './layouts/workspaces'
@@ -28,7 +28,7 @@ const App: Component = () => {
             <Route path=":workspaceId">
               <Route path="/" component={Workspace} />
               <Route path="/connections" component={Notion} />
-              <Route path="/embeddings" component={Embeddings} />
+              <Route path="/search" component={Search} />
               <Route path="/chat" component={Chat} />
             </Route>
           </Route>

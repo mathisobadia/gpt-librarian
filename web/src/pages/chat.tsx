@@ -35,9 +35,9 @@ export const Chat: Component = () => {
     <div>
       <div class="flex flex-row gap-3">
         <form onSubmit={onSubmit} class="w-full p-3">
-          <div class="bg-slate-2 focus:ring-cyan-7 flex rounded-md py-2 pl-3 focus:ring-2 md:py-3">
+          <div class="bg-slate-2 focus-visible:ring-cyan-7 flex rounded-md py-2 pl-3 focus:outline-none focus-visible:ring-2 md:py-3">
             <textarea
-              class="text-slate-12 m-0 flex-auto resize-none overflow-hidden border-0 bg-transparent p-0 pr-7 focus:ring-0 focus-visible:ring-0"
+              class="text-slate-12 m-0 flex-auto resize-none overflow-hidden border-0 bg-transparent p-0 pr-7 focus:outline-none focus-visible:ring-0"
               placeholder="enter query"
               required
               value={newChatQuery()}
@@ -46,8 +46,8 @@ export const Chat: Component = () => {
               onInput={(e) => setChatQuery(e.currentTarget.value)}
             />
             <div class="flex-none">
-              <Button type="submit">
-                <Icon path={paperAirplane} />
+              <Button intent='ghost' type="submit">
+                <Icon class='h-6 w-8' path={paperAirplane} />
               </Button>
             </div>
           </div>

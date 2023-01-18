@@ -3,7 +3,7 @@ import { Button as Btn } from 'solid-headless'
 import { Match, ParentComponent, Switch } from 'solid-js'
 import { cva } from 'class-variance-authority'
 
-interface ButtonProps {
+type ButtonProps = {
   disabled?: boolean
   href?: string
   intent?: 'primary' | 'ghost'
@@ -20,7 +20,7 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
       'disabled:opacity-50',
       'disabled:cursor-not-allowed',
       'focus:outline-none',
-      'focus:ring-2'
+      'focus-visible:ring-2'
     ],
     {
       variants: {
@@ -30,7 +30,7 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
             'hover:bg-cyan-10',
             'text-white',
             'font-bold',
-            'focus:ring-cyan-7'
+            'focus-visible:ring-cyan-7'
           ],
           ghost: [
             'bg-transparent',
@@ -39,7 +39,7 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
             'hover:outline-2',
             'text-slate-11',
             'hover:text-slate-12',
-            'focus:ring-slate-7'
+            'focus-visible:ring-slate-7'
           ]
         },
         size: {

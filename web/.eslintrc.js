@@ -15,6 +15,7 @@ module.exports = {
     project: './web/tsconfig.json'
   },
   rules: {
+    '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     'tailwindcss/no-custom-classname': ['error', {
       config: './web/tailwind.config.js'
     }],

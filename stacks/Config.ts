@@ -14,8 +14,9 @@ export function ConfigStack({ stack }: StackContext) {
   const DOMAIN_NAME = new Config.Parameter(stack, "DOMAIN_NAME", {
     value: domainName,
   });
+  // Made the mistake of using the wrong region here, so I need to hard code the region here.
   const SES_IDENTITY_ARN = new Config.Parameter(stack, "SES_IDENTITY_ARN", {
-    value: `arn:aws:ses:${stack.region}:${stack.account}:identity/gpt-librarian.com`,
+    value: `arn:aws:ses:us-east-1:${stack.account}:identity/gpt-librarian.com`,
   });
   return {
     OPENAI_API_KEY,

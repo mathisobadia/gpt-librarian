@@ -17,12 +17,13 @@ const listUserWorkspaces = async (): Promise<ListUserWorkspacesResponse> => {
   return await response.json()
 }
 
-export const listUserWorkspacesQuery = () => {
+export const listUserWorkspacesQuery = (onSuccess?: (data: ListUserWorkspacesResponse) => void) => {
   return createQuery(
     () => ['workspaces'],
     listUserWorkspaces,
     {
-      retry: false
+      retry: false,
+      onSuccess
     }
   )
 }

@@ -4,7 +4,7 @@ import { listEmbeddings } from '../queries/list-embeddings'
 import { EmbeddingList } from '../components/embedding'
 import { useParams } from '@solidjs/router'
 
-export const Embeddings: Component = () => {
+export const Search: Component = () => {
   const param = useParams()
   const workspaceId = param.workspaceId
   const listWorkspaceEmbeddings = async () => await listEmbeddings(workspaceId)

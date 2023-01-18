@@ -1,6 +1,6 @@
 import { ParentComponent } from 'solid-js'
 
-export interface MessageProps {
+export type MessageProps = {
   message: string
   type: 'user' | 'bot'
 }
