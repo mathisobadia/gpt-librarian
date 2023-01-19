@@ -1,6 +1,6 @@
 export type CreateConnectionRequest = {
   type: 'NOTION'
-  notionToken: string
+  oauthCode: string
   name?: string
 }
 
@@ -8,7 +8,9 @@ export type CreateConnectionResponse = {
   connectionId: string
   workspaceId: string
   type: 'NOTION'
-  name?: string
+  name: string
+  createdAt: string
+  lastSyncedAt?: string
 }
 
 export type ListConnectionsResponse = CreateConnectionResponse[]

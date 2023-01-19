@@ -1,8 +1,9 @@
 import { Component } from 'solid-js'
 
-export const GithubLogo: Component = () => {
+export const GithubLogo: Component<{ class?: string }> = (props) => {
   return (
     <svg
+      class={props.class}
       width="30"
       height="30"
       xmlns="http://www.w3.org/2000/svg"

@@ -9,7 +9,7 @@ import { Auth } from "@serverless-stack/resources";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 export function Api({ stack }: StackContext) {
   const table = use(Database);
-  const { OPENAI_API_KEY, PINECONE_TOKEN, DOMAIN_NAME, SES_IDENTITY_ARN } =
+  const { OPENAI_API_KEY, PINECONE_TOKEN, DOMAIN_NAME, SES_IDENTITY_ARN, NOTION_OAUTH_CLIENT_SECRET, NOTION_OAUTH_CLIENT_ID, BASE_DOMAIN } =
     use(ConfigStack);
   const routes = {
     "POST /fetch-connections": {
@@ -37,7 +37,7 @@ export function Api({ stack }: StackContext) {
       type: "function",
       function: {
         handler: "functions/chat/query-chat.handler",
-        timeout: 10,
+        timeout: 30,
       },
     },
     "POST /logout": {
@@ -78,6 +78,9 @@ export function Api({ stack }: StackContext) {
           PINECONE_TOKEN,
           DOMAIN_NAME,
           SES_IDENTITY_ARN,
+          NOTION_OAUTH_CLIENT_SECRET,
+          NOTION_OAUTH_CLIENT_ID,
+          BASE_DOMAIN
         ],
       },
     },

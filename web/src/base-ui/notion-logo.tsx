@@ -1,12 +1,13 @@
 import { Component } from 'solid-js'
 
-export const NotionLogo: Component = () => {
+export const NotionLogo: Component<{ class?: string }> = (props) => {
   return (
     <svg
       width="30"
       height="30"
       viewBox="0 0 100 100"
       fill="none"
+      class={props.class}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

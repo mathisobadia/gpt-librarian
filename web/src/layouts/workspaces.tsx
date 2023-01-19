@@ -1,5 +1,5 @@
 import { ListUserWorkspacesResponse } from '@gpt-librarian/services/functions/workspace/types'
-import { A, Outlet } from '@solidjs/router'
+import { A, Navigate, Outlet } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
 import { chatBubbleLeftRight, documentPlus, magnifyingGlass } from 'solid-heroicons/outline'
 import { Component, createSignal, JSXElement, Match, Switch } from 'solid-js'
@@ -28,7 +28,7 @@ export const Workspaces: Component = () => {
         <Spinner/>
       </Match>
       <Match when={query.isError}>
-        <p class="text-slate-12">Error: {JSON.stringify(query.error)}</p>
+        <Navigate href="/"/>
       </Match>
       <Match when={query.isSuccess && query.data && selectedWorkspace()}>
         <div class="flex h-screen flex-row">

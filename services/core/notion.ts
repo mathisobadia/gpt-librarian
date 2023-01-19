@@ -12,6 +12,8 @@ import {
   Embedding,
   getFullTextEmbedding
 } from './embedding'
+import { Config } from '@serverless-stack/node/config'
+import { Connection } from './connection'
 // Initializing a client
 
 // TODO user notion token from user ?
@@ -464,4 +466,63 @@ const blockToPlainText = (block: NestedBlockObjectResponse): string => {
 
 const richTextToPlainText = (richTextItems: RichTextItemResponse[]) => {
   return richTextItems.map((richText) => richText.plain_text).join('')
+}
+
+/**
+ * the last step of the oauth process to get the getAccessToken that will be used to make requests to the notion api
+ * https://developers.notion.com/docs/authorization#step-4-notion-responds-with-an-access_token-and-some-additional-information
+*/
+export type GetAccessTokenResponse = {
+  access_token: string
+  bot_id: string
+  duplicated_template_id: string
+  owner: {
+    workspace: true
+  }
+  workspace_icon: string
+  workspace_id: string
+  workspace_name?: string
+}
+export const createConnection = async ({ name, code, workspaceId }: {
+  code: string
+  workspaceId: string
+  name?: string
+}) => {
+  const { access_token: notionToken, workspace_name: workspaceName, workspace_icon: workspaceIcon, ...rest } = await getAccessToken(code)
+
+  const connection = await Connection.create({
+    type: 'NOTION',
+    notionToken,
+    workspaceId,
+    name: name ?? `${workspaceIcon ? `${workspaceIcon} ` : ''}${workspaceName ?? 'Workspace'}`,
+    additionalNotionInfo: { workspaceName, workspaceIcon, ...rest }
+  })
+  return connection
+}
+
+const getAccessToken = async (code: string) => {
+  const notionToken = await fetch(
+    'https://api.notion.com/v1/oauth/token',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // base 64 encoded client id and secret
+        Authorization: `Basic ${Buffer.from(Config.NOTION_OAUTH_CLIENT_ID + ':' + Config.NOTION_OAUTH_CLIENT_SECRET).toString('base64')}`
+      },
+      body: JSON.stringify({
+        code,
+        grant_type: 'authorization_code',
+        redirect_uri: `https://${Config.BASE_DOMAIN}/notion-oauth`
+      })
+    }
+  ).then(async (res) => {
+    if (!res.ok) {
+      const json = await res.json()
+      console.error(json)
+      throw new Error('Notion API Error', { cause: { json } })
+    }
+    return await res.json()
+  })
+  return notionToken as GetAccessTokenResponse
 }

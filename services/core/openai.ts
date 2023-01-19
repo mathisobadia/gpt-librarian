@@ -101,6 +101,7 @@ export const getRankedEmbeddings = async ({
   workspaceId: string
   embeddingQuantity: number
 }): Promise<WeightedEmbedding[]> => {
+  console.log('DO we get here?')
   // get the embedding for the query
   const queryEmbedding = await openai.createEmbedding({
     user: userId,
@@ -113,6 +114,7 @@ export const getRankedEmbeddings = async ({
     ada002,
     embeddingQuantity
   )
+  console.log('embeddingMatches', embeddingMatches)
   const embeddings = await Embedding.batchGetEmbeddings(
     workspaceId,
     embeddingMatches.map((match) => match.id)

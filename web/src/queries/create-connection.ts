@@ -2,9 +2,10 @@ import type {
   CreateConnectionRequest,
   CreateConnectionResponse
 } from '@gpt-librarian/services/functions/connection/types'
+import { createMutation } from '@tanstack/solid-query'
 import { getAPIUrl } from './utils'
 
-export const createConnection = async (
+const createConnection = async (
   params: CreateConnectionRequest & { workspaceId: string }
 ): Promise<CreateConnectionResponse> => {
   const response = await fetch(
@@ -22,4 +23,8 @@ export const createConnection = async (
     throw new Error('Failed to create connection')
   }
   return await response.json()
+}
+
+export const createConnectionMutation = (onSuccess?: (res: CreateConnectionResponse) => void) => {
+  return createMutation(['connection'], createConnection, { onSuccess })
 }

@@ -6,7 +6,7 @@ import { cva } from 'class-variance-authority'
 type ButtonProps = {
   disabled?: boolean
   href?: string
-  intent?: 'primary' | 'ghost'
+  intent?: 'primary' | 'secondary' | 'ghost'
   type?: 'button' | 'submit'
   additionalClass?: string
   size?: 'small' | 'medium'
@@ -18,9 +18,9 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
       'font-sans',
       'rounded',
       'disabled:opacity-50',
-      'disabled:cursor-not-allowed',
       'focus:outline-none',
-      'focus-visible:ring-2'
+      'focus-visible:ring-2',
+      'text-center'
     ],
     {
       variants: {
@@ -28,9 +28,22 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
           primary: [
             'bg-cyan-9',
             'hover:bg-cyan-10',
+            'disabled:bg-cyan-9',
             'text-white',
             'font-bold',
             'focus-visible:ring-cyan-7'
+          ],
+          secondary: [
+            'bg-slate-9',
+            'disabled:bg-slate-9',
+            'hover:bg-slate-10',
+            'text-white',
+            'border-solid',
+            'border-2',
+            'border-cyan-7',
+            'hover:boder-cyan-8',
+            'font-bold',
+            'focus-visible:ring-slate-7'
           ],
           ghost: [
             'bg-transparent',

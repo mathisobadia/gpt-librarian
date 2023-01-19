@@ -17,7 +17,8 @@ export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   if (!event.body) return respond.error('no body')
   const { query }: ChatRequest = JSON.parse(event.body)
   const { memberId, userId, workspaceId } = member
-  const rateExceeded = await checkRateLimit(memberId)
+  const rateExceeded = await isRateLimitExceeded(memberId)
+  console.log('rateExceeded', rateExceeded)
   if (rateExceeded) {
     return respond.error('rate limit exceeded')
   }
@@ -92,15 +93,15 @@ Check rate limit openai API, this is required to get aproval from Openai
 and is a good thing to include anyway as they costs can go up pretty fast
 We check in chat history the last requests made in the last minute
 */
-const checkRateLimit = async (memberId: string) => {
+const isRateLimitExceeded = async (memberId: string) => {
   const rateLimit = 10
   const dateAMinuteAgo = new Date()
   dateAMinuteAgo.setMinutes(dateAMinuteAgo.getMinutes() - 1)
-
   const lastRequest = await ChatHistory.listByUser({
     memberId,
     fromDate: dateAMinuteAgo
   })
-  if (!lastRequest) return true
-  return lastRequest.length < rateLimit
+  console.log(lastRequest)
+  if (!lastRequest) return false
+  return lastRequest.length > rateLimit
 }

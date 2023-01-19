@@ -27,10 +27,14 @@ export const ConnectionEntity = new Entity(
         readOnly: true
       },
       name: {
+        required: true,
         type: 'string'
       },
       notionToken: {
         type: 'string'
+      },
+      additionalNotionInfo: {
+        type: 'any'
       },
       createdAt: { type: 'string', required: true, readOnly: true },
       updatedAt: { type: 'string', required: true, readOnly: false }
@@ -86,12 +90,14 @@ export const create = async ({
   workspaceId,
   type,
   notionToken,
-  name
+  name,
+  additionalNotionInfo
 }: {
   workspaceId: string
   type: 'NOTION'
   notionToken: string
-  name?: string
+  name: string
+  additionalNotionInfo?: any
 }) => {
   const connectionId = ulid()
   const connection = await ConnectionEntity.create({
@@ -100,6 +106,7 @@ export const create = async ({
     notionToken,
     type,
     name,
+    additionalNotionInfo,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   }).go()
