@@ -90,7 +90,7 @@ export function Api ({ stack }: StackContext) {
       allowHeaders: ['content-type'],
       allowMethods: ['ANY'],
       // TODO: restrict this to the frontend URL
-      allowOrigins: ['http://localhost:3000', `https://${DOMAIN_NAME.value}`]
+      allowOrigins: ['http://localhost:3000', `https://${DOMAIN_NAME.value}`, `https://${BASE_DOMAIN.value}`]
       // allowOrigins: ["*"],
     },
     routes
