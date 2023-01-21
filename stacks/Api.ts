@@ -2,7 +2,8 @@ import {
   use,
   StackContext,
   Api as ApiGateway
-  , Auth
+  , Auth,
+  Config
 } from '@serverless-stack/resources'
 import { Database } from './Database'
 import { ConfigStack } from './Config'
@@ -116,5 +117,9 @@ export function Api ({ stack }: StackContext) {
     API: api.url
   })
 
+  const param = new Config.Parameter(stack, 'API_URL', {
+    value: api.url
+  })
+  console.log('API URL', param.value)
   return api
 }

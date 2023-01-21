@@ -10,6 +10,7 @@ const search = async (
   { workspaceId: string
     searchQuery: string }
 ): Promise<EmbeddingsResponse> => {
+  console.log('searchQuery', searchQuery)
   const response = await fetch(getAPIUrl('/search', workspaceId) + `&searchquery=${searchQuery}`, {
     method: 'GET',
     headers: {
@@ -24,5 +25,5 @@ const search = async (
 }
 
 export const searchQuery = ({ workspaceId, searchQuery, onSuccess }: { workspaceId: string, searchQuery: string, onSuccess?: (res: EmbeddingsResponse) => void }) => {
-  return createQuery(() => ['search', async () => await search({ workspaceId, searchQuery })], { onSuccess })
+  return createQuery(() => ['search', searchQuery], async () => await search({ workspaceId, searchQuery }), { onSuccess })
 }
