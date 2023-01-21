@@ -16,7 +16,7 @@ export const makeRequest = async <T>(params: {
   if (!token) {
     throw new Error('No token')
   }
-  const url = searchQuery ? getAPIUrl(path, workspaceId) + `&searchquery=${searchQuery}` : getAPIUrl(path, workspaceId, token)
+  const url = searchQuery ? getAPIUrl(path, workspaceId) + `&searchquery=${searchQuery}` : getAPIUrl(path, workspaceId)
   const response = await fetch(url, {
     method,
     headers: {
