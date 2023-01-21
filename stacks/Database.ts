@@ -1,29 +1,29 @@
-import { StackContext, Table } from "@serverless-stack/resources";
+import { StackContext, Table } from '@serverless-stack/resources'
 
-export function Database({ stack }: StackContext) {
-  const table = new Table(stack, "db", {
+export function Database ({ stack }: StackContext) {
+  const table = new Table(stack, 'db', {
     fields: {
-      pk: "string",
-      sk: "string",
-      gsi1pk: "string",
-      gsi1sk: "string",
-      gsi2pk: "string",
-      gsi2sk: "string",
+      pk: 'string',
+      sk: 'string',
+      gsi1pk: 'string',
+      gsi1sk: 'string',
+      gsi2pk: 'string',
+      gsi2sk: 'string'
     },
     primaryIndex: {
-      partitionKey: "pk",
-      sortKey: "sk",
+      partitionKey: 'pk',
+      sortKey: 'sk'
     },
     globalIndexes: {
       gsi1: {
-        partitionKey: "gsi1pk",
-        sortKey: "gsi1sk",
+        partitionKey: 'gsi1pk',
+        sortKey: 'gsi1sk'
       },
       gsi2: {
-        partitionKey: "gsi2pk",
-        sortKey: "gsi2sk",
-      },
-    },
-  });
-  return table;
+        partitionKey: 'gsi2pk',
+        sortKey: 'gsi2sk'
+      }
+    }
+  })
+  return table
 }
