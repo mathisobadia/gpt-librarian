@@ -20,6 +20,7 @@ export const Chat: Component = () => {
   }
   const submitOnEnter = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
       mutation.mutate({ query: newChatQuery(), workspaceId })
     }
   }

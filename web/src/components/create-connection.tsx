@@ -4,6 +4,8 @@ import { Dialog, DialogOverlay, DialogPanel, DialogTitle, Transition, Transition
 import { useParams } from '@solidjs/router'
 import { NotionLogo } from '../base-ui/notion-logo'
 import { GithubLogo } from '../base-ui/github-logo'
+import { Icon } from 'solid-heroicons'
+import { squaresPlus } from 'solid-heroicons/outline'
 
 export const CreateConnection: Component = () => {
   const params = useParams()
@@ -26,7 +28,7 @@ export const CreateConnection: Component = () => {
         onClick={openModal}
         intent="primary"
       >
-        Add Connection
+        <span><Icon class='inline h-8 w-8' path={squaresPlus}/><span> Add Connection</span></span>
       </Button>
 
       <Transition

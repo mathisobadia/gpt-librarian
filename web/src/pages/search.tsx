@@ -1,27 +1,39 @@
-import { Component, Match, Switch } from 'solid-js'
-import { createQuery } from '@tanstack/solid-query'
-import { listEmbeddings } from '../queries/list-embeddings'
+import { Component, createEffect, createSignal, Match, Switch } from 'solid-js'
+import { searchQuery } from '../queries/search'
 import { EmbeddingList } from '../components/embedding'
 import { useParams } from '@solidjs/router'
+import { Spinner } from '../base-ui/spinner'
+import { Input } from '../base-ui/input'
+import { magnifyingGlass } from 'solid-heroicons/outline'
 
 export const Search: Component = () => {
   const param = useParams()
   const workspaceId = param.workspaceId
-  const listWorkspaceEmbeddings = async () => await listEmbeddings(workspaceId)
-  const query = createQuery(() => ['embeddings'], listWorkspaceEmbeddings)
+  const [search, setSearch] = createSignal('')
+  let query = searchQuery({ workspaceId, searchQuery: search() })
+  createEffect(() => {
+    query = searchQuery({ workspaceId, searchQuery: search() })
+  })
   return (
-    <div class="bg-slate-2 flex flex-col items-center justify-center">
-      <Switch>
-        <Match when={query.isLoading}>
-          <p class="text-slate-12">Loading...</p>
-        </Match>
-        <Match when={query.isError}>
-          <p class="text-slate-12">Error: {JSON.stringify(query.error)}</p>
-        </Match>
-        <Match when={query.isSuccess && query.data}>
-          <EmbeddingList embeddings={query.data!} />
-        </Match>
-      </Switch>
+    <div class="bg-slate-2">
+      <div>
+        <h1 class="text-slate-11 pb-4 text-2xl font-bold">Search</h1>
+        <Input icon={magnifyingGlass} label="search" signal={[search, setSearch]} type="text"/>
+      </div>
+
+      <div class="flex flex-col items-center justify-center pt-4">
+        <Switch>
+          <Match when={query.isLoading}>
+            <Spinner/>
+          </Match>
+          <Match when={query.isError}>
+            <p class="text-slate-12">Error: {JSON.stringify(query.error)}</p>
+          </Match>
+          <Match when={query.isSuccess && query.data}>
+            <EmbeddingList embeddings={query.data!} />
+          </Match>
+        </Switch>
+      </div>
     </div>
   )
 }

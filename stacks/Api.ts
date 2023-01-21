@@ -12,10 +12,10 @@ export function Api({ stack }: StackContext) {
   const { OPENAI_API_KEY, PINECONE_TOKEN, DOMAIN_NAME, SES_IDENTITY_ARN, NOTION_OAUTH_CLIENT_SECRET, NOTION_OAUTH_CLIENT_ID, BASE_DOMAIN } =
     use(ConfigStack);
   const routes = {
-    "POST /fetch-connections": {
+    "POST /sync-connection": {
       type: "function",
       function: {
-        handler: "functions/connection/fetch-connections.handler",
+        handler: "functions/connection/sync-connection.handler",
         timeout: 300,
       },
     },
@@ -47,10 +47,10 @@ export function Api({ stack }: StackContext) {
         timeout: 3,
       },
     },
-    "GET /list-embeddings": {
+    "GET /search": {
       type: "function",
       function: {
-        handler: "functions/embeddings/list-embeddings.handler",
+        handler: "functions/embeddings/search.handler",
         timeout: 10,
       },
     },

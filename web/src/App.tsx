@@ -16,6 +16,7 @@ import { privacyPolicy } from './pages/privacy-policy'
 import { SignUp } from './pages/sign-up'
 import { DialogPreview } from './pages/test'
 import { NotionOauth } from './pages/notion-oauth'
+import { TermsOfUse } from './pages/terms-of-use'
 
 const queryClient = new QueryClient()
 
@@ -38,6 +39,7 @@ const App: Component = () => {
           <Route path="/log-in" component={LogIn} />
           <Route path="/sign-up" component={SignUp} />
           <Route path="/privacy-policy" component={privacyPolicy} />
+          <Route path="/terms-of-use" component={TermsOfUse} />
           <Route path="/test" component={DialogPreview} />
           <Route path="notion-oauth" component={NotionOauth} />
         </Routes>

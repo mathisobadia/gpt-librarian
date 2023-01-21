@@ -13,4 +13,8 @@ export type CreateConnectionResponse = {
   lastSyncedAt?: string
 }
 
+export type SyncConnectionRequest = {
+  connectionId: string
+}
+
 export type ListConnectionsResponse = CreateConnectionResponse[]

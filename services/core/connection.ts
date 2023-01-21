@@ -86,6 +86,14 @@ export const listByType = async (type: 'NOTION') => {
   return result.data
 }
 
+export const get = async (workspaceId: string, connectionId: string) => {
+  const result = await ConnectionEntity.get({
+    workspaceId,
+    connectionId
+  }).go()
+  return result.data
+}
+
 export const create = async ({
   workspaceId,
   type,

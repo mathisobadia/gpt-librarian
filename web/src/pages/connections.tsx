@@ -1,12 +1,12 @@
 import { useParams } from '@solidjs/router'
-import { createMutation, createQuery } from '@tanstack/solid-query'
+import { createQuery } from '@tanstack/solid-query'
 import { Button } from '../base-ui/button'
 import { Component, For, Match, Switch } from 'solid-js'
-import { fetchConnections } from '../queries/fetch-connections'
 import { listConnections } from '../queries/list-connections'
 import { NotionLogo } from '../base-ui/notion-logo'
 import { Spinner } from '../base-ui/spinner'
 import { CreateConnection } from '../components/create-connection'
+import { syncConnectionsMutation } from '../queries/sync-connection'
 
 export const Connections: Component = () => {
   const params = useParams()
@@ -35,20 +35,29 @@ export const Connections: Component = () => {
             </For>
           </ul>
         </Match>
+        <Match when={query.isSuccess && query.data.length === 0}>
+          <div>
+            <h5 class="text-slate-12">No connections yet</h5>
+            <p class="text-slate-11"> create your first connection by clicking the add connection button bellow</p>
+          </div>
+        </Match>
       </Switch>
-      <h2 class="text-slate-12">Create new connection</h2>
-      <CreateConnection/>
+      <div class="py-4">
+        <h2 class="text-slate-12">Create new connection</h2>
+        <CreateConnection/>
+      </div>
     </div>
   )
 }
 
 const Connection: Component<{ connectionId: string, type: 'NOTION', name: string, createdAt: string, lastSyncedAt?: string, workspaceId: string }> = (props) => {
-  const fetchConnectionMutation = createMutation(
-    ['connections'],
-    fetchConnections
-  )
-  const onSyncConnection = (connectionId: string) => {
-    fetchConnectionMutation.mutate(props.workspaceId)
+  const mutation = syncConnectionsMutation()
+  const onSyncConnection = () => {
+    console.log('syncing connection')
+    mutation.mutate({
+      connectionId: props.connectionId,
+      workspaceId: props.workspaceId
+    })
   }
   return (
     <div class="border-slate-7 bg-slate-3 shadow-slate-6 m-2 max-w-sm rounded-lg border p-3 shadow-md">
@@ -65,7 +74,7 @@ const Connection: Component<{ connectionId: string, type: 'NOTION', name: string
           <p class="text-slate-11">Created: {props.createdAt}, Last Synced: {props.lastSyncedAt ?? ''}</p>
         </div>
         <div class="m-auto">
-          <Button intent='secondary' onClick={() => onSyncConnection(props.connectionId)} disabled={fetchConnectionMutation.isLoading}>
+          <Button intent='secondary' onClick={() => onSyncConnection()} disabled={mutation.isLoading}>
             Sync
           </Button>
         </div>

@@ -1,16 +1,18 @@
-import { Embedding, mapRankedEmbeddings } from '@gpt-librarian/core/embedding'
+import { mapRankedEmbeddings } from '@gpt-librarian/core/embedding'
 import { respond, useAuth } from 'functions/utils'
-import { ApiHandler } from '@serverless-stack/node/api'
+import { ApiHandler, useQueryParam } from '@serverless-stack/node/api'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
 import { EmbeddingsResponse } from './types'
+import { getRankedEmbeddings } from '@gpt-librarian/core/openai'
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   const member = await useAuth()
   if (!member) return respond.error('auth error')
+  const searchQuery = useQueryParam('searchquery') ?? ''
   // const workspaceId = session.properties.userId;
-  const embeddings = await Embedding.list(member.workspaceId)
+  const embeddings = await getRankedEmbeddings({ workspaceId: member.workspaceId, query: searchQuery, userId: member.userId, embeddingQuantity: 10 })
   const response: EmbeddingsResponse = embeddings.map((embedding) =>
-    mapRankedEmbeddings({ ...embedding, weight: 0 })
+    mapRankedEmbeddings({ ...embedding })
   )
   return respond.ok(response)
 })

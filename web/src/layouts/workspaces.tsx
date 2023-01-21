@@ -31,7 +31,7 @@ export const Workspaces: Component = () => {
         <Navigate href="/"/>
       </Match>
       <Match when={query.isSuccess && query.data && selectedWorkspace()}>
-        <div class="flex h-screen flex-row">
+        <div class="flex min-h-screen flex-row pt-3">
           <aside class="w-64 pr-3" aria-label="Sidebar">
             <div class="bg-slate-3 overflow-y-auto rounded px-3 py-4">
               <DropDown
