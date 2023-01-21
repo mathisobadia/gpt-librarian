@@ -2,7 +2,7 @@ import type {
   ChatRequest,
   ChatResponse
 } from '@gpt-librarian/services/functions/chat/types'
-import { getAPIUrl } from './utils'
+import { makeRequest } from './utils'
 export const queryChat = async ({
   query,
   workspaceId
@@ -10,17 +10,14 @@ export const queryChat = async ({
   query: string
   workspaceId: string
 }): Promise<ChatResponse> => {
-  console.log(query)
   const param: ChatRequest = {
     query
   }
-  const response = await fetch(getAPIUrl('/query-chat', workspaceId), {
+  const response = await makeRequest<ChatResponse>({
+    path: '/query-chat',
+    workspaceId,
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(param),
-    credentials: 'include'
+    body: param
   })
-  return await response.json()
+  return response
 }

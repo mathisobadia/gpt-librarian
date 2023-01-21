@@ -1,7 +1,7 @@
 import { Button } from '../base-ui/button'
 import { Component, Match, Switch } from 'solid-js'
 import { listUserWorkspacesQuery } from '../queries/list-user-workspaces'
-import { A, Navigate } from '@solidjs/router'
+import { A, Navigate, useSearchParams } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
 import {
   documentArrowDown,
@@ -12,6 +12,11 @@ import {
 import { Spinner } from '../base-ui/spinner'
 
 export const Home: Component = () => {
+  const [searchParams] = useSearchParams()
+  const token = searchParams.token
+  if (token) {
+    localStorage.setItem('token', token)
+  }
   const query = listUserWorkspacesQuery()
   return (
     <>

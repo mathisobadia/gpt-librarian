@@ -1,6 +1,6 @@
 import type { EmbeddingsResponse } from '@gpt-librarian/services/functions/embeddings/types'
 import { createQuery } from '@tanstack/solid-query'
-import { getAPIUrl } from './utils'
+import { makeRequest } from './utils'
 
 const search = async (
   {
@@ -11,17 +11,13 @@ const search = async (
     searchQuery: string }
 ): Promise<EmbeddingsResponse> => {
   console.log('searchQuery', searchQuery)
-  const response = await fetch(getAPIUrl('/search', workspaceId) + `&searchquery=${searchQuery}`, {
+  const response = await makeRequest<EmbeddingsResponse>({
+    path: '/search',
+    workspaceId,
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
+    searchQuery
   })
-  if (response.status !== 200) {
-    throw new Error('Failed to list embeddings')
-  }
-  return await response.json()
+  return response
 }
 
 export const searchQuery = ({ workspaceId, searchQuery, onSuccess }: { workspaceId: string, searchQuery: string, onSuccess?: (res: EmbeddingsResponse) => void }) => {

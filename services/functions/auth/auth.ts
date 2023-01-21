@@ -48,7 +48,7 @@ export const onSuccess = async (claims: SignUpClaims | LoginClaims) => {
   const redirect = process.env.IS_LOCAL
     ? 'http://localhost:3000'
     : `https://${domainName}`
-  return Session.cookie({
+  return Session.parameter({
     redirect,
     type: 'user',
     properties: {

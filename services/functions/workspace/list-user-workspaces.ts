@@ -10,6 +10,7 @@ import { Connection } from '@gpt-librarian/core/connection'
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   console.log(event)
   const session = useSession()
+  console.log(session)
   if (session.type === 'public') return respond.error('auth error')
   const userId = session.properties.userId
   const members = await Member.listByUser(userId)

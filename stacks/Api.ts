@@ -27,7 +27,7 @@ export function Api ({ stack }: StackContext) {
         timeout: 3
       }
     },
-    'POST /list-connections': {
+    'GET /list-connections': {
       type: 'function',
       function: {
         handler: 'functions/connection/list-connections.handler',
@@ -39,13 +39,6 @@ export function Api ({ stack }: StackContext) {
       function: {
         handler: 'functions/chat/query-chat.handler',
         timeout: 30
-      }
-    },
-    'POST /logout': {
-      type: 'function',
-      function: {
-        handler: 'functions/auth/logout.handler',
-        timeout: 3
       }
     },
     'GET /search': {
@@ -86,12 +79,11 @@ export function Api ({ stack }: StackContext) {
       }
     },
     cors: {
-      allowCredentials: true,
-      allowHeaders: ['content-type'],
+      allowHeaders: ['content-type', 'authorization'],
       allowMethods: ['ANY'],
       // TODO: restrict this to the frontend URL
-      allowOrigins: ['http://localhost:3000', `https://${DOMAIN_NAME.value}`, 'https://gpt-librarian.com']
-      // allowOrigins: ["*"],
+      // allowOrigins: ['http://localhost:3000', `https://${DOMAIN_NAME.value}`, 'https://gpt-librarian.com']
+      allowOrigins: ['*']
     },
     routes
   })
