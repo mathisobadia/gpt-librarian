@@ -9,6 +9,7 @@
     "@notionhq/client": "^2.2.2",
     "@pothos/core": "^3.23.2",
     "aws-sdk": "^2.1278.0",
+    "dedent": "^0.7.0",
     "electrodb": "^2.3.5",
     "gpt-3-encoder": "latitudegames/GPT-3-Encoder",
     "gpt3-tokenizer": "^1.1.4",
@@ -18,6 +19,7 @@
     "ulid": "^2.3.0"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.109"
+    "@types/aws-lambda": "^8.10.109",
+    "@types/dedent": "^0.7.0"
   }
 }

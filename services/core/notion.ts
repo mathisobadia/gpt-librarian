@@ -18,7 +18,7 @@ import { Connection } from './connection'
 
 // TODO user notion token from user ?
 
-const MERGED_BLOCK_LENGTH = 200
+const MERGED_BLOCK_LENGTH = 100
 const MAX_PAGES = 100
 
 export const getPageList = async (notionToken: string, maxPages?: number) => {

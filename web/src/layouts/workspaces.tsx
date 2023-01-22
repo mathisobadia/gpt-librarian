@@ -48,7 +48,9 @@ export const Workspaces: Component = () => {
               </ul>
             </div>
           </aside>
-          <Outlet />
+          <div class='w-full'>
+            <Outlet />
+          </div>
         </div>
       </Match>
     </Switch>

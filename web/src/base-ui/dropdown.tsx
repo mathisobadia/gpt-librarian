@@ -46,11 +46,9 @@ export const DropDown: Component<DropDownProps> = (props) => {
     >
       <div class="relative mt-1">
         <ListboxButton class="bg-slate-3 focus-visible:ring-slate-7 relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:ring-2 sm:text-sm">
-          <span class="text-slate-11 block truncate">{selected().name}</span>
+          <span class="text-slate-11 block truncate px-3">{selected().name}</span>
           <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <Icon
-              width="1.25rem"
-              height="1.25rem"
               class="text-slate-11 h-5 w-5"
               aria-hidden="true"
               path={chevronUpDown}
@@ -103,9 +101,7 @@ export const DropDown: Component<DropDownProps> = (props) => {
                                 )}
                             >
                                 <Icon
-                                  width="2rem"
-                                  height="2rem"
-                                  class="h-8 w-8"
+                                  class="h-5 w-5"
                                   aria-hidden="true"
                                   path={check}
                               />

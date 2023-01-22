@@ -84,6 +84,24 @@ export const list = async (workspaceId: string) => {
   return result.data
 }
 
+/*
+Check rate limit openai API, this is required to get aproval from Openai
+and is a good thing to include anyway as they costs can go up pretty fast
+We check in chat history the last requests made in the last minute
+*/
+export const isRateLimitExceeded = async (memberId: string) => {
+  const rateLimit = 10
+  const dateAMinuteAgo = new Date()
+  dateAMinuteAgo.setMinutes(dateAMinuteAgo.getMinutes() - 1)
+  const lastRequest = await listByUser({
+    memberId,
+    fromDate: dateAMinuteAgo
+  })
+  console.log(lastRequest)
+  if (!lastRequest) return false
+  return lastRequest.length > rateLimit
+}
+
 export const listByUser = async ({
   memberId,
   fromDate

@@ -5,13 +5,16 @@ import type {
 import { makeRequest } from './utils'
 export const queryChat = async ({
   query,
-  workspaceId
+  workspaceId,
+  language
 }: {
   query: string
   workspaceId: string
+  language: 'en' | 'fr'
 }): Promise<ChatResponse> => {
   const param: ChatRequest = {
-    query
+    query,
+    language
   }
   const response = await makeRequest<ChatResponse>({
     path: '/query-chat',
