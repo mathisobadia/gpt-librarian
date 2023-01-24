@@ -1,5 +1,6 @@
 import type { EmbeddingsResponse } from '@gpt-librarian/services/functions/embeddings/types'
 import { createQuery } from '@tanstack/solid-query'
+import { createSignal } from 'solid-js'
 import { makeRequest } from './utils'
 
 const search = async (
@@ -20,6 +21,8 @@ const search = async (
   return response
 }
 
-export const searchQuery = ({ workspaceId, searchQuery, onSuccess }: { workspaceId: string, searchQuery: string, onSuccess?: (res: EmbeddingsResponse) => void }) => {
-  return createQuery(() => ['search', searchQuery], async () => await search({ workspaceId, searchQuery }), { onSuccess })
+export const searchSolidQuery = ({ workspaceId, searchQuery, onSuccess }: { workspaceId: string, searchQuery: string, onSuccess?: (res: EmbeddingsResponse) => void }) => {
+  const [query, setQuery] = createSignal(searchQuery)
+  const solidQuery = createQuery(() => ['search', query()], async () => await search({ workspaceId, searchQuery: query() }), { onSuccess })
+  return { solidQuery, setQuery }
 }

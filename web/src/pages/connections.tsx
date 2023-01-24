@@ -13,7 +13,7 @@ export const Connections: Component = () => {
   const workspaceId = params.workspaceId
   const listWorkspaceConnections = async () => await listConnections(workspaceId)
 
-  const query = createQuery(() => ['connections'], listWorkspaceConnections)
+  const query = createQuery(() => ['connections', workspaceId], listWorkspaceConnections)
 
   return (
     <div class="flex h-screen flex-col">
