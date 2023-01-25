@@ -8,10 +8,13 @@ export const LogIn: Component = () => {
   const queryParams = useLocation().query
   const emailsent = queryParams.emailsent
   const [email, setEmail] = createSignal('')
+  const getSearchParams = () => new URLSearchParams({
+    email: email()
+  }).toString()
   const onSubmit = (e: Event) => {
     e.preventDefault()
     location.href =
-      import.meta.env.VITE_REST_URL + `/auth/link/authorize?email=${email()}`
+      import.meta.env.VITE_REST_URL + `/auth/link/authorize?${getSearchParams()}}`
   }
   console.log(emailsent)
   return (

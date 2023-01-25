@@ -9,11 +9,15 @@ export const SignUp: Component = () => {
   const emailsent = queryParams.emailsent
   const [email, setEmail] = createSignal('')
   const [name, setName] = createSignal('')
+  const getSearchParams = () => new URLSearchParams({
+    email: email(),
+    name: name()
+  }).toString()
   const onSubmit = (e: Event) => {
     e.preventDefault()
     location.href =
       import.meta.env.VITE_REST_URL +
-      `/auth/link/authorize?email=${email()}&name=${name()}`
+      `/auth/link/authorize?${getSearchParams()}`
   }
   return (
     <div class="flex h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
