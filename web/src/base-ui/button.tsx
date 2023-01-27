@@ -2,6 +2,7 @@ import { A } from '@solidjs/router'
 import { Button as Btn } from 'solid-headless'
 import { Match, ParentComponent, Switch } from 'solid-js'
 import { cva } from 'class-variance-authority'
+import { SmallSpinner as Spinner } from './spinner'
 
 type ButtonProps = {
   disabled?: boolean
@@ -10,6 +11,7 @@ type ButtonProps = {
   type?: 'button' | 'submit'
   additionalClass?: string
   size?: 'small' | 'medium'
+  loading?: boolean
   onClick?: (e: Event) => void
 }
 export const Button: ParentComponent<ButtonProps> = (props) => {
@@ -78,11 +80,13 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
       <Match when={props.href}>
         <Switch>
           <Match when={props.disabled}>
-            <span class={fullClass()}>{props.children}</span>
+            <span class={fullClass()} >
+              <InnerButton {...props}/>
+            </span>
           </Match>
           <Match when={!props.disabled}>
             <A class={fullClass()} href={props.href!}>
-              {props.children}
+              <InnerButton {...props}/>
             </A>
           </Match>
         </Switch>
@@ -94,9 +98,16 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
           disabled={props.disabled}
           type={props.type ?? 'button'}
         >
-          {props.children}
+          <InnerButton {...props}/>
         </Btn>
       </Match>
     </Switch>
+  )
+}
+
+const InnerButton: ParentComponent<ButtonProps> = (props) => {
+  return (
+    <span class='relative'><span class='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' classList={{ invisible: !props.loading }}><Spinner/></span>
+      <span classList={{ invisible: props.loading }}>{props.children}</span></span>
   )
 }

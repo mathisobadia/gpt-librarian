@@ -75,7 +75,7 @@ const Connection: Component<{ connectionId: string, type: 'NOTION', name: string
           <p class="text-slate-11">Created: {props.createdAt}, Last Synced: {props.lastSyncedAt ?? ''}</p>
         </div>
         <div class="m-auto">
-          <Button intent='secondary' onClick={() => onSyncConnection()} disabled={mutation.isLoading}>
+          <Button intent='secondary' onClick={() => onSyncConnection()} disabled={mutation.isLoading} loading={mutation.isLoading}>
             Sync
           </Button>
         </div>
