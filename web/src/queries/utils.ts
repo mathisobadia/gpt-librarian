@@ -1,5 +1,6 @@
+import { createSignal, Signal } from 'solid-js'
+
 const getAPIUrl = (path: string, workspaceId: string): string => {
-  //   const workspaceId = params.workspaceId;
   const urlParams = new URLSearchParams({ workspaceId })
   return `${import.meta.env.VITE_REST_URL}${path}?${urlParams.toString()}`
 }
@@ -12,15 +13,16 @@ export const makeRequest = async <T>(params: {
   searchQuery?: string
 }): Promise<T> => {
   const { path, workspaceId, method, body, searchQuery } = params
-  const token = localStorage.getItem('token')
-  if (!token) {
+  const [token] = useToken
+  if (!token()) {
     throw new Error('No token')
   }
+  console.log(token())
   const url = searchQuery ? getAPIUrl(path, workspaceId) + `&searchquery=${searchQuery}` : getAPIUrl(path, workspaceId)
   const response = await fetch(url, {
     method,
     headers: {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token()!}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
@@ -30,3 +32,70 @@ export const makeRequest = async <T>(params: {
   }
   return await response.json()
 }
+
+export const useSession = () => {
+  const [token, setToken] = useToken
+  const logout = () => setToken(null)
+  if (!token()) {
+    logout()
+    return { claims: () => undefined, logout, setToken }
+  }
+  const decoded = () => parseJwt(token())
+  if (!decoded()) {
+    logout()
+    return { claims: () => undefined, logout, setToken }
+  }
+  const exp = decoded()!.exp
+  const now = Date.now() / 1000
+  if (exp && now > exp) {
+    logout()
+  }
+  return { claims: decoded, logout, setToken }
+}
+
+const parseJwt = (token: string | null): {
+  iat: number
+  exp?: number | undefined
+  properties: {
+    name: string
+    email: string
+  }
+  type: 'user'
+} | undefined => {
+  if (!token) {
+    return undefined
+  }
+  const base64Url = token.split('.')[1]
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  }).join(''))
+  return JSON.parse(jsonPayload)
+}
+
+const createStoredSignal = <T> (
+  key: string,
+  defaultValue: T,
+  storage = localStorage
+): Signal<T> => {
+  const item = storage.getItem(key)
+  const initialValue = item
+    ? JSON.parse(item) as T
+    : defaultValue
+
+  const [value, setValue] = createSignal<T>(initialValue)
+
+  const setValueAndStore = ((arg) => {
+    const v = setValue(arg)
+    if (v === null) {
+      storage.removeItem(key)
+    } else {
+      storage.setItem(key, JSON.stringify(v))
+    }
+    return v
+  }) as typeof setValue
+
+  return [value, setValueAndStore]
+}
+
+const useToken = createStoredSignal<null | string>('token', null, localStorage)

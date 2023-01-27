@@ -1,6 +1,5 @@
 import { Button } from '../base-ui/button'
 import { Component, Match, Switch } from 'solid-js'
-import { listUserWorkspacesQuery } from '../queries/list-user-workspaces'
 import { A, Navigate, useSearchParams } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
 import {
@@ -9,25 +8,24 @@ import {
   magnifyingGlassPlus,
   questionMarkCircle
 } from 'solid-heroicons/outline'
-import { Spinner } from '../base-ui/spinner'
+import { useSession } from '../queries/utils'
 
 export const Home: Component = () => {
   const [searchParams] = useSearchParams()
   const token = searchParams.token
+  const { claims, setToken } = useSession()
   if (token) {
-    localStorage.setItem('token', token)
+    setToken(token)
   }
-  const query = listUserWorkspacesQuery()
+  console.log(claims())
   return (
     <>
+      <p>{JSON.stringify(claims())}</p>
       <Switch>
-        <Match when={query.isLoading}>
-          <Spinner/>
+        <Match when={claims()}>
+          <Navigate href={'/workspace/'} />
         </Match>
-        <Match when={query.data?.length}>
-          <Navigate href={`/workspaces/${query.data![0].workspaceId}`} />
-        </Match>
-        <Match when={query.isError}>
+        <Match when={!claims()}>
           <div class="bg-slate-1 w-full">
             <div class="flex h-[70vh] flex-col items-center justify-center">
               <div class="relative px-6 lg:px-8">

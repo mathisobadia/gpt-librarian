@@ -11,6 +11,7 @@ import { syncConnectionsMutation } from '../queries/sync-connection'
 export const Connections: Component = () => {
   const params = useParams()
   const workspaceId = params.workspaceId
+  console.log('workspaceId::::', workspaceId)
   const listWorkspaceConnections = async () => await listConnections(workspaceId)
 
   const query = createQuery(() => ['connections', workspaceId], listWorkspaceConnections)

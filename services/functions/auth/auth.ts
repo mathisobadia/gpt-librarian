@@ -53,7 +53,8 @@ export const onSuccess = async (claims: SignUpClaims | LoginClaims) => {
     type: 'user',
     properties: {
       userId: user.userId,
-      email: user.email
+      email: user.email,
+      name: user.name
     }
   })
 }
@@ -163,6 +164,7 @@ declare module '@serverless-stack/node/auth' {
     user: {
       userId: string
       email: string
+      name?: string
     }
   }
 }

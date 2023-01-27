@@ -18,7 +18,7 @@ export const NotionOauth = () => {
   const mutation = createConnectionMutation(() => {
     console.log('connection created')
     // redirect to the workspace page
-    navigate(`/workspaces/${workspaceId}`)
+    navigate(`/workspace/${workspaceId}`)
   })
 
   const query = listUserWorkspacesQuery(workspaces => {

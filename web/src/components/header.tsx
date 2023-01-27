@@ -4,24 +4,13 @@ import { Button } from '../base-ui/button'
 import { GithubLogo } from '../base-ui/github-logo'
 import { Logo } from '../base-ui/logo'
 import { ThemeToggler } from '../base-ui/theme-toggler'
-import { listUserWorkspacesQuery } from '../queries/list-user-workspaces'
+import { useSession } from '../queries/utils'
 
 export const Header: Component = () => {
-  const query = listUserWorkspacesQuery()
+  const { claims, logout } = useSession()
   const onLogout = (e: Event) => {
     e.preventDefault()
-    fetch(import.meta.env.VITE_REST_URL + '/logout', {
-      method: 'POST',
-      credentials: 'include'
-    }).then((res) => {
-      if (res.status === 200) {
-        window.location.href = '/'
-      } else {
-        console.error('Logout failed')
-      }
-    }).catch(err => {
-      console.error(err)
-    })
+    logout()
   }
   return (
     <nav class="fixed top-0 z-10 w-full backdrop-blur-lg">
@@ -38,12 +27,13 @@ export const Header: Component = () => {
           <div class="flex flex-row items-center justify-end gap-2" />
           <div class="flex flex-row items-center justify-start gap-2">
             <Switch>
-              <Match when={query.data?.length}>
+              <Match when={claims()?.properties.name}>
+                <>{claims()?.properties.name}</>
                 <Button onClick={onLogout} intent="ghost">
                   Log out
                 </Button>
               </Match>
-              <Match when={query.error}>
+              <Match when={!claims()}>
                 <Button intent="ghost" href="/log-in">
                   <span>Log in</span>
                 </Button>

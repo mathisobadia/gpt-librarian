@@ -26,7 +26,7 @@ const App: Component = () => {
       <Header />
       <main class="bg-slate-1 pt-20">
         <Routes>
-          <Route path="/workspaces" component={Workspaces}>
+          <Route path="/workspace" component={Workspaces}>
             <Route path="/" />
             <Route path=":workspaceId">
               <Route path="/" component={Workspace} />

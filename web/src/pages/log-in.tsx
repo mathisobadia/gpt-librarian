@@ -14,7 +14,7 @@ export const LogIn: Component = () => {
   const onSubmit = (e: Event) => {
     e.preventDefault()
     location.href =
-      import.meta.env.VITE_REST_URL + `/auth/link/authorize?${getSearchParams()}}`
+      import.meta.env.VITE_REST_URL + `/auth/link/authorize?${getSearchParams()}`
   }
   console.log(emailsent)
   return (

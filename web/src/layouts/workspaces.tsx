@@ -1,5 +1,5 @@
 import { ListUserWorkspacesResponse } from '@gpt-librarian/services/functions/workspace/types'
-import { A, Navigate, Outlet } from '@solidjs/router'
+import { A, Navigate, Outlet, useLocation, useNavigate } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
 import { chatBubbleLeftRight, documentPlus, magnifyingGlass } from 'solid-heroicons/outline'
 import { Component, createSignal, JSXElement, Match, Switch } from 'solid-js'
@@ -8,9 +8,31 @@ import { Spinner } from '../base-ui/spinner'
 import { listUserWorkspacesQuery } from '../queries/list-user-workspaces'
 
 export const Workspaces: Component = () => {
+  const location = useLocation()
+  const getWorkspaceId = () => {
+    const workspaceId = (location.pathname
+      .split('workspace/')[1])
+      ? location.pathname
+        .split('workspace/')[1]?.split('/')[0]
+      : undefined
+    return workspaceId
+  }
   const [selectedWorkspace, setSelectedWorkspace] = createSignal<ListUserWorkspacesResponse[number] | null>(null)
+  const navigate = useNavigate()
+  // const params = useParams()
   const onSucess = (data: ListUserWorkspacesResponse) => {
-    setSelectedWorkspace(data[0])
+    if (!getWorkspaceId()) {
+      navigate(`/workspace/${data[0].workspaceId}`)
+      query.refetch().catch((error) => console.error(error))
+      return
+    }
+    const workspace = data.find((workspace) => workspace.workspaceId === getWorkspaceId())
+    if (workspace) {
+      setSelectedWorkspace(workspace)
+    } else {
+      navigate(`/workspace/${data[0].workspaceId}`)
+      query.refetch().catch((error) => console.error(error))
+    }
   }
   const query = listUserWorkspacesQuery(onSucess)
   const onDropDownChange = (option: DropDownOption) => {
@@ -42,9 +64,9 @@ export const Workspaces: Component = () => {
                 }))}
             />
               <ul class="space-y-2 pt-3">
-                <LeftPanelListElement icon={chatBubbleLeftRight} text="Chat" href={`/workspaces/${selectedWorkspace()!.workspaceId}/chat`}/>
-                <LeftPanelListElement icon={magnifyingGlass} text="Search" href={`/workspaces/${selectedWorkspace()!.workspaceId}/search`}/>
-                <LeftPanelListElement icon={documentPlus} text="Connections" href={`/workspaces/${selectedWorkspace()!.workspaceId}/connections`}/>
+                <LeftPanelListElement icon={chatBubbleLeftRight} text="Chat" href={`/workspace/${selectedWorkspace()!.workspaceId}/chat`}/>
+                <LeftPanelListElement icon={magnifyingGlass} text="Search" href={`/workspace/${selectedWorkspace()!.workspaceId}/search`}/>
+                <LeftPanelListElement icon={documentPlus} text="Connections" href={`/workspace/${selectedWorkspace()!.workspaceId}/connections`}/>
               </ul>
             </div>
           </aside>
