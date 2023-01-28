@@ -2,7 +2,7 @@ import { Embedding } from '@gpt-librarian/core/embedding'
 import { getPageList, savePageEmbeddings } from '@gpt-librarian/core/notion'
 import { respond, useAuth } from 'functions/utils'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
-import { ApiHandler, useJsonBody } from '@serverless-stack/node/api'
+import { ApiHandler, useJsonBody } from 'sst/node/api'
 import { Connection } from '@gpt-librarian/core/connection'
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   const PAGES_LIMIT = 100

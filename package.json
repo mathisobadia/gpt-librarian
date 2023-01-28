@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "sst start",
+    "start": "sst dev",
     "build": "sst build",
     "deploy": "sst deploy",
     "remove": "sst remove",
@@ -12,21 +12,20 @@
     "test": "sst bind -- vitest run"
   },
   "devDependencies": {
-    "@serverless-stack/cli": "^1.18.4",
-    "@serverless-stack/resources": "^1.18.4",
     "@tsconfig/node16": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
-    "aws-cdk-lib": "2.50.0",
+    "aws-cdk-lib": "2.55.0",
+    "constructs": "10.1.156",
     "eslint": "^8.30.0",
     "eslint-config-standard-with-typescript": "^24.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.6.0",
     "eslint-plugin-promise": "^6.1.1",
+    "sst": "2.0.0-rc.55",
     "typescript": "^4.9.4",
     "vitest": "^0.26.1"
   },
   "dependencies": {
-    "@serverless-stack/node": "^1.18.4",
     "cross-fetch": "^3.1.5",
     "notion-client": "^6.15.6"
   },

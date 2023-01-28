@@ -12,7 +12,7 @@ import {
   Embedding,
   getFullTextEmbedding
 } from './embedding'
-import { Config } from '@serverless-stack/node/config'
+import { Config } from 'sst/node/config'
 import { Connection } from './connection'
 // Initializing a client
 

@@ -1,5 +1,5 @@
 import { EntityConfiguration } from 'electrodb'
-import { Table } from '@serverless-stack/node/table'
+import { Table } from 'sst/node/table'
 import { DynamoDB } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 export * as Dynamo from './dynamo'

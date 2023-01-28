@@ -1,11 +1,8 @@
-import { useSession } from '@serverless-stack/node/auth'
+import { useSession } from 'sst/node/auth'
 import { Member } from '@gpt-librarian/core/member'
-import { useQueryParam } from '@serverless-stack/node/api'
-import { Config } from '@serverless-stack/node/config'
-import {
-  useEvent,
-  useLambdaContext
-} from '@serverless-stack/node/context/handler'
+import { useQueryParam } from 'sst/node/api'
+import { Config } from 'sst/node/config'
+import { useLambdaContext } from 'sst/context/handler'
 
 /**
  * Hook to return the current user's membership in the workspace, implicitly gets the workspaceId from the query params

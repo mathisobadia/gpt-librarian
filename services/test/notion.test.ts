@@ -1,6 +1,6 @@
-// import { Api } from "@serverless-stack/node/api";
+// import { Api } from "sst/node/api";
 import { expect, it } from 'vitest'
-import { Config } from '@serverless-stack/node/config'
+import { Config } from 'sst/node/config'
 
 it('can access api url', async () => {
   const apiUrl = Config.API_URL

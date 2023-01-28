@@ -1,5 +1,5 @@
 import { PineconeClient } from 'pinecone-client'
-import { Config } from '@serverless-stack/node/config'
+import { Config } from 'sst/node/config'
 // TODO: delete this when upgrading to node 18
 import 'cross-fetch/polyfill'
 

@@ -4,7 +4,7 @@ import {
 } from '@gpt-librarian/core/openai'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
 import { ChatRequest, ChatResponse } from './types'
-import { ApiHandler, useJsonBody } from '@serverless-stack/node/api'
+import { ApiHandler, useJsonBody } from 'sst/node/api'
 import { useAuth } from 'functions/utils'
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {

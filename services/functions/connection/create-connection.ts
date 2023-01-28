@@ -1,5 +1,5 @@
 import { respond, useAuth } from 'functions/utils'
-import { ApiHandler } from '@serverless-stack/node/api'
+import { ApiHandler } from 'sst/node/api'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
 import { CreateConnectionRequest, CreateConnectionResponse } from './types'
 import { createConnection } from '@gpt-librarian/core/notion'

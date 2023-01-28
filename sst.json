@@ -1,5 +1,0 @@
-{
-  "name": "gpt-librarian",
-  "region": "us-west-2",
-  "main": "stacks/index.ts"
-}

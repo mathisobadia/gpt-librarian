@@ -4,7 +4,7 @@ import {
   Api as ApiGateway
   , Auth,
   Config
-} from '@serverless-stack/resources'
+} from 'sst/constructs'
 import { Database } from './Database'
 import { ConfigStack } from './Config'
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam'
@@ -16,49 +16,49 @@ export function Api ({ stack }: StackContext) {
     'POST /sync-connection': {
       type: 'function',
       function: {
-        handler: 'functions/connection/sync-connection.handler',
+        handler: 'services/functions/connection/sync-connection.handler',
         timeout: 300
       }
     },
     'POST /create-connection': {
       type: 'function',
       function: {
-        handler: 'functions/connection/create-connection.handler',
+        handler: 'services/functions/connection/create-connection.handler',
         timeout: 3
       }
     },
     'GET /list-connections': {
       type: 'function',
       function: {
-        handler: 'functions/connection/list-connections.handler',
+        handler: 'services/functions/connection/list-connections.handler',
         timeout: 3
       }
     },
     'POST /query-chat': {
       type: 'function',
       function: {
-        handler: 'functions/chat/query-chat.handler',
+        handler: 'services/functions/chat/query-chat.handler',
         timeout: 30
       }
     },
     'GET /search': {
       type: 'function',
       function: {
-        handler: 'functions/embeddings/search.handler',
+        handler: 'services/functions/embeddings/search.handler',
         timeout: 10
       }
     },
     'GET /list-user-workspaces': {
       type: 'function',
       function: {
-        handler: 'functions/workspace/list-user-workspaces.handler',
+        handler: 'services/functions/workspace/list-user-workspaces.handler',
         timeout: 3
       }
     },
     'GET /get-workspace': {
       type: 'function',
       function: {
-        handler: 'functions/workspace/get-workspace.handler',
+        handler: 'services/functions/workspace/get-workspace.handler',
         timeout: 3
       }
     }
@@ -89,7 +89,7 @@ export function Api ({ stack }: StackContext) {
   })
   const auth = new Auth(stack, 'auth', {
     authenticator: {
-      handler: 'functions/auth/auth.handler',
+      handler: 'services/functions/auth/auth.handler',
       initialPolicy: [
         new PolicyStatement({
           effect: Effect.ALLOW,

@@ -2,14 +2,14 @@
 Auth handler from [SST Auth](https://docs.sst.dev/auth)
 this handles the auth flow for the app, including the login page, the callback page, and the logout page
 **/
-import { AuthHandler, LinkAdapter, Session } from '@serverless-stack/node/auth'
+import { AuthHandler, LinkAdapter, Session } from 'sst/node/auth'
 import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses'
 import { respond } from '../utils'
 import { User } from '@gpt-librarian/core/user'
 import { Organization } from '@gpt-librarian/core/organization'
 import { Member } from '@gpt-librarian/core/member'
 import { Workspace } from '@gpt-librarian/core/workspace'
-import { Config } from '@serverless-stack/node/config'
+import { Config } from 'sst/node/config'
 
 const client = new SESClient({ region: 'us-east-1' })
 export const handler = AuthHandler({
@@ -158,7 +158,7 @@ const html = ({ url, email }: { url: string, email: string }) => {
   `
 }
 
-declare module '@serverless-stack/node/auth' {
+declare module 'sst/node/auth' {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   export interface SessionTypes {
     user: {
