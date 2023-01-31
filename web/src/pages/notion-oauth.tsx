@@ -21,8 +21,8 @@ export const NotionOauth = () => {
     navigate(`/workspace/${workspaceId}`)
   })
 
-  const query = listUserWorkspacesQuery(workspaces => {
-    const workspace = workspaces.find(workspace => workspace.workspaceId === workspaceId)
+  const query = listUserWorkspacesQuery(res => {
+    const workspace = res.workspaces.find(workspace => workspace.workspaceId === workspaceId)
     if (workspace) {
       connectToWorkspace(workspaceId)
     }
@@ -52,7 +52,7 @@ export const NotionOauth = () => {
           <p class="text-slate-12">TEST: {code} {workspaceId}</p>
           <p class="text-slate-12">Choose which workspace to connect to:</p>
           <div class='flex w-64 flex-col gap-2 p-5'>
-            <For each={query.data}>
+            <For each={query.data!.workspaces}>
               {(workspace) => (
                 <Button onClick={(event) => connectToWorkspace(workspace.workspaceId)}>{workspace.name}</Button>
               )}
