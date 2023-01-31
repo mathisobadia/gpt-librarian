@@ -50,7 +50,7 @@ export const EmbeddingEntity = new Entity(
       updatedAt: { type: 'string', required: true, readOnly: false }
     },
     indexes: {
-      primary: {
+      byWorkspace: {
         pk: {
           field: 'pk',
           composite: ['workspaceId']
@@ -170,7 +170,7 @@ export const batchGetEmbeddings = async (
 }
 
 export const list = async (workspaceId: string) => {
-  const result = await EmbeddingEntity.query.primary({ workspaceId }).go()
+  const result = await EmbeddingEntity.query.byWorkspace({ workspaceId }).go()
   return result.data
 }
 

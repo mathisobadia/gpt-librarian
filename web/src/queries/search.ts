@@ -1,7 +1,7 @@
 import type { EmbeddingsResponse } from '@gpt-librarian/services/functions/embeddings/types'
 import { createQuery } from '@tanstack/solid-query'
 import { createSignal } from 'solid-js'
-import { makeRequest } from './utils'
+import { makeRequest } from './query-utils'
 
 const search = async (
   {

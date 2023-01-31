@@ -2,7 +2,7 @@ import type {
   ChatRequest,
   ChatResponse
 } from '@gpt-librarian/services/functions/chat/types'
-import { makeRequest } from './utils'
+import { makeRequest } from './query-utils'
 export const queryChat = async ({
   query,
   workspaceId,

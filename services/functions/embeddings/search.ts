@@ -1,5 +1,5 @@
 import { mapRankedEmbeddings } from '@gpt-librarian/core/embedding'
-import { respond, useAuth } from 'functions/utils'
+import { respond, useAuth } from 'functions/event-utils'
 import { ApiHandler, useQueryParam } from 'sst/node/api'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
 import { EmbeddingsResponse } from './types'

@@ -8,7 +8,7 @@ export const ConnectionEntity = new Entity(
     model: {
       version: '1',
       entity: 'Connection',
-      service: 'connection'
+      service: 'workspace'
     },
     attributes: {
       connectionId: {
@@ -40,7 +40,7 @@ export const ConnectionEntity = new Entity(
       updatedAt: { type: 'string', required: true, readOnly: false }
     },
     indexes: {
-      primary: {
+      byWorkspace: {
         pk: {
           field: 'pk',
           composite: ['workspaceId']
@@ -60,6 +60,18 @@ export const ConnectionEntity = new Entity(
           field: 'gsi1sk',
           composite: ['connectionId']
         }
+      },
+      workspaceCollection: {
+        index: 'gsi2',
+        collection: 'workspace',
+        pk: {
+          field: 'gsi2pk',
+          composite: ['workspaceId']
+        },
+        sk: {
+          field: 'gsi2sk',
+          composite: []
+        }
       }
     }
   },
@@ -70,7 +82,7 @@ export type ConnectionEntityType = EntityItem<typeof ConnectionEntity>
 
 export const list = async (workspaceId: string) => {
   const result = await ConnectionEntity.query
-    .primary({
+    .byWorkspace({
       workspaceId
     })
     .go()

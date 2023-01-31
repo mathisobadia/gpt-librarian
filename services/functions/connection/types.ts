@@ -1,8 +1,12 @@
-export type CreateConnectionRequest = {
-  type: 'NOTION'
-  oauthCode: string
-  name?: string
-}
+import { z } from 'zod'
+
+export type CreateConnectionRequest = z.infer<typeof createConnectionInputSchema>
+
+export const createConnectionInputSchema = z.object({
+  type: z.enum(['NOTION']),
+  oauthCode: z.string(),
+  name: z.string().optional()
+})
 
 export type CreateConnectionResponse = {
   connectionId: string
@@ -12,6 +16,10 @@ export type CreateConnectionResponse = {
   createdAt: string
   lastSyncedAt?: string
 }
+
+export const syncConnectionInputSchema = z.object({
+  connectionId: z.string()
+})
 
 export type SyncConnectionRequest = {
   connectionId: string

@@ -4,27 +4,24 @@ this handles the auth flow for the app, including the login page, the callback p
 **/
 import { AuthHandler, LinkAdapter, Session } from 'sst/node/auth'
 import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses'
-import { respond } from '../utils'
+import { respond } from '../event-utils'
 import { User } from '@gpt-librarian/core/user'
 import { Organization } from '@gpt-librarian/core/organization'
 import { Member } from '@gpt-librarian/core/member'
 import { Workspace } from '@gpt-librarian/core/workspace'
 import { Config } from 'sst/node/config'
+import { z } from 'zod'
 
 const client = new SESClient({ region: 'us-east-1' })
 export const handler = AuthHandler({
   providers: {
     link: LinkAdapter({
       onLink: async (link, claims) => {
-        console.log('LINK', link, claims)
         return await sendLink(link, claims)
       },
       onSuccess: async (claims) => {
         // TODO: include zod to validate claims
-        if (claims.email) {
-          return await onSuccess({ email: claims.email, name: claims.name })
-        }
-        return respond.error('missing email')
+        return await onSuccess(claims)
       },
       onError: async () => {
         console.log('ERROR')
@@ -38,13 +35,19 @@ export type LoginClaims = {
   email: string
 }
 
-export const onSuccess = async (claims: SignUpClaims | LoginClaims) => {
+export const onSuccess = async (claims: Record<string, unknown>) => {
   const domainName = Config.DOMAIN_NAME
-  let user = await User.getByEmail(claims.email)
-  if (!user) {
-    const res = await createUser(claims)
+  const onSuccessClaimsSchema = z.discriminatedUnion('type', [
+    z.object({ type: z.literal('login'), email: z.string() }),
+    z.object({ type: z.literal('signup'), email: z.string(), name: z.string() })
+  ])
+  const parsedClaims = onSuccessClaimsSchema.parse(claims)
+  let user = await User.getByEmail(parsedClaims.email)
+  if (!user && parsedClaims.type === 'signup') {
+    const res = await createUser(parsedClaims)
     user = res.user
   }
+  if (!user) return respond.error('missing claims for user creation')
   const redirect = process.env.IS_LOCAL
     ? 'http://localhost:3000'
     : `https://${domainName}`
@@ -61,7 +64,7 @@ export const onSuccess = async (claims: SignUpClaims | LoginClaims) => {
 
 export type SignUpClaims = {
   email: string
-  name?: string
+  name: string
 }
 
 export const createUser = async (claims: SignUpClaims) => {
@@ -80,8 +83,11 @@ export const createUser = async (claims: SignUpClaims) => {
   return { user, organization, member }
 }
 
-export const sendLink = async (link: string, claims: Record<string, any>) => {
-  const { email: address } = claims
+export const sendLink = async (link: string, claims: Record<string, unknown>) => {
+  const sendLinkInputSchema = z.object({
+    email: z.string()
+  })
+  const { email: address } = sendLinkInputSchema.parse(claims)
   const subject = 'Login to GPT Librarian'
   await client.send(
     new SendEmailCommand({

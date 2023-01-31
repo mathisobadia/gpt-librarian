@@ -1,6 +1,6 @@
 import type { ListUserWorkspacesResponse } from '@gpt-librarian/services/functions/workspace/types'
 import { createQuery } from '@tanstack/solid-query'
-import { makeRequest } from './utils'
+import { makeRequest } from './query-utils'
 const listUserWorkspaces = async (): Promise<ListUserWorkspacesResponse> => {
   const response = await makeRequest<ListUserWorkspacesResponse>({
     path: '/list-user-workspaces',
@@ -10,13 +10,14 @@ const listUserWorkspaces = async (): Promise<ListUserWorkspacesResponse> => {
   return response
 }
 
-export const listUserWorkspacesQuery = (onSuccess?: (data: ListUserWorkspacesResponse) => void) => {
+export const listUserWorkspacesQuery = (onSuccess?: (data: ListUserWorkspacesResponse) => void, onError?: () => void) => {
   return createQuery(
     () => ['workspaces'],
     listUserWorkspaces,
     {
       retry: false,
-      onSuccess
+      onSuccess,
+      onError
     }
   )
 }

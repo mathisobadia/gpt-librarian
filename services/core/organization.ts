@@ -8,7 +8,7 @@ export const OrganizationEntity = new Entity(
     model: {
       version: '1',
       entity: 'Organization',
-      service: 'organization'
+      service: 'workspace'
     },
     attributes: {
       organizationId: {

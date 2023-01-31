@@ -1,6 +1,9 @@
 import { ulid } from 'ulid'
-import { Entity, EntityItem } from 'electrodb'
+import { Entity, EntityItem, Service } from 'electrodb'
 import { Dynamo } from './dynamo'
+import { ConnectionEntity } from './connection'
+import { MemberEntity } from './member'
+import { UserEntity } from './user'
 export * as Workspace from './workspace'
 
 export const WorkspaceEntity = new Entity(
@@ -8,7 +11,7 @@ export const WorkspaceEntity = new Entity(
     model: {
       version: '1',
       entity: 'Workspace',
-      service: 'organization'
+      service: 'workspace'
     },
     attributes: {
       organizationId: {
@@ -17,7 +20,8 @@ export const WorkspaceEntity = new Entity(
         readOnly: true
       },
       name: {
-        type: 'string'
+        type: 'string',
+        required: true
       },
       workspaceId: {
         type: 'string',
@@ -48,11 +52,30 @@ export const WorkspaceEntity = new Entity(
           field: 'gsi1sk',
           composite: ['createdAt']
         }
+      },
+      workspaceCollection: {
+        index: 'gsi2',
+        collection: 'workspace',
+        pk: {
+          field: 'gsi2pk',
+          composite: ['workspaceId']
+        },
+        sk: {
+          field: 'gsi2sk',
+          composite: []
+        }
       }
     }
   },
   Dynamo.Configuration
 )
+
+const workspaceService = new Service({
+  workspaces: WorkspaceEntity,
+  connections: ConnectionEntity,
+  members: MemberEntity,
+  users: UserEntity
+})
 
 export type WorkspaceEntityType = EntityItem<typeof WorkspaceEntity>
 
@@ -65,7 +88,7 @@ export const list = async (organizationId: string) => {
   return result.data
 }
 
-export const create = async (organizationId: string, name?: string) => {
+export const create = async (organizationId: string, name: string) => {
   const workspaceId = ulid()
   const result = await WorkspaceEntity.create({
     organizationId,
@@ -88,5 +111,15 @@ export const batchGet = async (workspaceIds: string[]) => {
   const result = await WorkspaceEntity.get(
     workspaceIds.map((id) => ({ workspaceId: id }))
   ).go()
+  return result.data
+}
+
+export const getWorkspaceCollection = async (workspaceId: string) => {
+  const result = await workspaceService.collections.workspace({ workspaceId }).go()
+  return result.data
+}
+
+export const getUserCollection = async (userId: string) => {
+  const result = await workspaceService.collections.user({ userId }).go()
   return result.data
 }

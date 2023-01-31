@@ -1,14 +1,15 @@
 import { Embedding } from '@gpt-librarian/core/embedding'
 import { getPageList, savePageEmbeddings } from '@gpt-librarian/core/notion'
-import { respond, useAuth } from 'functions/utils'
+import { respond, useAuth, useSafeJsonBody } from 'functions/event-utils'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
-import { ApiHandler, useJsonBody } from 'sst/node/api'
+import { ApiHandler } from 'sst/node/api'
 import { Connection } from '@gpt-librarian/core/connection'
+import { syncConnectionInputSchema } from './types'
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   const PAGES_LIMIT = 100
   const member = await useAuth()
   if (!member) return respond.error('auth error')
-  const { connectionId } = useJsonBody()
+  const { connectionId } = useSafeJsonBody(syncConnectionInputSchema)
   const connection = await Connection.get(member.workspaceId, connectionId)
   if (!connection) {
     return respond.error('no connection')

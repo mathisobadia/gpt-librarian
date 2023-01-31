@@ -8,7 +8,7 @@ export const UserEntity = new Entity(
     model: {
       version: '1',
       entity: 'User',
-      service: 'user'
+      service: 'workspace'
     },
     attributes: {
       userId: {
@@ -21,11 +21,23 @@ export const UserEntity = new Entity(
         required: true
       },
       name: {
-        type: 'string'
+        type: 'string',
+        required: true
       }
     },
     indexes: {
       primary: {
+        pk: {
+          field: 'pk',
+          composite: ['userId']
+        },
+        sk: {
+          field: 'sk',
+          composite: []
+        }
+      },
+      userCollection: {
+        collection: 'user',
         pk: {
           field: 'pk',
           composite: ['userId']
@@ -55,7 +67,7 @@ export type UserEntityType = EntityItem<typeof UserEntity>
 
 type CreateUserInput = {
   email: string
-  name?: string
+  name: string
 }
 export async function create (input: CreateUserInput) {
   const result = await UserEntity.create({

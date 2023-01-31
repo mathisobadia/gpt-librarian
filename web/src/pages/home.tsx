@@ -8,7 +8,7 @@ import {
   magnifyingGlassPlus,
   questionMarkCircle
 } from 'solid-heroicons/outline'
-import { useSession } from '../queries/utils'
+import { useSession } from '../queries/query-utils'
 
 export const Home: Component = () => {
   const [searchParams] = useSearchParams()

@@ -40,7 +40,7 @@ export const ChatHistoryEntity = new Entity(
       updatedAt: { type: 'string', required: true, readOnly: false }
     },
     indexes: {
-      primary: {
+      byWorkspace: {
         pk: {
           field: 'pk',
           composite: ['workspaceId']
@@ -80,7 +80,7 @@ export const ChatHistoryEntity = new Entity(
 export type ChatHistoryEntityType = EntityItem<typeof ChatHistoryEntity>
 
 export const list = async (workspaceId: string) => {
-  const result = await ChatHistoryEntity.query.primary({ workspaceId }).go()
+  const result = await ChatHistoryEntity.query.byWorkspace({ workspaceId }).go()
   return result.data
 }
 

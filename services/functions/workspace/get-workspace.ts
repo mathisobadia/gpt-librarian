@@ -1,4 +1,4 @@
-import { respond, useAuth } from 'functions/utils'
+import { respond, useAuth } from 'functions/event-utils'
 import { ApiHandler } from 'sst/node/api'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
 import { Workspace } from '@gpt-librarian/core/workspace'

@@ -4,7 +4,7 @@ import { Button } from '../base-ui/button'
 import { GithubLogo } from '../base-ui/github-logo'
 import { Logo } from '../base-ui/logo'
 import { ThemeToggler } from '../base-ui/theme-toggler'
-import { useSession } from '../queries/utils'
+import { useSession } from '../queries/query-utils'
 
 export const Header: Component = () => {
   const { claims, logout } = useSession()

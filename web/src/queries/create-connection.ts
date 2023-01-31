@@ -3,7 +3,7 @@ import type {
   CreateConnectionResponse
 } from '@gpt-librarian/services/functions/connection/types'
 import { createMutation } from '@tanstack/solid-query'
-import { makeRequest } from './utils'
+import { makeRequest } from './query-utils'
 
 const createConnection = async (
   params: CreateConnectionRequest & { workspaceId: string }

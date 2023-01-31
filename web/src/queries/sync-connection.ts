@@ -1,5 +1,5 @@
 import { createMutation } from '@tanstack/solid-query'
-import { makeRequest } from './utils'
+import { makeRequest } from './query-utils'
 
 const syncConnection = async (
   { workspaceId, connectionId }:

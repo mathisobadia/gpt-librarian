@@ -9,14 +9,14 @@ export const LogIn: Component = () => {
   const emailsent = queryParams.emailsent
   const [email, setEmail] = createSignal('')
   const getSearchParams = () => new URLSearchParams({
-    email: email()
+    email: email(),
+    type: 'login'
   }).toString()
   const onSubmit = (e: Event) => {
     e.preventDefault()
     location.href =
       import.meta.env.VITE_REST_URL + `/auth/link/authorize?${getSearchParams()}`
   }
-  console.log(emailsent)
   return (
     <div class="flex h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div class="w-full max-w-md">

@@ -41,7 +41,7 @@ const App: Component = () => {
           <Route path="/privacy-policy" component={privacyPolicy} />
           <Route path="/terms-of-use" component={TermsOfUse} />
           <Route path="/test" component={DialogPreview} />
-          <Route path="notion-oauth" component={NotionOauth} />
+          <Route path="/notion-oauth" component={NotionOauth} />
         </Routes>
       </main>
     </QueryClientProvider>

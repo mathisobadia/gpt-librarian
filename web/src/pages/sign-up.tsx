@@ -11,7 +11,8 @@ export const SignUp: Component = () => {
   const [name, setName] = createSignal('')
   const getSearchParams = () => new URLSearchParams({
     email: email(),
-    name: name()
+    name: name(),
+    type: 'signup'
   }).toString()
   const onSubmit = (e: Event) => {
     e.preventDefault()

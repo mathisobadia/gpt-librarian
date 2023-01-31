@@ -6,9 +6,15 @@ import { Component, createSignal, JSXElement, Match, Switch } from 'solid-js'
 import { DropDown, DropDownOption } from '../base-ui/dropdown'
 import { Spinner } from '../base-ui/spinner'
 import { listUserWorkspacesQuery } from '../queries/list-user-workspaces'
+import { useSession } from '../queries/query-utils'
 
 export const Workspaces: Component = () => {
   const location = useLocation()
+  const { logout } = useSession()
+  const onError = () => {
+    logout()
+    navigate('/')
+  }
   const getWorkspaceId = () => {
     const workspaceId = (location.pathname
       .split('workspace/')[1])
@@ -17,27 +23,28 @@ export const Workspaces: Component = () => {
       : undefined
     return workspaceId
   }
-  const [selectedWorkspace, setSelectedWorkspace] = createSignal<ListUserWorkspacesResponse[number] | null>(null)
+  const [selectedWorkspace, setSelectedWorkspace] = createSignal<ListUserWorkspacesResponse['workspaces'][number] | null>(null)
   const navigate = useNavigate()
   // const params = useParams()
   const onSucess = (data: ListUserWorkspacesResponse) => {
+    console.log('ON SUCCESS', data)
     if (!getWorkspaceId()) {
-      navigate(`/workspace/${data[0].workspaceId}`)
+      navigate(`/workspace/${data.workspaces[0].workspaceId}`)
       query.refetch().catch((error) => console.error(error))
       return
     }
-    const workspace = data.find((workspace) => workspace.workspaceId === getWorkspaceId())
+    const workspace = data.workspaces.find((workspace) => workspace.workspaceId === getWorkspaceId())
     if (workspace) {
       setSelectedWorkspace(workspace)
     } else {
-      navigate(`/workspace/${data[0].workspaceId}`)
+      navigate(`/workspace/${data.workspaces[0].workspaceId}`)
       query.refetch().catch((error) => console.error(error))
     }
   }
-  const query = listUserWorkspacesQuery(onSucess)
+  const query = listUserWorkspacesQuery(onSucess, onError)
   const onDropDownChange = (option: DropDownOption) => {
     if (query.data) {
-      const newSelectedWorkspace = query.data.find((workspace) => workspace.workspaceId === option.value)
+      const newSelectedWorkspace = query.data.workspaces.find((workspace) => workspace.workspaceId === option.value)
       if (newSelectedWorkspace) {
         setSelectedWorkspace(newSelectedWorkspace)
       }
@@ -58,7 +65,7 @@ export const Workspaces: Component = () => {
             <div class="bg-slate-3 overflow-y-auto rounded px-3 py-4">
               <DropDown
                 onChange={onDropDownChange}
-                options={query.data!.map((workspace) => ({
+                options={query.data!.workspaces.map((workspace) => ({
                   name: workspace.name ?? 'Untitled',
                   value: workspace.workspaceId
                 }))}

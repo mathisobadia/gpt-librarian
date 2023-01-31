@@ -8,7 +8,7 @@ export const MemberEntity = new Entity(
     model: {
       version: '1',
       entity: 'Member',
-      service: 'organization'
+      service: 'workspace'
     },
     attributes: {
       workspaceId: {
@@ -39,7 +39,7 @@ export const MemberEntity = new Entity(
       updatedAt: { type: 'string', required: true, readOnly: false }
     },
     indexes: {
-      primary: {
+      byWorkspace: {
         pk: {
           field: 'pk',
           composite: ['workspaceId']
@@ -49,15 +49,28 @@ export const MemberEntity = new Entity(
           composite: ['memberId']
         }
       },
-      byUser: {
+      userCollection: {
         index: 'gsi1',
+        collection: 'user',
         pk: {
           field: 'gsi1pk',
           composite: ['userId']
         },
         sk: {
           field: 'gsi1sk',
-          composite: ['createdAt']
+          composite: []
+        }
+      },
+      workspaceCollection: {
+        index: 'gsi2',
+        collection: 'workspace',
+        pk: {
+          field: 'gsi2pk',
+          composite: ['workspaceId']
+        },
+        sk: {
+          field: 'gsi2sk',
+          composite: []
         }
       }
     }
@@ -96,7 +109,7 @@ export const create = async ({
 
 export const list = async (workspaceId: string) => {
   const result = await MemberEntity.query
-    .primary({
+    .byWorkspace({
       workspaceId
     })
     .go()
@@ -105,7 +118,7 @@ export const list = async (workspaceId: string) => {
 
 export const listByUser = async (userId: string) => {
   const result = await MemberEntity.query
-    .byUser({
+    .userCollection({
       userId
     })
     .go()

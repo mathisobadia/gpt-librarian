@@ -1,8 +1,9 @@
 import { useSession } from 'sst/node/auth'
 import { Member } from '@gpt-librarian/core/member'
-import { useQueryParam } from 'sst/node/api'
+import { useJsonBody, useQueryParam, useQueryParams } from 'sst/node/api'
 import { Config } from 'sst/node/config'
 import { useLambdaContext } from 'sst/context/handler'
+import { z } from 'zod'
 
 /**
  * Hook to return the current user's membership in the workspace, implicitly gets the workspaceId from the query params
@@ -28,6 +29,18 @@ export const useAuth = async () => {
   return membership
 }
 
+export const useSafeJsonBody = <T extends z.ZodTypeAny>(zodSchema: T): z.infer<T> => {
+  const body = useJsonBody()
+  const parsed = zodSchema.parse(body)
+  return parsed
+}
+
+export const useSafeQueryParams = <T extends z.ZodTypeAny>(zodSchema: T): z.infer<T> => {
+  const params = useQueryParams()
+  const parsed = zodSchema.parse(params)
+  return parsed
+}
+
 /**
  * Utility to return a response from an API Gateway handler with a the right status code, JSON body, and CORS headers
  */
@@ -43,7 +56,7 @@ export const respond = {
       body: JSON.stringify(response)
     }
   },
-  error: (error: string) => {
+  error: (error: unknown) => {
     return {
       statusCode: 400,
       headers: {
