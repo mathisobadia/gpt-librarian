@@ -2,8 +2,8 @@ import { useSession } from 'sst/node/auth'
 import { Member } from '@gpt-librarian/core/member'
 import { useJsonBody, useQueryParam, useQueryParams } from 'sst/node/api'
 import { Config } from 'sst/node/config'
-import { useLambdaContext } from 'sst/context/handler'
 import { z } from 'zod'
+import { useLambdaContext } from 'sst/context/handler.js'
 
 /**
  * Hook to return the current user's membership in the workspace, implicitly gets the workspaceId from the query params
