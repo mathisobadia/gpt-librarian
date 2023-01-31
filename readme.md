@@ -1,6 +1,6 @@
 # GPT Workspace Assistant
 
-A Chat GPT assistant that knows all about your business
+GPT Librarian understands all your docs, connect your docs today and find the answers you need in seconds.
 
 ## How
 
