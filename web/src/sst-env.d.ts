@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
 /// <reference types="vite/client" />
 interface ImportMetaEnv {
   readonly VITE_REST_URL: string

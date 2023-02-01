@@ -15,6 +15,7 @@ export const Home: Component = () => {
   const token = searchParams.token
   const { claims, setToken } = useSession()
   if (token) {
+    console.log('SETTING TOKEN', token)
     setToken(token)
   }
   console.log(claims())

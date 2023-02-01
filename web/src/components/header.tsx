@@ -8,6 +8,7 @@ import { useSession } from '../queries/query-utils'
 
 export const Header: Component = () => {
   const { claims, logout } = useSession()
+  console.log('claims', claims())
   const onLogout = (e: Event) => {
     e.preventDefault()
     logout()

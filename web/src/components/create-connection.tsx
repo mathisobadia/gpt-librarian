@@ -1,76 +1,44 @@
-import { Button } from '../base-ui/button'
-import { Component, createSignal } from 'solid-js'
-import { Dialog, DialogOverlay, DialogPanel, DialogTitle, Transition, TransitionChild } from 'solid-headless'
+import { Button, button } from '../base-ui/button'
+import { Component } from 'solid-js'
+import { Dialog } from '@kobalte/core'
 import { useParams } from '@solidjs/router'
 import { NotionLogo } from '../base-ui/notion-logo'
 import { GithubLogo } from '../base-ui/github-logo'
 import { Icon } from 'solid-heroicons'
-import { squaresPlus } from 'solid-heroicons/outline'
+import { squaresPlus, xMark } from 'solid-heroicons/outline'
 
 export const CreateConnection: Component = () => {
   const params = useParams()
   const workspaceId = params.workspaceId
 
-  const [isOpen, setIsOpen] = createSignal(false)
-
-  const closeModal = () => {
-    setIsOpen(false)
-  }
-
-  const openModal = () => {
-    setIsOpen(true)
-  }
-
   return (
-    <>
-      <Button
-        type="button"
-        onClick={openModal}
-        intent="primary"
-      >
-        <span><Icon class='inline h-8 w-8' path={squaresPlus}/><span> Add Connection</span></span>
-      </Button>
-
-      <Transition
-        appear
-        show={isOpen()}
-        >
-        <Dialog
-          isOpen
-          class="fixed inset-0 z-10 overflow-y-auto"
-          onClose={closeModal}
+    <Dialog.Root>
+      <Dialog.Trigger class={button({
+        intent: 'primary'
+      })}>
+        <Icon class='inline h-8 w-8' path={squaresPlus}/><span> Add Connection</span>
+      </Dialog.Trigger>
+      <Dialog.Portal
           >
-          <div class="flex min-h-screen items-center justify-center px-4">
-            <TransitionChild
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <DialogOverlay class="bg-whiteA-9 dark:bg-blackA-9 fixed inset-0 z-0" />
-            </TransitionChild>
-            <span
-              class="inline-block h-screen align-middle"
-              aria-hidden="true"
-              >
-              &#8203;
-            </span>
-
-            <DialogPanel class="bg-slate-4 z-10 my-8 inline-block w-full max-w-md overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all">
-              <DialogTitle
-                as="h3"
-                class="text-slate-12 text-lg font-medium leading-6"
+        <Dialog.Overlay class="bg-whiteA-9 dark:bg-blackA-9 fixed inset-0 z-0" />
+        <div class="fixed inset-0 flex min-h-screen items-center justify-center px-4">
+          <Dialog.Content class="bg-slate-4 z-10 my-8 inline-block w-full max-w-md overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all">
+            <Dialog.Title
+              as="h3"
+              class="text-slate-12 text-lg font-medium leading-6"
                   >
-                Add Connection
-              </DialogTitle>
+              Add Connection
+            </Dialog.Title>
+            <Dialog.CloseButton>
+              <Icon path={xMark} />
+            </Dialog.CloseButton>
+            <Dialog.Description>
               <ChooseConnectionType workspaceId={workspaceId}/>
-            </DialogPanel>
-          </div>
-        </Dialog>
-      </Transition>
-    </>
+            </Dialog.Description>
+          </Dialog.Content>
+        </div>
+      </Dialog.Portal>
+    </Dialog.Root>
   )
 }
 

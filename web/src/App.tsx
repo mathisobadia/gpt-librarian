@@ -14,7 +14,7 @@ import { Workspaces } from './layouts/workspaces'
 import { Workspace } from './components/workspace'
 import { privacyPolicy } from './pages/privacy-policy'
 import { SignUp } from './pages/sign-up'
-import { DialogPreview } from './pages/test'
+import { Test } from './pages/test'
 import { NotionOauth } from './pages/notion-oauth'
 import { TermsOfUse } from './pages/terms-of-use'
 
@@ -40,7 +40,8 @@ const App: Component = () => {
           <Route path="/sign-up" component={SignUp} />
           <Route path="/privacy-policy" component={privacyPolicy} />
           <Route path="/terms-of-use" component={TermsOfUse} />
-          <Route path="/test" component={DialogPreview} />
+          <Route path="/test" component={Test
+          } />
           <Route path="/notion-oauth" component={NotionOauth} />
         </Routes>
       </main>
