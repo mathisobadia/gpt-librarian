@@ -37,6 +37,7 @@ export const UserEntity = new Entity(
         }
       },
       userCollection: {
+        index: 'gsi1',
         collection: 'user',
         pk: {
           field: 'pk',
@@ -48,13 +49,13 @@ export const UserEntity = new Entity(
         }
       },
       byMail: {
-        index: 'gsi1',
+        index: 'gsi2',
         pk: {
-          field: 'gsi1pk',
+          field: 'gsi2pk',
           composite: ['email']
         },
         sk: {
-          field: 'gsi1sk',
+          field: 'gsi2sk',
           composite: []
         }
       }
