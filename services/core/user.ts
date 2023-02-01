@@ -40,11 +40,11 @@ export const UserEntity = new Entity(
         index: 'gsi1',
         collection: 'user',
         pk: {
-          field: 'pk',
+          field: 'gsi1pk',
           composite: ['userId']
         },
         sk: {
-          field: 'sk',
+          field: 'gsi1sk',
           composite: []
         }
       },
