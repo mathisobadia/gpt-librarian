@@ -18,10 +18,10 @@ export const button = cva(
   [
     'font-sans',
     'rounded',
-    'disabled:opacity-50',
-    'focus:outline-none',
-    'focus-visible:ring-2',
-    'focus-visible:ring-cyan-7',
+    'ui-disabled:opacity-50',
+    'ui-focus:outline-none',
+    'ui-focus-visible:ring-2',
+    'ui-focus-visible:ring-cyan-7',
     'text-center'
   ],
   {
@@ -29,31 +29,29 @@ export const button = cva(
       intent: {
         primary: [
           'bg-cyan-9',
-          'hover:bg-cyan-10',
-          'disabled:bg-cyan-9',
-          'diabled:pointer-events-none',
+          'ui-hover:bg-cyan-10',
           'text-white',
           'font-bold'
         ],
         secondary: [
           'bg-cyan-3',
-          'hover:bg-cyan-4',
-          'active:bg-cyan-5',
+          'ui-hover:bg-cyan-4',
+          'ui-active:bg-cyan-5',
           'text-cyan-11',
-          'hover:text-cyan-12',
+          'ui-hover:text-cyan-12',
           'border-solid',
           'border',
           'border-cyan-7',
-          'hover:boder-cyan-8',
+          'ui-hover:boder-cyan-8',
           'font-bold'
         ],
         ghost: [
           'bg-transparent',
           'text-slate-11',
           'font-bold',
-          'hover:text-slate-12',
-          'hover:underline',
-          'hover:underline-offset-4'
+          'ui-hover:text-slate-12',
+          'ui-hover:underline',
+          'ui-hover:underline-offset-4'
         ]
       },
       size: {
@@ -94,7 +92,7 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
         <Btn.Root
           onClick={props.onClick}
           class={fullClass()}
-          disabled={props.disabled}
+          isDisabled={props.disabled}
           type={props.type ?? 'button'}
         >
           <InnerButton {...props}/>

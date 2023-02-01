@@ -95,7 +95,7 @@ const LeftPanelListElement: Component<{
     <li>
       <A
         href={props.href}
-        class="text-slate-11 hover:bg-slate-4 hover:text-slate-12 focus-visible:ring-slate-7 flex items-center rounded-lg p-2 text-base font-normal focus:outline-none focus-visible:ring-2"
+        class="text-slate-11 hover:bg-slate-4 hover:text-slate-12 focus-visible:ring-cyan-7 flex items-center rounded-lg p-2 text-base font-normal focus:outline-none focus-visible:ring-2"
     >
         <Icon path={props.icon} class="h-8 w-8"/>
         <span class="ml-3 flex-1 whitespace-nowrap">{props.text}</span>

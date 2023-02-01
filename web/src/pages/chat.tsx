@@ -9,7 +9,7 @@ import { Button } from '../base-ui/button'
 import { Icon } from 'solid-heroicons'
 import { paperAirplane } from 'solid-heroicons/outline'
 import { DropDown, DropDownOption } from '../base-ui/dropdown'
-
+import { TextField } from '@kobalte/core'
 export const Chat: Component = () => {
   const [newChatQuery, setChatQuery] = createSignal('')
   const languageOptions: DropDownOption[] = [{ name: 'en', value: 'en' }, { name: 'fr', value: 'fr' }]
@@ -34,34 +34,26 @@ export const Chat: Component = () => {
     setLanguage(option.value)
   }
 
-  // resize textarea to fit content on key up
-  const resizeTextArea = (e: Event) => {
-    const el = e.currentTarget as HTMLTextAreaElement
-    el.style.height = 'auto'
-    el.style.height = `${el.scrollHeight}px`
-  }
-
   return (
     <div>
       <div class="flex flex-row gap-3">
         <form onSubmit={onSubmit} class="w-full p-3">
           <div class="flex flex-row justify-between gap-3">
-            <div class="bg-slate-2 focus-visible:ring-cyan-7 flex w-full rounded-md py-2 pl-3 focus:outline-none focus-visible:ring-2 md:py-3">
-              <textarea
+            <TextField.Root value={newChatQuery()} onValueChange={setChatQuery} isRequired class="bg-slate-2 focus-visible:ring-cyan-7 flex w-full rounded-md py-2 pl-3 focus:outline-none focus-visible:ring-2 md:py-3">
+              <TextField.TextArea
+                role="textbox"
                 class="text-slate-12 m-0 flex-auto resize-none overflow-hidden border-0 bg-transparent p-0 pr-7 focus:outline-none focus-visible:ring-0"
                 placeholder="enter query"
-                required
                 value={newChatQuery()}
                 onKeyPress={submitOnEnter}
-                onKeyUp={resizeTextArea}
-                onInput={(e) => setChatQuery(e.currentTarget.value)}
-            />
+                autoResize
+              />
               <div class="flex-none">
                 <Button intent='ghost' type="submit">
                   <Icon class='h-6 w-8' path={paperAirplane} />
                 </Button>
               </div>
-            </div>
+            </TextField.Root>
             <DropDown options={languageOptions} onChange={onLanguageChange} />
           </div>
         </form>
