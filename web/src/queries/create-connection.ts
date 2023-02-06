@@ -1,7 +1,7 @@
 import type {
   CreateConnectionRequest,
   CreateConnectionResponse
-} from '@gpt-librarian/services/functions/connection/types'
+} from '../../../services/functions/connection/types'
 import { createMutation } from '@tanstack/solid-query'
 import { makeRequest } from './query-utils'
 

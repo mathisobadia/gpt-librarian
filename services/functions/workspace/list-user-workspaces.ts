@@ -17,6 +17,7 @@ export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   const workspaceIds = members.map((member) => member.workspaceId)
   // const connectionPromise = await Promise.all(workspaceIds.map((workspaceId) => ({ workspaceId, connections: Connection.list(workspaceId) })))
   const workspaces = await Workspace.batchGet(workspaceIds)
+  console.log(workspaces)
   const response: ListUserWorkspacesResponse = {
     user,
     workspaces: workspaces.map((workspace) => {

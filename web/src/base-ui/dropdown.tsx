@@ -1,7 +1,7 @@
 import { Select } from '@kobalte/core'
 import { Icon } from 'solid-heroicons'
 import { check, chevronUpDown } from 'solid-heroicons/outline'
-import { createSignal, For, Component } from 'solid-js'
+import { createSignal, For, ParentComponent, Show } from 'solid-js'
 
 export type DropDownOption = {
   name: string
@@ -13,7 +13,7 @@ export type DropDownProps = {
   onChange?: (value: DropDownOption) => void
 }
 
-export const DropDown: Component<DropDownProps> = (props) => {
+export const DropDown: ParentComponent<DropDownProps> = (props) => {
   const initialValue = () => {
     return props.options.find((option) => option.value === props.value) ?? props.options[0]
   }
@@ -57,7 +57,7 @@ export const DropDown: Component<DropDownProps> = (props) => {
                     value={person.value}
                     >
                     <Select.ItemLabel
-                      class='text-slate-11 ui-focus:text-slate-12 ui-focus:bg-cyan-5 relative block w-full cursor-default select-none truncate py-2 pl-10 pr-4 font-normal'
+                      class='text-slate-11 ui-highlighted:text-slate-12 ui-highlighted:bg-cyan-5 relative block w-full cursor-default select-none truncate py-2 pl-10 pr-4 font-normal'
                         >
                       {person.name}
                     </Select.ItemLabel>
@@ -71,6 +71,10 @@ export const DropDown: Component<DropDownProps> = (props) => {
                   </Select.Item>
                 )}
               </For>
+              <Show when={props.children}>
+                <Select.Separator class="border-slate-6 m-2 border-t-2" />
+                {props.children}
+              </Show>
             </Select.Listbox>
           </Select.Content>
         </Select.Portal>

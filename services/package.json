@@ -6,6 +6,8 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.234.0",
     "@aws-sdk/client-ses": "^3.238.0",
+    "@aws-sdk/lib-dynamodb": "^3.264.0",
+    "@aws-sdk/types": "^3.257.0",
     "@notionhq/client": "^2.2.2",
     "@pothos/core": "^3.23.2",
     "aws-sdk": "^2.1278.0",

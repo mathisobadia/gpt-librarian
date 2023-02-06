@@ -11,6 +11,7 @@ import { Member } from '@gpt-librarian/core/member'
 import { Workspace } from '@gpt-librarian/core/workspace'
 import { Config } from 'sst/node/config'
 import { z } from 'zod'
+import { UserProperties } from './types'
 
 const client = new SESClient({ region: 'us-east-1' })
 export const handler = AuthHandler({
@@ -35,13 +36,14 @@ export type LoginClaims = {
   email: string
 }
 
+const linkSchema = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('login'), email: z.string() }),
+  z.object({ type: z.literal('signup'), email: z.string(), name: z.string() })
+])
+
 export const onSuccess = async (claims: Record<string, unknown>) => {
   const domainName = Config.DOMAIN_NAME
-  const onSuccessClaimsSchema = z.discriminatedUnion('type', [
-    z.object({ type: z.literal('login'), email: z.string() }),
-    z.object({ type: z.literal('signup'), email: z.string(), name: z.string() })
-  ])
-  const parsedClaims = onSuccessClaimsSchema.parse(claims)
+  const parsedClaims = linkSchema.parse(claims)
   let user = await User.getByEmail(parsedClaims.email)
   if (!user && parsedClaims.type === 'signup') {
     const res = await createUser(parsedClaims)
@@ -84,10 +86,12 @@ export const createUser = async (claims: SignUpClaims) => {
 }
 
 export const sendLink = async (link: string, claims: Record<string, unknown>) => {
-  const sendLinkInputSchema = z.object({
-    email: z.string()
-  })
-  const { email: address } = sendLinkInputSchema.parse(claims)
+  const { email: address, type } = linkSchema.parse(claims)
+  console.log('address', address, type)
+  const user = await User.getByEmail(address)
+  if (!user && type === 'login') {
+    return respond.redirect('/sign-up?error=usernotfound')
+  }
   const subject = 'Login to GPT Librarian'
   await client.send(
     new SendEmailCommand({
@@ -112,7 +116,7 @@ export const sendLink = async (link: string, claims: Record<string, unknown>) =>
       Source: 'no-reply@gpt-librarian.com'
     })
   )
-  return respond.redirectClearSession('/log-in?emailsent=true')
+  return respond.redirect('/log-in?emailsent=true')
 }
 
 const html = ({ url, email }: { url: string, email: string }) => {
@@ -167,10 +171,6 @@ const html = ({ url, email }: { url: string, email: string }) => {
 declare module 'sst/node/auth' {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   export interface SessionTypes {
-    user: {
-      userId: string
-      email: string
-      name?: string
-    }
+    user: UserProperties
   }
 }

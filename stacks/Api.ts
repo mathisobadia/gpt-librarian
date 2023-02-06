@@ -17,21 +17,21 @@ export function Api ({ stack }: StackContext) {
       type: 'function',
       function: {
         handler: 'services/functions/connection/sync-connection.handler',
-        timeout: 300
+        timeout: 10
       }
     },
     'POST /create-connection': {
       type: 'function',
       function: {
         handler: 'services/functions/connection/create-connection.handler',
-        timeout: 3
+        timeout: 10
       }
     },
     'GET /list-connections': {
       type: 'function',
       function: {
         handler: 'services/functions/connection/list-connections.handler',
-        timeout: 3
+        timeout: 10
       }
     },
     'POST /query-chat': {
@@ -52,14 +52,14 @@ export function Api ({ stack }: StackContext) {
       type: 'function',
       function: {
         handler: 'services/functions/workspace/list-user-workspaces.handler',
-        timeout: 3
+        timeout: 10
       }
     },
     'GET /get-workspace': {
       type: 'function',
       function: {
         handler: 'services/functions/workspace/get-workspace.handler',
-        timeout: 3
+        timeout: 10
       }
     }
   } as const
@@ -75,7 +75,8 @@ export function Api ({ stack }: StackContext) {
           NOTION_OAUTH_CLIENT_SECRET,
           NOTION_OAUTH_CLIENT_ID,
           BASE_DOMAIN
-        ]
+        ],
+        timeout: 10
       }
     },
     cors: {
@@ -112,6 +113,5 @@ export function Api ({ stack }: StackContext) {
   const param = new Config.Parameter(stack, 'API_URL', {
     value: api.url
   })
-  console.log('API URL', param.value)
-  return api
+  return { api, param }
 }

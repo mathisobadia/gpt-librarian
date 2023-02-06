@@ -1,5 +1,5 @@
 import { Button } from '../base-ui/button'
-import { Component, Match, Switch } from 'solid-js'
+import { Component, Match, Switch, createEffect } from 'solid-js'
 import { A, Navigate, useSearchParams } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
 import {
@@ -18,6 +18,9 @@ export const Home: Component = () => {
     console.log('SETTING TOKEN', token)
     setToken(token)
   }
+  createEffect(() => {
+    console.log('CLAIMS', claims())
+  })
   console.log(claims())
   return (
     <>

@@ -21,7 +21,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.6.0",
     "eslint-plugin-promise": "^6.1.1",
-    "sst": "2.0.0-rc.57",
+    "sst": "2.0.0-rc.69",
     "typescript": "^4.9.4",
     "vitest": "^0.26.1"
   },
@@ -31,7 +31,6 @@
   },
   "workspaces": [
     "services",
-    "graphql",
     "web"
   ],
   "overrides": {

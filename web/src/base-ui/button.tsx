@@ -18,10 +18,11 @@ export const button = cva(
   [
     'font-sans',
     'rounded',
-    'ui-disabled:opacity-50',
-    'ui-focus:outline-none',
-    'ui-focus-visible:ring-2',
-    'ui-focus-visible:ring-cyan-7',
+    'disabled:opacity-50',
+    'focus:outline-none',
+    'focus-visible:ring-2',
+    'focus-visible:ring-cyan-7',
+    'disabled:pointer-events-none',
     'text-center'
   ],
   {
@@ -29,29 +30,29 @@ export const button = cva(
       intent: {
         primary: [
           'bg-cyan-9',
-          'ui-hover:bg-cyan-10',
+          'hover:bg-cyan-10',
           'text-white',
           'font-bold'
         ],
         secondary: [
           'bg-cyan-3',
-          'ui-hover:bg-cyan-4',
-          'ui-active:bg-cyan-5',
+          'hover:bg-cyan-4',
+          'active:bg-cyan-5',
           'text-cyan-11',
-          'ui-hover:text-cyan-12',
+          'hover:text-cyan-12',
           'border-solid',
           'border',
           'border-cyan-7',
-          'ui-hover:boder-cyan-8',
+          'hover:boder-cyan-8',
           'font-bold'
         ],
         ghost: [
           'bg-transparent',
           'text-slate-11',
           'font-bold',
-          'ui-hover:text-slate-12',
-          'ui-hover:underline',
-          'ui-hover:underline-offset-4'
+          'hover:text-slate-12',
+          'hover:underline',
+          'hover:underline-offset-4'
         ]
       },
       size: {

@@ -18,5 +18,8 @@
     "jsxImportSource": "solid-js"
   },
   "include": ["src"],
+  "paths": {
+    "@gpt-librarian/*": ["../services/*"]
+  },
   "references": [{ "path": "./tsconfig.node.json" }]
 }

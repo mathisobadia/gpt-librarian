@@ -1,4 +1,4 @@
-import type { ListUserWorkspacesResponse } from '@gpt-librarian/services/functions/workspace/types'
+import type { ListUserWorkspacesResponse } from '../../../services/functions/workspace/types'
 import { createQuery } from '@tanstack/solid-query'
 import { makeRequest } from './query-utils'
 const listUserWorkspaces = async (): Promise<ListUserWorkspacesResponse> => {

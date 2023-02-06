@@ -1,8 +1,9 @@
 import { ListUserWorkspacesResponse } from '@gpt-librarian/services/functions/workspace/types'
 import { A, Navigate, Outlet, useLocation, useNavigate } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
-import { chatBubbleLeftRight, documentPlus, magnifyingGlass } from 'solid-heroicons/outline'
+import { chatBubbleLeftRight, documentPlus, magnifyingGlass, plus } from 'solid-heroicons/outline'
 import { Component, createSignal, JSXElement, Match, Switch } from 'solid-js'
+import { Button } from '../base-ui/button'
 import { DropDown, DropDownOption } from '../base-ui/dropdown'
 import { Spinner } from '../base-ui/spinner'
 import { listUserWorkspacesQuery } from '../queries/list-user-workspaces'
@@ -69,7 +70,11 @@ export const Workspaces: Component = () => {
                   name: workspace.name ?? 'Untitled',
                   value: workspace.workspaceId
                 }))}
-            />
+            >
+                <div class='m-2'>
+                  <Button intent='secondary'><Icon path={plus} class="mr-4 inline h-4 w-4" />Create Workspace</Button>
+                </div>
+              </DropDown>
               <ul class="space-y-2 pt-3">
                 <LeftPanelListElement icon={chatBubbleLeftRight} text="Chat" href={`/workspace/${selectedWorkspace()!.workspaceId}/chat`}/>
                 <LeftPanelListElement icon={magnifyingGlass} text="Search" href={`/workspace/${selectedWorkspace()!.workspaceId}/search`}/>

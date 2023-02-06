@@ -44,6 +44,7 @@ export const LogIn: Component = () => {
                   signal={[email, setEmail]}
                   required
                   label="Email address"
+                  placeholder='jeanclaude@vandamme.com'
                  />
               </div>
               <div>

@@ -1,3 +1,4 @@
+import { DropdownMenu } from '@kobalte/core'
 import { A } from '@solidjs/router'
 import { Component, Match, Switch } from 'solid-js'
 import { Button } from '../base-ui/button'
@@ -29,7 +30,7 @@ export const Header: Component = () => {
           <div class="flex flex-row items-center justify-start gap-2">
             <Switch>
               <Match when={claims()?.properties.name}>
-                <>{claims()?.properties.name}</>
+                {/* <>{claims()?.properties.name}</> */}
                 <Button onClick={onLogout} intent="ghost">
                   Log out
                 </Button>
@@ -57,5 +58,33 @@ export const Header: Component = () => {
         </div>
       </div>
     </nav>
+  )
+}
+
+const LoggedInDropdown: Component = (claims) => {
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger class="dropdown-menu__trigger">
+        <DropdownMenu.Icon class="dropdown-menu__trigger-icon">
+          <div class="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600">
+            <span class="font-medium text-gray-600 dark:text-gray-300">JL</span>
+          </div>
+        </DropdownMenu.Icon>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content class="dropdown-menu__content">
+          <DropdownMenu.Item class="dropdown-menu__item">
+            Commit <div class="dropdown-menu__item-right-slot">⌘+K</div>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item class="dropdown-menu__item">
+            Push <div class="dropdown-menu__item-right-slot">⇧+⌘+K</div>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item class="dropdown-menu__item" isDisabled>
+            Update Project <div class="dropdown-menu__item-right-slot">⌘+T</div>
+          </DropdownMenu.Item>
+          <DropdownMenu.Arrow />
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   )
 }

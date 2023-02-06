@@ -3,7 +3,7 @@ import { searchSolidQuery } from '../queries/search'
 import { EmbeddingList } from '../components/embedding'
 import { useParams, useSearchParams } from '@solidjs/router'
 import { Spinner } from '../base-ui/spinner'
-import { Input } from '../base-ui/input'
+import { InputWithIcon } from '../base-ui/input'
 import { magnifyingGlass } from 'solid-heroicons/outline'
 
 export const Search: Component = () => {
@@ -23,7 +23,7 @@ export const Search: Component = () => {
       <div>
         <form onSubmit={onSubmit}>
           <h1 class="text-slate-11 pb-4 text-2xl font-bold">Search</h1>
-          <Input icon={magnifyingGlass} label="search" signal={[searchQuery, setSearchQuery]} type="text"/>
+          <InputWithIcon icon={magnifyingGlass} label="search" signal={[searchQuery, setSearchQuery]} type="text" placeholder="enter search query here"/>
         </form>
       </div>
 

@@ -46,6 +46,7 @@ export const useSafeQueryParams = <T extends z.ZodTypeAny>(zodSchema: T): z.infe
  */
 export const respond = {
   ok: (response: unknown) => {
+    console.log('responding', response)
     return {
       statusCode: 200,
       headers: {
@@ -67,7 +68,7 @@ export const respond = {
       body: JSON.stringify(error)
     }
   },
-  redirectClearSession: (path: string) => {
+  redirect: (path: string) => {
     const domainName = Config.DOMAIN_NAME
     const redirect = process.env.IS_LOCAL
       ? `http://localhost:3000${path}`
@@ -76,10 +77,7 @@ export const respond = {
       statusCode: 302,
       headers: {
         Location: redirect
-      },
-      cookies: [
-        'auth-token=deleted; HttpOnly; SameSite=None; Secure; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
-      ]
+      }
     }
   }
 }

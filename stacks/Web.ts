@@ -4,10 +4,10 @@ import { ConfigStack } from './Config'
 
 export function Web ({ stack }: StackContext): StaticSite {
   const { DOMAIN_NAME, BASE_DOMAIN } = use(ConfigStack)
-  const api = use(Api)
+  const { api } = use(Api)
   const site = new StaticSite(stack, 'site', {
     path: 'web',
-    buildCommand: 'npm run build',
+    buildCommand: 'pnpm run build',
     buildOutput: 'dist',
     environment: {
       VITE_REST_URL: api.url

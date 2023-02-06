@@ -1,4 +1,5 @@
 import { createSignal, Signal } from 'solid-js'
+import { UserProperties } from '../../../services/functions/auth/types'
 
 const getAPIUrl = (path: string, workspaceId: string): string => {
   const urlParams = new URLSearchParams({ workspaceId })
@@ -33,24 +34,34 @@ export const makeRequest = async <T>(params: {
   return await response.json()
 }
 
+export type Claims = {
+  iat: number
+  exp?: number | undefined
+  properties: UserProperties
+  type: 'user'
+}
 export const useSession = () => {
   const [token, setToken] = useToken
   const logout = () => setToken(null)
-  if (!token()) {
-    logout()
-    return { claims: () => undefined, logout, setToken }
+  const claims = () => {
+    if (!token()) {
+      logout()
+      return undefined
+    }
+    const decoded = parseJwt(token())
+    if (!decoded) {
+      logout()
+      return undefined
+    }
+    const exp = decoded.exp
+    const now = Date.now() / 1000
+    if (exp && now > exp) {
+      logout()
+      return undefined
+    }
+    return decoded
   }
-  const decoded = () => parseJwt(token())
-  if (!decoded()) {
-    logout()
-    return { claims: () => undefined, logout, setToken }
-  }
-  const exp = decoded()!.exp
-  const now = Date.now() / 1000
-  if (exp && now > exp) {
-    logout()
-  }
-  return { claims: decoded, logout, setToken }
+  return { claims, logout, setToken }
 }
 
 const parseJwt = (token: string | null): {
