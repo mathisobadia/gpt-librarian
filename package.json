@@ -9,7 +9,7 @@
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
-    "test": "sst bind -- vitest run"
+    "test": "sst bind \"vitest run\""
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",

@@ -40,13 +40,20 @@ export const OrganizationEntity = new Entity(
 
 export type OrganizationEntityType = EntityItem<typeof OrganizationEntity>
 
-export const create = async (name?: string) => {
+export const create = async ({ name }: { name?: string }) => {
   const organizationId = ulid()
   const organization = await OrganizationEntity.create({
     organizationId,
     name,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
+  }).go()
+  return organization.data
+}
+
+export const get = async (organizationId: string) => {
+  const organization = await OrganizationEntity.get({
+    organizationId
   }).go()
   return organization.data
 }

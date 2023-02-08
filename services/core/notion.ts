@@ -16,8 +16,6 @@ import { Config } from 'sst/node/config'
 import { Connection } from './connection'
 // Initializing a client
 
-// TODO user notion token from user ?
-
 const MERGED_BLOCK_LENGTH = 100
 const MAX_PAGES = 100
 

@@ -110,6 +110,8 @@ export function Api ({ stack }: StackContext) {
     API: api.url
   })
 
+  api.bind([table])
+
   const param = new Config.Parameter(stack, 'API_URL', {
     value: api.url
   })

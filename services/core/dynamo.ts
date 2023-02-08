@@ -4,7 +4,7 @@ import { DynamoDB } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'
 export * as Dynamo from './dynamo'
 
-const isTest = process.env.JEST_WORKER_ID
+const isTest = process.env.NODE_ENV === 'test'
 const config = {
   ...(isTest && {
     endpoint: 'http://127.0.0.1:8000',
@@ -16,7 +16,10 @@ const config = {
     }
   })
 }
-export const Client = DynamoDBDocument.from(new DynamoDB(config), {
+
+export const BaseClient = new DynamoDB(config)
+
+export const Client = DynamoDBDocument.from(BaseClient, {
   marshallOptions: {
     convertEmptyValues: true,
     removeUndefinedValues: true,

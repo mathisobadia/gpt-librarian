@@ -7,7 +7,9 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@gpt-librarian/core/*": ["./core/*"]
+      "@gpt-librarian/core/*": ["./core/*"],
+      "@gpt-librarian/functions/*": ["./functions/*"],
+      "@gpt-librarian/stacks/*": ["../stacks/*"]
     }
   }
 }

@@ -13,6 +13,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@gpt-librarian/core": "./services/core",
+      "@gpt-librarian/functions": "./services/functions",
+      "@gpt-librarian/stacks": "./stacks",
     },
   },
 });

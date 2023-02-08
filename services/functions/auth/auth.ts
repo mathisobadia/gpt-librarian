@@ -71,7 +71,9 @@ export type SignUpClaims = {
 
 export const createUser = async (claims: SignUpClaims) => {
   const { email, name } = claims
-  const organization = await Organization.create()
+  const organization = await Organization.create({
+    name: 'Default Organization'
+  })
   const user = await User.create({ email, name })
   const workspace = await Workspace.create(
     organization.organizationId,
