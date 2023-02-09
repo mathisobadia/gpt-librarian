@@ -1,3 +1,4 @@
 before_compile:
   - n lts
+check_code_change: pnpm
 

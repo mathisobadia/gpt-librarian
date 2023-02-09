@@ -4,26 +4,26 @@
   "type": "module",
   "scripts": {},
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.234.0",
-    "@aws-sdk/client-ses": "^3.238.0",
-    "@aws-sdk/lib-dynamodb": "^3.264.0",
-    "@aws-sdk/types": "^3.257.0",
-    "@notionhq/client": "^2.2.2",
-    "@pothos/core": "^3.23.2",
-    "aws-sdk": "^2.1278.0",
+    "@aws-sdk/client-dynamodb": "^3.267.0",
+    "@aws-sdk/client-ses": "^3.267.0",
+    "@aws-sdk/lib-dynamodb": "^3.267.0",
+    "@aws-sdk/types": "^3.267.0",
+    "@notionhq/client": "^2.2.3",
+    "@pothos/core": "^3.25.0",
+    "aws-sdk": "^2.1311.0",
     "dedent": "^0.7.0",
     "dynamo-db-local": "^5.0.0",
-    "electrodb": "^2.3.5",
+    "electrodb": "^2.4.1",
     "gpt-3-encoder": "latitudegames/GPT-3-Encoder",
-    "gpt3-tokenizer": "^1.1.4",
+    "gpt3-tokenizer": "^1.1.5",
     "graphql": "^16.6.0",
     "openai": "^3.1.0",
-    "pinecone-client": "^1.0.0",
+    "pinecone-client": "^1.0.1",
     "ulid": "^2.3.0",
-    "zod": "^3.20.2"
+    "zod": "^3.20.6"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.109",
+    "@types/aws-lambda": "^8.10.110",
     "@types/dedent": "^0.7.0"
   }
 }

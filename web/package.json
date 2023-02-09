@@ -12,28 +12,28 @@
   "devDependencies": {
     "@radix-ui/colors": "^0.1.8",
     "@tailwindcss/typography": "^0.5.9",
-    "@tanstack/eslint-plugin-query": "^4.21.0",
+    "@tanstack/eslint-plugin-query": "^4.24.5",
     "autoprefixer": "^10.4.13",
-    "eslint-plugin-react": "^7.32.0",
-    "eslint-plugin-solid": "^0.9.3",
-    "eslint-plugin-tailwindcss": "^3.8.0",
-    "postcss": "^8.4.20",
-    "tailwindcss": "^3.2.4",
-    "typescript": "^4.9.4",
-    "vite": "^4.0.3",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-solid": "^0.9.4",
+    "eslint-plugin-tailwindcss": "^3.8.3",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.6",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.1",
     "vite-plugin-fonts": "^0.7.0",
     "vite-plugin-solid": "^2.5.0",
-    "windy-radix-palette": "^0.4.1",
+    "windy-radix-palette": "^0.5.0",
     "windy-radix-typography": "^0.1.0"
   },
   "dependencies": {
     "@kobalte/core": "^0.6.0",
-    "@kobalte/tailwindcss": "^0.4.0",
-    "@solidjs/router": "^0.6.0",
+    "@kobalte/tailwindcss": "^0.4.1",
+    "@solidjs/router": "^0.7.0",
     "@tailwindcss/forms": "^0.5.3",
-    "@tanstack/solid-query": "4.22.0",
+    "@tanstack/solid-query": "4.24.4",
     "class-variance-authority": "^0.4.0",
     "solid-heroicons": "^3.1.1",
-    "solid-js": "^1.6.6"
+    "solid-js": "^1.6.10"
   }
 }
