@@ -1,4 +1,4 @@
-import { SignUpClaims } from 'functions/auth/auth'
+import { type SignUpClaims } from 'functions/auth/auth'
 import { ulid } from 'ulid'
 import { spawn } from 'dynamo-db-local'
 import { Table } from 'sst/node/table'

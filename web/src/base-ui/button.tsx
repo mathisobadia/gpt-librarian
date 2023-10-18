@@ -1,6 +1,6 @@
 import { A } from '@solidjs/router'
 import { Button as Btn } from '@kobalte/core'
-import { Match, ParentComponent, Switch } from 'solid-js'
+import { Match, type ParentComponent, Switch } from 'solid-js'
 import { cva } from 'class-variance-authority'
 import { SmallSpinner as Spinner } from './spinner'
 

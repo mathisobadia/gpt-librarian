@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { EmbeddingResponse } from '../embeddings/types'
+import { type EmbeddingResponse } from '../embeddings/types'
 
 export type ChatRequest = z.infer<typeof queryChatSchema>
 

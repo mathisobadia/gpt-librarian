@@ -1,4 +1,4 @@
-import { SSTConfig } from 'sst'
+import { type SSTConfig } from 'sst'
 import { Api } from './stacks/Api.js'
 import { ConfigStack } from './stacks/Config.js'
 import { Database } from './stacks/Database.js'

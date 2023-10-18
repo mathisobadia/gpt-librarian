@@ -1,8 +1,8 @@
 import { respond, useAuth } from 'functions/event-utils'
 import { ApiHandler } from 'sst/node/api'
-import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
+import { type APIGatewayProxyHandlerV2 } from 'aws-lambda'
 import { Connection } from '@gpt-librarian/core/connection'
-import { ListConnectionsResponse } from './types'
+import { type ListConnectionsResponse } from './types'
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   try {

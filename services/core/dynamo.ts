@@ -1,4 +1,4 @@
-import { EntityConfiguration } from 'electrodb'
+import { type EntityConfiguration } from 'electrodb'
 import { Table } from 'sst/node/table'
 import { DynamoDB } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb'

@@ -1,5 +1,5 @@
 import { Button, button } from '../base-ui/button'
-import { Component } from 'solid-js'
+import { type Component } from 'solid-js'
 import { Dialog } from '@kobalte/core'
 import { useParams } from '@solidjs/router'
 import { NotionLogo } from '../base-ui/notion-logo'

@@ -1,7 +1,7 @@
 import { Select } from '@kobalte/core'
 import { Icon } from 'solid-heroicons'
 import { check, chevronUpDown } from 'solid-heroicons/outline'
-import { createSignal, For, ParentComponent, Show } from 'solid-js'
+import { createSignal, For, type ParentComponent, Show } from 'solid-js'
 
 export type DropDownOption = {
   name: string

@@ -1,12 +1,12 @@
 import { ulid } from 'ulid'
-import { Entity, EntityItem } from 'electrodb'
+import { Entity, type EntityItem } from 'electrodb'
 import { Dynamo } from './dynamo'
 import {
   batchCreatePineconeEmbedding,
   batchDeletePineconeEmbedding
 } from './pinecone'
-import { WeightedEmbedding } from './openai'
-import { EmbeddingResponse } from 'functions/embeddings/types'
+import { type WeightedEmbedding } from './openai'
+import { type EmbeddingResponse } from 'functions/embeddings/types'
 export * as Embedding from './embedding'
 
 export const EmbeddingEntity = new Entity(

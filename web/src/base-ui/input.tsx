@@ -1,5 +1,5 @@
 import { Icon } from 'solid-heroicons'
-import { Component, Signal, JSXElement, ParentComponent } from 'solid-js'
+import { type Component, type Signal, type JSXElement, type ParentComponent } from 'solid-js'
 import { TextField } from '@kobalte/core'
 export type InputProps = {
   signal: Signal<string>

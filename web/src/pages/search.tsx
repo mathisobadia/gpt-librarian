@@ -1,4 +1,4 @@
-import { Component, createSignal, Match, Switch } from 'solid-js'
+import { type Component, createSignal, Match, Switch } from 'solid-js'
 import { searchSolidQuery } from '../queries/search'
 import { EmbeddingList } from '../components/embedding'
 import { useParams, useSearchParams } from '@solidjs/router'

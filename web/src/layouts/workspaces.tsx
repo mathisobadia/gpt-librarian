@@ -1,10 +1,10 @@
-import { ListUserWorkspacesResponse } from '@gpt-librarian/services/functions/workspace/types'
+import { type ListUserWorkspacesResponse } from '@gpt-librarian/services/functions/workspace/types'
 import { A, Navigate, Outlet, useLocation, useNavigate } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
 import { chatBubbleLeftRight, documentPlus, magnifyingGlass, plus } from 'solid-heroicons/outline'
-import { Component, createSignal, JSXElement, Match, Switch } from 'solid-js'
+import { type Component, createSignal, type JSXElement, Match, Switch } from 'solid-js'
 import { Button } from '../base-ui/button'
-import { DropDown, DropDownOption } from '../base-ui/dropdown'
+import { DropDown, type DropDownOption } from '../base-ui/dropdown'
 import { Spinner } from '../base-ui/spinner'
 import { listUserWorkspacesQuery } from '../queries/list-user-workspaces'
 import { useSession } from '../queries/query-utils'
@@ -31,7 +31,7 @@ export const Workspaces: Component = () => {
     console.log('ON SUCCESS', data)
     if (!getWorkspaceId()) {
       navigate(`/workspace/${data.workspaces[0].workspaceId}`)
-      query.refetch().catch((error) => console.error(error))
+      query.refetch().catch((error) => { console.error(error) })
       return
     }
     const workspace = data.workspaces.find((workspace) => workspace.workspaceId === getWorkspaceId())
@@ -39,7 +39,7 @@ export const Workspaces: Component = () => {
       setSelectedWorkspace(workspace)
     } else {
       navigate(`/workspace/${data.workspaces[0].workspaceId}`)
-      query.refetch().catch((error) => console.error(error))
+      query.refetch().catch((error) => { console.error(error) })
     }
   }
   const query = listUserWorkspacesQuery(onSucess, onError)

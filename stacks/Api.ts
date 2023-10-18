@@ -1,6 +1,6 @@
 import {
   use,
-  StackContext,
+  type StackContext,
   Api as ApiGateway
   , Auth,
   Config

@@ -1,4 +1,4 @@
-import { use, StackContext, StaticSite } from 'sst/constructs'
+import { use, type StackContext, StaticSite } from 'sst/constructs'
 import { Api } from './Api'
 import { ConfigStack } from './Config'
 

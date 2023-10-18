@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
-interface ImportMetaEnv {
+type ImportMetaEnv = {
   readonly VITE_REST_URL: string
 }
-interface ImportMeta {
+type ImportMeta = {
   readonly env: ImportMetaEnv
 }

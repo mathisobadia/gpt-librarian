@@ -1,7 +1,7 @@
 import { useParams } from '@solidjs/router'
 import { createQuery } from '@tanstack/solid-query'
 import { Button } from '../base-ui/button'
-import { Component, For, Match, Switch } from 'solid-js'
+import { type Component, For, Match, Switch } from 'solid-js'
 import { listConnections } from '../queries/list-connections'
 import { NotionLogo } from '../base-ui/notion-logo'
 import { Spinner } from '../base-ui/spinner'
@@ -75,7 +75,7 @@ const Connection: Component<{ connectionId: string, type: 'NOTION', name: string
           <p class="text-slate-11">Created: {props.createdAt}, Last Synced: {props.lastSyncedAt ?? ''}</p>
         </div>
         <div class="m-auto">
-          <Button intent='secondary' onClick={() => onSyncConnection()} disabled={mutation.isLoading} loading={mutation.isLoading}>
+          <Button intent='secondary' onClick={onSyncConnection} disabled={mutation.isLoading} loading={mutation.isLoading}>
             Sync
           </Button>
         </div>

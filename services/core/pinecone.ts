@@ -29,8 +29,7 @@ export const batchCreatePineconeEmbedding = async (
   embeddings: PineconeEmbedding[]
 ) => {
   const pinecone = getPineconeClient(worspaceId)
-  const result = await pinecone.upsert({ vectors: embeddings })
-  return result
+  await pinecone.upsert({ vectors: embeddings })
 }
 
 export const batchDeletePineconeEmbedding = async (
@@ -41,8 +40,7 @@ export const batchDeletePineconeEmbedding = async (
     return []
   }
   const pinecone = getPineconeClient(worspaceId)
-  const result = await pinecone.delete({ ids: embeddingIds })
-  return result
+  await pinecone.delete({ ids: embeddingIds })
 }
 
 export const queryEmbeddings = async (

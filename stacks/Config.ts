@@ -1,4 +1,4 @@
-import { Config, StackContext } from 'sst/constructs'
+import { Config, type StackContext } from 'sst/constructs'
 
 export function ConfigStack ({ stack }: StackContext) {
   const OPENAI_API_KEY = new Config.Secret(stack, 'OPENAI_API_KEY')

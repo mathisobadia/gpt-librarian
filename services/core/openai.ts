@@ -9,7 +9,7 @@ https://beta.openai.com/docs/guides/safety-best-practices
 import dedent from 'dedent'
 import { Configuration, OpenAIApi } from 'openai'
 import { Config } from 'sst/node/config'
-import { EmbeddingEntityType, Embedding, mapRankedEmbeddings } from './embedding'
+import { type EmbeddingEntityType, Embedding, mapRankedEmbeddings } from './embedding'
 import GPT3Tokenizer from 'gpt3-tokenizer'
 import { queryEmbeddings } from './pinecone'
 import { ChatHistory } from './chat-history'

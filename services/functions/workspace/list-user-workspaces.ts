@@ -1,9 +1,9 @@
 import { respond } from 'functions/event-utils'
 import { ApiHandler } from 'sst/node/api'
-import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
+import { type APIGatewayProxyHandlerV2 } from 'aws-lambda'
 import { useSession } from 'sst/node/auth'
 import { Workspace } from '@gpt-librarian/core/workspace'
-import { ListUserWorkspacesResponse } from './types'
+import { type ListUserWorkspacesResponse } from './types'
 // import { Connection } from '@gpt-librarian/core/connection'
 
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {

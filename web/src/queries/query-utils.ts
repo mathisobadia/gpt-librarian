@@ -1,5 +1,5 @@
-import { createSignal, Signal } from 'solid-js'
-import { UserProperties } from '../../../services/functions/auth/types'
+import { createSignal, type Signal } from 'solid-js'
+import { type UserProperties } from '../../../services/functions/auth/types'
 
 const getAPIUrl = (path: string, workspaceId: string): string => {
   const urlParams = new URLSearchParams({ workspaceId })

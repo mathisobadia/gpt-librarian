@@ -11,7 +11,7 @@ import { Member } from '@gpt-librarian/core/member'
 import { Workspace } from '@gpt-librarian/core/workspace'
 import { Config } from 'sst/node/config'
 import { z } from 'zod'
-import { UserProperties } from './types'
+import { type UserProperties } from './types'
 
 const client = new SESClient({ region: 'us-east-1' })
 export const handler = AuthHandler({

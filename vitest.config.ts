@@ -1,20 +1,20 @@
 /// <reference types="vitest" />
 
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    testTimeout: 30000,
+    testTimeout: 30000
   },
-  logLevel: "info",
+  logLevel: 'info',
   esbuild: {
-    sourcemap: "both",
+    sourcemap: 'both'
   },
   resolve: {
     alias: {
-      "@gpt-librarian/core": "./services/core",
-      "@gpt-librarian/functions": "./services/functions",
-      "@gpt-librarian/stacks": "./stacks",
-    },
-  },
-});
+      '@gpt-librarian/core': './services/core',
+      '@gpt-librarian/functions': './services/functions',
+      '@gpt-librarian/stacks': './stacks'
+    }
+  }
+})

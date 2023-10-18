@@ -19,6 +19,7 @@
     "graphql": "^16.6.0",
     "openai": "^3.1.0",
     "pinecone-client": "^1.0.1",
+    "promptable": "^0.0.9",
     "ulid": "^2.3.0",
     "zod": "^3.20.6"
   },

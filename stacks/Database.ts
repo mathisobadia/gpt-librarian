@@ -1,4 +1,4 @@
-import { StackContext, Table } from 'sst/constructs'
+import { type StackContext, Table } from 'sst/constructs'
 
 export function Database ({ stack }: StackContext) {
   const table = new Table(stack, 'db', {

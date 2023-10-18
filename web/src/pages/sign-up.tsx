@@ -1,4 +1,4 @@
-import { Component, createSignal, Match, Show, Switch } from 'solid-js'
+import { type Component, createSignal, Match, Show, Switch } from 'solid-js'
 import { Button } from '../base-ui/button'
 import { Logo } from '../base-ui/logo'
 import { useLocation } from '@solidjs/router'

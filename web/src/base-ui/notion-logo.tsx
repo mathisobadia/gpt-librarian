@@ -1,4 +1,4 @@
-import { Component } from 'solid-js'
+import { type Component } from 'solid-js'
 
 export const NotionLogo: Component<{ class?: string }> = (props) => {
   return (

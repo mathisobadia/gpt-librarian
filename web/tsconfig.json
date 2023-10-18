@@ -15,9 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
   },
-  "include": ["src"],
+  "include": ["src", "vite.config.ts", "src/sst-env.d.ts"],
   "paths": {
     "@gpt-librarian/*": ["../services/*"]
   },

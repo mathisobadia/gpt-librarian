@@ -2,7 +2,7 @@ import { Icon } from 'solid-heroicons'
 import { plus } from 'solid-heroicons/outline'
 import { createSignal } from 'solid-js'
 import { Button } from '../base-ui/button'
-import { DropDown, DropDownOption } from '../base-ui/dropdown'
+import { DropDown, type DropDownOption } from '../base-ui/dropdown'
 import { Input, InputWithIcon } from '../base-ui/input'
 import { CreateConnection } from '../components/create-connection'
 import { Chat } from './chat'
@@ -14,7 +14,7 @@ export const Test = () => {
     { name: 'test3', value: 'test3' }
   ]
   const [value, setValue] = createSignal('')
-  const onDropDownChange = (value: DropDownOption) => console.log(value)
+  const onDropDownChange = (value: DropDownOption) => { console.log(value) }
   return (<><DropDown
     onChange={onDropDownChange}
     options={workspaces}>

@@ -1,6 +1,6 @@
 import { DropdownMenu } from '@kobalte/core'
 import { A } from '@solidjs/router'
-import { Component, Match, Switch } from 'solid-js'
+import { type Component, Match, Switch } from 'solid-js'
 import { Button } from '../base-ui/button'
 import { GithubLogo } from '../base-ui/github-logo'
 import { Logo } from '../base-ui/logo'

@@ -2,7 +2,7 @@ import { useSession } from 'sst/node/auth'
 import { Member } from '@gpt-librarian/core/member'
 import { useJsonBody, useQueryParam, useQueryParams } from 'sst/node/api'
 import { Config } from 'sst/node/config'
-import { z } from 'zod'
+import { type z } from 'zod'
 import { useLambdaContext } from 'sst/context/handler.js'
 
 /**

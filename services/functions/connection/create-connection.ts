@@ -1,7 +1,7 @@
 import { respond, useAuth, useSafeJsonBody } from 'functions/event-utils'
 import { ApiHandler } from 'sst/node/api'
-import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
-import { createConnectionInputSchema, CreateConnectionResponse } from './types'
+import { type APIGatewayProxyHandlerV2 } from 'aws-lambda'
+import { createConnectionInputSchema, type CreateConnectionResponse } from './types'
 import { createConnection } from '@gpt-librarian/core/notion'
 export const handler: APIGatewayProxyHandlerV2 = ApiHandler(async (event) => {
   try {

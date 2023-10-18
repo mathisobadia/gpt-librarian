@@ -1,14 +1,14 @@
 import {
-  ListBlockChildrenParameters,
-  BlockObjectResponse,
-  RichTextItemResponse,
-  PageObjectResponse,
-  GetPageResponse
+  type ListBlockChildrenParameters,
+  type BlockObjectResponse,
+  type RichTextItemResponse,
+  type PageObjectResponse,
+  type GetPageResponse
 } from '@notionhq/client/build/src/api-endpoints'
 import { Client } from '@notionhq/client'
 import { createEmbeddingWithRetry, getPromptLength } from './openai'
 import {
-  CreateEmbeddingInput,
+  type CreateEmbeddingInput,
   Embedding,
   getFullTextEmbedding
 } from './embedding'

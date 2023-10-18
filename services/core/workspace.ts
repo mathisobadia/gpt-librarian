@@ -1,5 +1,5 @@
 import { ulid } from 'ulid'
-import { Entity, EntityItem, Service } from 'electrodb'
+import { Entity, type EntityItem, Service } from 'electrodb'
 import { Dynamo } from './dynamo'
 import { ConnectionEntity } from './connection'
 import { MemberEntity } from './member'

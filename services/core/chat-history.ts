@@ -1,5 +1,5 @@
 import { ulid } from 'ulid'
-import { Entity, EntityItem } from 'electrodb'
+import { Entity, type EntityItem } from 'electrodb'
 import { Dynamo } from './dynamo'
 export * as ChatHistory from './chat-history'
 

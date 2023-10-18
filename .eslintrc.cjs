@@ -17,5 +17,25 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off'
   },
-  plugins: []
+  plugins: [],
+  ignorePatterns: [
+    '**/*.js',
+    '**/*.yml',
+    '**/*.yaml',
+    '**/*.log',
+    '**/*.json',
+    '**/*.css',
+    '**/*.md',
+    '**/*.html',
+    '**/*.lock',
+    '**/*.png',
+    '**/*.jpg',
+    '**/*.jpeg',
+    '**/*.gif',
+    '**/*.svg',
+    '**/*.ico',
+    'node_modules/**',
+    'coverage/**',
+    '.vscode/**'
+  ]
 }

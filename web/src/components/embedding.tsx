@@ -1,10 +1,10 @@
 import {
-  EmbeddingResponse,
-  EmbeddingsResponse
+  type EmbeddingResponse,
+  type EmbeddingsResponse
 } from '@gpt-librarian/services/functions/embeddings/types'
 import { Icon } from 'solid-heroicons'
 import { arrowTopRightOnSquare } from 'solid-heroicons/outline'
-import { Component, For } from 'solid-js'
+import { type Component, For } from 'solid-js'
 import { NotionLogo } from '../base-ui/notion-logo'
 
 export const EmbeddingItem: Component<EmbeddingResponse> = (props) => {

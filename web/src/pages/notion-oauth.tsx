@@ -54,7 +54,7 @@ export const NotionOauth = () => {
           <div class='flex w-64 flex-col gap-2 p-5'>
             <For each={query.data!.workspaces}>
               {(workspace) => (
-                <Button onClick={(event) => connectToWorkspace(workspace.workspaceId)}>{workspace.name}</Button>
+                <Button onClick={(event) => { connectToWorkspace(workspace.workspaceId) }}>{workspace.name}</Button>
               )}
             </For>
           </div>

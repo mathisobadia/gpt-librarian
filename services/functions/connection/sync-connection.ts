@@ -1,7 +1,7 @@
 import { Embedding } from '@gpt-librarian/core/embedding'
 import { getPageList, savePageEmbeddings } from '@gpt-librarian/core/notion'
 import { respond, useAuth, useSafeJsonBody } from 'functions/event-utils'
-import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
+import { type APIGatewayProxyHandlerV2 } from 'aws-lambda'
 import { ApiHandler } from 'sst/node/api'
 import { Connection } from '@gpt-librarian/core/connection'
 import { syncConnectionInputSchema } from './types'

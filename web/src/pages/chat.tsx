@@ -8,7 +8,7 @@ import { useParams } from '@solidjs/router'
 import { Button } from '../base-ui/button'
 import { Icon } from 'solid-heroicons'
 import { paperAirplane } from 'solid-heroicons/outline'
-import { DropDown, DropDownOption } from '../base-ui/dropdown'
+import { DropDown, type DropDownOption } from '../base-ui/dropdown'
 import { TextField } from '@kobalte/core'
 export const Chat: Component = () => {
   const [newChatQuery, setChatQuery] = createSignal('')

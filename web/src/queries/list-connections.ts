@@ -1,4 +1,4 @@
-import { ListConnectionsResponse } from '../../../services/functions/connection/types'
+import { type ListConnectionsResponse } from '../../../services/functions/connection/types'
 import { makeRequest } from './query-utils'
 
 export const listConnections = async (
